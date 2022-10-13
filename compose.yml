@@ -1,0 +1,25 @@
+version: '3.1'
+services:
+  nextjs:
+    container_name: nextjs
+    build:
+      context: ./
+    env_file:
+      - ./.env
+    ports:
+      - 3000:3000
+    depends_on:
+      - mongo
+  mongo:
+    container_name: mongo
+    image: 'bitnami/mongodb:4.4'
+    environment:
+      - MONGODB_ADVERTISED_HOSTNAME=${MONGODB_ADVERTISED_HOSTNAME}
+      - MONGODB_REPLICA_SET_MODE=${MONGODB_REPLICA_SET_MODE}
+      - MONGODB_ROOT_USER=${MONGO_INITDB_ROOT_USERNAME}
+      - MONGODB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
+      - MONGODB_REPLICA_SET_KEY=${MONGODB_REPLICA_SET_KEY}
+    ports:
+      - '27017:27017'
+    volumes:
+      - ./prisma/data/mongo:/data/db
