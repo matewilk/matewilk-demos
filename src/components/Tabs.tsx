@@ -19,7 +19,7 @@ const TabHorizontal = ({ children }: { children: ReactNode }) => {
 
 const TabPannel = ({ children }: { children: ReactNode }) => {
   return (
-    <Tab.Panel className="flex h-52 items-center justify-center rounded-lg bg-white">
+    <Tab.Panel className="flex h-64 items-center justify-center rounded-lg bg-white">
       {children}
     </Tab.Panel>
   );
@@ -27,18 +27,20 @@ const TabPannel = ({ children }: { children: ReactNode }) => {
 
 const Tabs = () => {
   return (
-    <Tab.Group>
-      <Tab.List className="flex flex-row justify-around gap-5 p-4">
-        <TabHorizontal>Connect</TabHorizontal>
-        <TabHorizontal>Send</TabHorizontal>
-        <TabHorizontal>Receive</TabHorizontal>
-      </Tab.List>
-      <Tab.Panels className="rounded-xl pb-6">
-        <TabPannel>Content 1</TabPannel>
-        <TabPannel>Content 2</TabPannel>
-        <TabPannel>Content 3</TabPannel>
-      </Tab.Panels>
-    </Tab.Group>
+    <div className="rounded-xl bg-blue-500 p-5">
+      <Tab.Group>
+        <Tab.List className="flex flex-row justify-around gap-5 pb-4">
+          <TabHorizontal>Connect</TabHorizontal>
+          <TabHorizontal>Send</TabHorizontal>
+          <TabHorizontal>Receive</TabHorizontal>
+        </Tab.List>
+        <Tab.Panels className="rounded-xl">
+          <TabPannel>Content 1</TabPannel>
+          <TabPannel>Content 2</TabPannel>
+          <TabPannel>Content 3</TabPannel>
+        </Tab.Panels>
+      </Tab.Group>
+    </div>
   );
 };
 
@@ -48,7 +50,7 @@ const TabVertical = ({ children }: { children: ReactNode }) => {
   return (
     <Tab
       className={({ selected }: { selected: boolean }) => {
-        return `w-full rounded-xl border-none py-4 text-lg focus:outline-none sm:rounded-r-none  ${
+        return `w-full rounded-xl border-none p-4 text-lg focus:outline-none sm:rounded-r-none  ${
           selected
             ? "bg-white text-blue-600 hover:text-blue-800"
             : "text-blue-100 hover:bg-blue-400 hover:text-white"
@@ -62,14 +64,14 @@ const TabVertical = ({ children }: { children: ReactNode }) => {
 
 const TabsVertical = () => {
   return (
-    <div className="sm:min-h-64 flex h-auto flex-col py-5 sm:flex-row sm:py-0">
+    <div className="flex h-auto flex-col rounded-xl bg-blue-500 p-5 sm:flex-row">
       <Tab.Group vertical>
         <Tab.List className="w-full flex-auto sm:w-1/4 sm:py-10">
           <TabVertical>Tab 1</TabVertical>
           <TabVertical>Tab 2</TabVertical>
           <TabVertical>Tab 3</TabVertical>
         </Tab.List>
-        <Tab.Panels className="sm:flex-1/4 w-full flex-auto pt-5 sm:right-0 sm:w-3/4 sm:py-6">
+        <Tab.Panels className="sm:flex-1/4 w-full flex-auto pt-4 sm:right-0 sm:w-3/4 sm:pt-0">
           <TabPannel>Content 1</TabPannel>
           <TabPannel>Content 2</TabPannel>
           <TabPannel>Content 3</TabPannel>

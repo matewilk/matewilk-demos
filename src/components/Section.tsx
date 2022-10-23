@@ -13,19 +13,21 @@ enum Type {
   WHITE = "white",
 }
 
+type Section = {
+  type: `${Type}`;
+  sectionId: string;
+  headerText: string;
+  subheaderText: string;
+  children?: ReactNode;
+};
+
 const Section = ({
   type,
   sectionId,
   headerText,
   subheaderText,
   children,
-}: {
-  type: `${Type}`;
-  sectionId: string;
-  headerText: string;
-  subheaderText: string;
-  children?: ReactNode;
-}) => {
+}: Section) => {
   return (
     <section
       id={sectionId}
@@ -46,7 +48,7 @@ const Section = ({
           </p>
         </div>
       </div>
-      <div className="mt-20 max-w-5xl rounded-xl bg-blue-500 px-5 text-center sm:mx-auto sm:text-center">
+      <div className="mt-20 max-w-5xl text-center sm:mx-auto sm:text-center">
         {children}
       </div>
     </section>
