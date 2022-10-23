@@ -4,6 +4,7 @@ import Section from "../components/Section";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
 import Intro from "../components/Intro";
+import Tabs, { TabsVertical } from "../components/Tabs";
 
 const Home: NextPage = () => {
   return (
@@ -22,13 +23,17 @@ const Home: NextPage = () => {
           sectionId="features"
           headerText="Everything you need to exchange your tokens."
           subheaderText="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-        />
+        >
+          <Tabs />
+        </Section>
         <Section
           type="white"
           sectionId="about"
           headerText="Simplify everyday token operations."
           subheaderText="Etiam eu dui pulvinar, pharetra odio."
-        />
+        >
+          <TabsVertical />
+        </Section>
         <Section
           type="blue"
           sectionId="getstarted"

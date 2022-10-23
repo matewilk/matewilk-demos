@@ -1,3 +1,5 @@
+import { ReactNode } from "react";
+
 const SectionType = {
   textColor: {
     header: { blue: "text-white", white: "text-black" },
@@ -16,11 +18,13 @@ const Section = ({
   sectionId,
   headerText,
   subheaderText,
+  children,
 }: {
   type: `${Type}`;
   sectionId: string;
   headerText: string;
   subheaderText: string;
+  children?: ReactNode;
 }) => {
   return (
     <section
@@ -41,6 +45,9 @@ const Section = ({
             {subheaderText}
           </p>
         </div>
+      </div>
+      <div className="mt-20 max-w-5xl rounded-xl bg-blue-500 px-5 text-center sm:mx-auto sm:text-center">
+        {children}
       </div>
     </section>
   );
