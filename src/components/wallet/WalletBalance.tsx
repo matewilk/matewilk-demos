@@ -1,16 +1,10 @@
 import truncateEthAddress from "../../../utils/truncate-eth-address";
+import { useWallet } from "./WalletContext";
 
-const WalletBalance = ({
-  connected,
-  address,
-  balance,
-  error,
-}: {
-  connected: boolean;
-  address: string;
-  balance: string;
-  error: string;
-}) => {
+const WalletBalance = () => {
+  const {
+    wallet: { connected, balance, address, error },
+  } = useWallet();
   return (
     <div className="h-64 w-full max-w-2xl rounded-xl bg-white p-10 sm:w-3/4 lg:w-1/2">
       {connected ? (

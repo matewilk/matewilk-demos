@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Link from "next/link";
 
 type MenuItem = { text: string; href: string };
 
@@ -94,16 +95,16 @@ const Header = ({ signedIn }: { signedIn: boolean }) => {
                 <a href="/games">Games</a>
               </li>
               <li className="btn-white md:absolute md:right-2">
-                <a href="/api/auth/signout">Sign out</a>
+                <Link href="/api/auth/signout">Sign out</Link>
               </li>
             </>
           ) : (
             <>
               <li className="btn-white md:absolute md:right-44">
-                <a href="/api/auth/signin">Sign in</a>
+                <Link href="/api/auth/signin">Sign in</Link>
               </li>
               <li className="btn-blue md:absolute md:right-2">
-                <a href="/api/auth/signin">Get started today</a>
+                <Link href="/api/auth/signin">Get started today</Link>
               </li>
             </>
           )}

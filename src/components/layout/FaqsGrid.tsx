@@ -1,5 +1,4 @@
 import { ReactNode } from "react";
-import { faqs } from "../../pages/content";
 
 const FaqCell = ({ children }: { children: ReactNode }) => {
   return <div className="p-2">{children}</div>;
@@ -23,3 +22,38 @@ const FaqsGrid = () => {
 };
 
 export default FaqsGrid;
+
+const faqs = [
+  {
+    question: "Lorem ipsum dolor?",
+    answer: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam ut.",
+  },
+  {
+    question: "Lorem ipsum dolor gate?",
+    answer:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer rhoncus tincidunt.",
+  },
+  {
+    question: "Lorem ipsum dolor sit?",
+    answer:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur.",
+  },
+  {
+    question: "Lorem ipsum dolor gate?",
+    answer:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer rhoncus tincidunt.",
+  },
+  {
+    question: "Lorem ipsum dolor?",
+    answer: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam ut.",
+  },
+  {
+    question: "Lorem ipsum dolor sit?",
+    answer:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur.",
+  },
+  {
+    question: "Lorem ipsum dolor?",
+    answer: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam ut.",
+  },
+];

@@ -1,35 +1,7 @@
 import type { NextPage } from "next";
 import Header from "../components/layout/Header";
 import Wallet from "../components/wallet/Wallet";
-
-const headers = ["token", "value", "quantity", "symbol"];
-
-const tokens = [
-  {
-    token: "Ether",
-    value: "$10,453.44",
-    quantity: "3.23489234",
-    symbol: "ETH",
-  },
-  {
-    token: "Solana",
-    value: "$15,653.21",
-    quantity: "332.47293434",
-    symbol: "SOL",
-  },
-  {
-    token: "Polygon",
-    value: "10,453.44",
-    quantity: "343.234834",
-    symbol: "MATIC",
-  },
-  {
-    token: "Tether",
-    value: "$12,000.00",
-    quantity: "12000.00",
-    symbol: "USDT",
-  },
-];
+import { WalletProvider } from "../components/wallet/WalletContext";
 
 const TokenTableRow = ({
   token,
@@ -85,7 +57,7 @@ const TokenTable = () => {
 
 const Dashboard: NextPage = () => {
   return (
-    <>
+    <WalletProvider>
       <Header signedIn={true} />
       <Wallet />
       <section id="portfolio" aria-label="portfolio">
@@ -93,8 +65,37 @@ const Dashboard: NextPage = () => {
           <TokenTable />
         </div>
       </section>
-    </>
+    </WalletProvider>
   );
 };
 
 export default Dashboard;
+
+const headers = ["token", "value", "quantity", "symbol"];
+
+const tokens = [
+  {
+    token: "Ether",
+    value: "$10,453.44",
+    quantity: "3.23489234",
+    symbol: "ETH",
+  },
+  {
+    token: "Solana",
+    value: "$15,653.21",
+    quantity: "332.47293434",
+    symbol: "SOL",
+  },
+  {
+    token: "Polygon",
+    value: "10,453.44",
+    quantity: "343.234834",
+    symbol: "MATIC",
+  },
+  {
+    token: "Tether",
+    value: "$12,000.00",
+    quantity: "12000.00",
+    symbol: "USDT",
+  },
+];

@@ -3,14 +3,12 @@ import {
   ChevronDoubleDownIcon,
   PlusIcon,
 } from "@heroicons/react/24/outline";
+import { connectWallet, sendTransaction } from "./actions";
+import { useWallet } from "./WalletContext";
 
-const SendButton = ({
-  connected,
-  sendTransaction,
-}: {
-  connected: boolean;
-  sendTransaction: Function;
-}) => {
+const SendButton = () => {
+  const { wallet: connected, dispatch } = useWallet();
+
   return (
     <div
       className={`flex flex-col items-center gap-1 p-3 ${
@@ -20,7 +18,7 @@ const SendButton = ({
       <button
         className="flex flex-col items-center"
         onClick={() => {
-          sendTransaction();
+          sendTransaction(dispatch);
         }}
       >
         <ChevronDoubleUpIcon
@@ -36,18 +34,14 @@ const SendButton = ({
   );
 };
 
-const ConnectButton = ({
-  connected,
-  connectWallet,
-}: {
-  connected: boolean;
-  connectWallet: Function;
-}) => {
+const ConnectButton = () => {
+  const { wallet: connected, dispatch } = useWallet();
+
   return (
     <div className="flex flex-col items-center gap-1 p-3">
       <button
         className="flex flex-col items-center"
-        onClick={() => connectWallet()}
+        onClick={() => connectWallet(dispatch)}
       >
         <PlusIcon
           className={`h-14 w-14 rounded-md ${
@@ -60,7 +54,9 @@ const ConnectButton = ({
   );
 };
 
-const ReceiveButton = ({ connected }: { connected: boolean }) => {
+const ReceiveButton = () => {
+  const { wallet: connected } = useWallet();
+
   return (
     <div
       className={`flex flex-col items-center gap-1 p-3 ${
@@ -79,20 +75,12 @@ const ReceiveButton = ({ connected }: { connected: boolean }) => {
   );
 };
 
-const WalletActions = ({
-  connectWallet,
-  sendTransaction,
-  connected,
-}: {
-  connectWallet: Function;
-  sendTransaction: Function;
-  connected: boolean;
-}) => {
+const WalletActions = () => {
   return (
     <div className="flex w-full max-w-2xl flex-row items-center justify-around rounded-xl bg-white pt-2 sm:w-3/4 lg:w-1/2">
-      <SendButton connected={connected} sendTransaction={sendTransaction} />
-      <ConnectButton connected={connected} connectWallet={connectWallet} />
-      <ReceiveButton connected={connected} />
+      <SendButton />
+      <ConnectButton />
+      <ReceiveButton />
     </div>
   );
 };
