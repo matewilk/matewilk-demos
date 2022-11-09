@@ -1,11 +1,6 @@
 import type { NextPage } from "next";
-import Header from "../components/Header";
-
-import {
-  ChevronDoubleUpIcon,
-  ChevronDoubleDownIcon,
-  PlusIcon,
-} from "@heroicons/react/24/outline";
+import Header from "../components/layout/Header";
+import Wallet from "../components/wallet/Wallet";
 
 const headers = ["token", "value", "quantity", "symbol"];
 
@@ -88,54 +83,11 @@ const TokenTable = () => {
   );
 };
 
-const WalletBalance = () => {
-  return (
-    <div className="h-72 w-full max-w-2xl rounded-xl bg-white p-10 sm:w-3/4 lg:w-1/2">
-      <div>
-        <span>Total Balance</span>
-        <div>
-          <h3 className="py-5 text-3xl">$ 10,3534.32</h3>
-        </div>
-      </div>
-      <div className="mt-10">
-        <span>Monthly change</span>
-        <div>
-          <h3 className="py-3 text-2xl">$ 1,264.05</h3>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-const WalletActions = () => {
-  return (
-    <div className="flex w-full max-w-2xl flex-row items-center justify-around rounded-xl bg-white pt-2 sm:w-3/4 lg:w-1/2">
-      <div className="flex flex-col items-center gap-1 p-3">
-        <ChevronDoubleUpIcon className="h-14 w-14 rounded-md bg-slate-200 p-3" />
-        Send
-      </div>
-      <div className="flex flex-col items-center gap-1">
-        <PlusIcon className="h-14 w-14 rounded-md bg-slate-200 p-3" />
-        Connect Wallet
-      </div>
-      <div className="flex flex-col items-center gap-1">
-        <ChevronDoubleDownIcon className="h-14 w-14 rounded-md bg-slate-200 p-3" />
-        Receive
-      </div>
-    </div>
-  );
-};
-
 const Dashboard: NextPage = () => {
   return (
     <>
       <Header signedIn={true} />
-      <section id="balance" aria-label="balance">
-        <div className="mx-auto flex h-min max-w-7xl flex-col items-center justify-between gap-10 bg-blue-100 py-10">
-          <WalletBalance />
-          <WalletActions />
-        </div>
-      </section>
+      <Wallet />
       <section id="portfolio" aria-label="portfolio">
         <div className="mx-auto max-w-3xl">
           <TokenTable />

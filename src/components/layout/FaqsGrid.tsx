@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { faqs } from "../pages/content";
+import { faqs } from "../../pages/content";
 
 const FaqCell = ({ children }: { children: ReactNode }) => {
   return <div className="p-2">{children}</div>;

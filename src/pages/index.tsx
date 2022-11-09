@@ -1,9 +1,9 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import Footer from "../components/Footer";
-import Header from "../components/Header";
-import Intro from "../components/Intro";
-import Sections from "../components/Sections";
+import Footer from "../components/layout/Footer";
+import Header from "../components/layout/Header";
+import Intro from "../components/layout/Intro";
+import Sections from "../components/layout/Sections";
 
 const Home: NextPage = () => {
   return (
@@ -14,7 +14,7 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Header />
+      <Header signedIn={false} />
       <main>
         <Intro />
         <Sections />
