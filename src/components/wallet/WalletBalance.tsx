@@ -8,7 +8,7 @@ const WalletPlaceholder = () => {
 
   return (
     <div className="flex h-full w-full flex-col items-center justify-center">
-      <h1 className="">{isLoading ? "Loading..." : "Connect Wallet"}</h1>
+      <h1 className="">{isLoading ? "Connecting..." : "Connect Wallet"}</h1>
       {error && (
         <div className="text-sm font-bold text-red-400">
           <div>{error}</div>
