@@ -1,4 +1,4 @@
-import truncateEthAddress from "../../../utils/truncate-eth-address";
+import truncateEthAddress from "../../utils/truncate-eth-address";
 import { useWallet } from "./WalletContext";
 
 const WalletPlaceholder = () => {

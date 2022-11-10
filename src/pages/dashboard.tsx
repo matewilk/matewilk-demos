@@ -1,7 +1,7 @@
 import type { NextPage } from "next";
-import Header from "../components/layout/Header";
-import Wallet from "../components/wallet/Wallet";
-import { WalletProvider } from "../components/wallet/WalletContext";
+import Header from "@/components/layout/Header";
+import Wallet from "@/components/wallet/Wallet";
+import { WalletProvider } from "@/components/wallet/WalletContext";
 
 const TokenTableRow = ({
   token,
