@@ -1,6 +1,6 @@
-import Section from "../components/Section";
-import Tabs, { TabsVertical } from "../components/Tabs";
-import FaqsGrid from "../components/FaqsGrid";
+import Section from "./Section";
+import Tabs, { TabsVertical } from "./Tabs";
+import FaqsGrid from "./FaqsGrid";
 import { ReactNode } from "react";
 
 type SectionData = {
