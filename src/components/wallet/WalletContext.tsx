@@ -6,28 +6,36 @@ import React, {
 } from "react";
 import { walletReducer } from "./walletReducer";
 
-export type WalletState = {
+type WalletData = {
   connected: boolean;
-  chain: string;
+  chain: number;
   balance: string;
   address: string;
-  error: string;
   transaction: unknown;
   history: [];
 };
 
-const initialState: WalletState = {
-  connected: false,
-  chain: "",
-  balance: "",
-  address: "",
+export type Wallet = {
+  data: WalletData;
+  isLoading: boolean;
+  error?: string;
+};
+
+const initialState: Wallet = {
+  data: {
+    connected: false,
+    chain: 1,
+    balance: "",
+    address: "",
+    transaction: {},
+    history: [],
+  },
+  isLoading: false,
   error: "",
-  transaction: {},
-  history: [],
 };
 
 const WalletContext = createContext(
-  {} as { wallet: WalletState; dispatch: Dispatch<any> }
+  {} as { wallet: Wallet; dispatch: Dispatch<any> }
 );
 
 export function WalletProvider({ children }: { children: React.ReactNode }) {

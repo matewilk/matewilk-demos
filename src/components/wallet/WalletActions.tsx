@@ -7,7 +7,12 @@ import { connectWallet, sendTransaction } from "./actions";
 import { useWallet } from "./WalletContext";
 
 const SendButton = () => {
-  const { wallet: connected, dispatch } = useWallet();
+  const {
+    wallet: {
+      data: { connected },
+    },
+    dispatch,
+  } = useWallet();
 
   return (
     <div
@@ -35,7 +40,12 @@ const SendButton = () => {
 };
 
 const ConnectButton = () => {
-  const { wallet: connected, dispatch } = useWallet();
+  const {
+    wallet: {
+      data: { connected },
+    },
+    dispatch,
+  } = useWallet();
 
   return (
     <div className="flex flex-col items-center gap-1 p-3">
@@ -55,7 +65,11 @@ const ConnectButton = () => {
 };
 
 const ReceiveButton = () => {
-  const { wallet: connected } = useWallet();
+  const {
+    wallet: {
+      data: { connected },
+    },
+  } = useWallet();
 
   return (
     <div

@@ -12,6 +12,8 @@ const noExtensionText =
 export const connectWallet = async (dispatch: Dispatch<ReducerAction<any>>) => {
   if (window.ethereum) {
     try {
+      dispatch(connect({ isLoading: true, error: "" }));
+
       const provider = new ethers.providers.Web3Provider(
         window.ethereum,
         "any"
@@ -24,16 +26,19 @@ export const connectWallet = async (dispatch: Dispatch<ReducerAction<any>>) => {
 
       dispatch(
         connect({
-          connected: true,
-          balance,
-          address,
+          data: {
+            connected: true,
+            balance,
+            address,
+          },
+          isLoading: false,
         })
       );
     } catch (error: any) {
-      dispatch(connect({ error: error.message }));
+      dispatch(connect({ error: error.message, isLoading: false }));
     }
   } else {
-    dispatch(connect({ error: noExtensionText }));
+    dispatch(connect({ error: noExtensionText, isLoading: false }));
   }
 };
 
@@ -41,18 +46,26 @@ export const chainChange =
   (dispatch: Dispatch<ReducerAction<any>>) =>
   // args is chain hex number
   async (chainHex: string) => {
-    const chainDecimal = parseInt(chainHex, 16); // hex to decimal
-    // switch chain
-    new ethers.providers.EtherscanProvider(chainDecimal);
-    // update chain in state
-    dispatch(chainChangeAction(chainDecimal));
-    // reconnect wallet (with new chain)
-    await connectWallet(dispatch);
-    // fetch wallet history (move logic somewhere else)
-    // const history = await ethscanProvider.getHistory(wallet.address);
-    // history.map((tr) => {
-    //   console.log(ethers.utils.formatEther(tr.value /* wei */)); // transaction value in eth
-    // });
+    if (window.ethereum) {
+      try {
+        dispatch(chainChangeAction({ isLoading: true, error: "" }));
+
+        const chainDecimal = parseInt(chainHex, 16); // hex to decimal
+        // switch chain
+        new ethers.providers.EtherscanProvider(chainDecimal);
+        // update chain in state
+        dispatch(chainChangeAction({ data: { chain: chainDecimal } }));
+        // reconnect wallet (with new chain)
+        await connectWallet(dispatch);
+        // fetch wallet history (move logic somewhere else)
+        // const history = await ethscanProvider.getHistory(wallet.address);
+        // history.map((tr) => {
+        //   console.log(ethers.utils.formatEther(tr.value /* wei */)); // transaction value in eth
+        // });
+      } catch (e: any) {
+        dispatch(chainChangeAction({ error: e.message, isLoading: false }));
+      }
+    }
   };
 
 export const sendTransaction = async (
@@ -60,6 +73,8 @@ export const sendTransaction = async (
 ) => {
   if (window.ethereum) {
     try {
+      dispatch(send({ isLoading: true, error: "" }));
+
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       const signer = provider.getSigner();
       const address = await signer.getAddress();
@@ -74,9 +89,9 @@ export const sendTransaction = async (
       };
 
       const transaction = await signer.sendTransaction(tx);
-      dispatch(send({ transaction }));
+      dispatch(send({ data: { transaction }, isLoading: false }));
     } catch (e: any) {
-      dispatch(send({ error: e.message }));
+      dispatch(send({ error: e.message, isLoading: false }));
     }
   }
 };
