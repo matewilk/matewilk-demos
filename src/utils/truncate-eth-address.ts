@@ -6,10 +6,12 @@ const truncateRegex = /^(0x[a-zA-Z0-9]{4})[a-zA-Z0-9]+([a-zA-Z0-9]{4})$/;
  * @param address Full address to truncate
  * @returns Truncated address
  */
-const truncateEthAddress = (address: string) => {
-  const match = address.match(truncateRegex);
-  if (!match) return address;
-  return `${match[1]}…${match[2]}`;
+const truncateEthAddress = (address: `0x${string}` | undefined) => {
+  if (address) {
+    const match = address.match(truncateRegex);
+    if (!match) return address;
+    return `${match[1]}…${match[2]}`;
+  }
 };
 
 export default truncateEthAddress;
