@@ -3,11 +3,12 @@ import {
   ChevronDoubleDownIcon,
   PlusIcon,
 } from "@heroicons/react/24/outline";
+import { GetAccountResult, Connector } from "@wagmi/core";
 import { useWallet } from "@/hooks/useWallet";
 
 const SendButton = () => {
   const { account } = useWallet();
-  const { isConnected } = account;
+  const { isConnected }: GetAccountResult = account;
 
   return (
     <div
@@ -30,7 +31,15 @@ const SendButton = () => {
 };
 
 const ConnectButton = () => {
-  const { connect, account, disconnect } = useWallet();
+  const {
+    connect,
+    account,
+    disconnect,
+  }: {
+    connect: Connector;
+    disconnect: Connector;
+    account: GetAccountResult;
+  } = useWallet();
   const { isConnected } = account;
 
   const handler = isConnected ? disconnect.disconnect : connect.connect;
@@ -51,7 +60,7 @@ const ConnectButton = () => {
 
 const ReceiveButton = () => {
   const { account } = useWallet();
-  const { isConnected } = account;
+  const { isConnected }: GetAccountResult = account;
 
   return (
     <div

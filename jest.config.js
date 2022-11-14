@@ -19,9 +19,11 @@ const customJestConfig = {
     // Handle module aliases (this will be automatically configured for you soon)
     "^@/components/(.*)$": "<rootDir>/src/components/$1",
     "^@/pages/(.*)$": "<rootDir>/src/pages/$1",
+    "^@/hooks/(.*)$": "<rootDir>/src/hooks/$1",
+    "^@/providers/(.*)$": "<rootDir>/src/providers/$1",
   },
 
-  setupFilesAfterEnv: ["<rootDir>/setupTests.ts"],
+  setupFilesAfterEnv: ["<rootDir>/jest.setup.ts"],
 };
 
 // createJestConfig is exported this way to ensure that next/jest can load the Next.js config which is async

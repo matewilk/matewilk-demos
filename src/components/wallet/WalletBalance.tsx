@@ -1,12 +1,15 @@
-import { useAccount, useBalance, useConnect } from "wagmi";
+import {
+  FetchBalanceResult,
+  GetAccountResult,
+  ConnectorEvents,
+} from "@wagmi/core";
 import truncateEthAddress from "../../utils/truncate-eth-address";
-
 import { useWallet } from "@/hooks/useWallet";
 
 const WalletPlaceholder = () => {
   const { connect, account } = useWallet();
   const { isLoading, error } = connect;
-  const { isConnecting, isReconnecting } = account;
+  const { isConnecting, isReconnecting }: GetAccountResult = account;
 
   return (
     <div className="flex h-full w-full flex-col items-center justify-center">
@@ -17,7 +20,7 @@ const WalletPlaceholder = () => {
       </h1>
       {error && (
         <div className="text-sm font-bold text-red-400">
-          <div>{error.message}</div>
+          <div>{error["message"]}</div>
         </div>
       )}
     </div>
@@ -27,8 +30,8 @@ const WalletPlaceholder = () => {
 const WalletBalance = () => {
   const { connect, account, balance } = useWallet();
   const { isLoading } = connect;
-  const { address, isConnected } = account;
-  const { data } = balance;
+  const { address, isConnected }: GetAccountResult = account;
+  const { data }: { data: FetchBalanceResult } = balance;
 
   return (
     <div className="h-64 w-full max-w-2xl rounded-xl bg-white p-10 sm:w-3/4 lg:w-1/2">

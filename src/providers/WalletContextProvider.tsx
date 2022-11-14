@@ -1,4 +1,4 @@
-import { createContext, useContext } from "react";
+import { createContext } from "react";
 import { useAccount, useDisconnect, useConnect, useBalance } from "wagmi";
 import { InjectedConnector } from "wagmi/connectors/injected";
 
