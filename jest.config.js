@@ -23,6 +23,9 @@ const customJestConfig = {
     "^@/providers/(.*)$": "<rootDir>/src/providers/$1",
   },
 
+  // allows runing jest in ESM mode
+  extensionsToTreatAsEsm: [".ts", ".tsx"],
+
   setupFilesAfterEnv: ["<rootDir>/jest.setup.ts"],
 };
 

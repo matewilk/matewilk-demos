@@ -29,10 +29,10 @@ describe("Dashboard", () => {
     testingUtils.clearAllMocks();
   });
 
-  it("renders a connect wallet message and button", () => {
+  it("renders a connect wallet message and button", async () => {
     render(<Dashboard />);
 
-    const message = screen.getByRole("heading", {
+    const message = await screen.findByRole("heading", {
       name: /Connect Wallet/i,
     });
     const button = screen.getByRole("button", {
@@ -60,7 +60,7 @@ describe("Dashboard", () => {
       userEvent.click(connectButton);
     });
 
-    const connectHeading = screen.getByRole("heading", {
+    const connectHeading = await screen.findByRole("heading", {
       name: /Connect Wallet/i,
     });
     await waitForElementToBeRemoved(connectHeading);
