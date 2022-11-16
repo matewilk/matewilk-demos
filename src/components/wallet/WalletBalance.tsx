@@ -1,8 +1,4 @@
-import {
-  FetchBalanceResult,
-  GetAccountResult,
-  ConnectorEvents,
-} from "@wagmi/core";
+import { FetchBalanceResult, GetAccountResult } from "@wagmi/core";
 import truncateEthAddress from "../../utils/truncate-eth-address";
 import { useWallet } from "@/hooks/useWallet";
 

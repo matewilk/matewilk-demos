@@ -4,7 +4,6 @@ import Wallet from "@/components/wallet/Wallet";
 
 import { WagmiConfig } from "wagmi";
 import { client } from "@/components/wallet/wagmi.config";
-// import { getDefaultProvider } from "ethers";
 
 const Dashboard: NextPage = () => {
   return (

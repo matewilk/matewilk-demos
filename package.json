@@ -8,7 +8,8 @@
     "postinstall": "prisma generate",
     "lint": "next lint",
     "start": "next start",
-    "test": "NODE_OPTIONS=--experimental-vm-modules jest"
+    "test": "NODE_OPTIONS=--experimental-vm-modules jest",
+    "tailwind:test:css": "tailwindcss -c tailwind.config.cjs -i ./src/styles/globals.css -o ./src/__tests__/index.css"
   },
   "dependencies": {
     "@headlessui/react": "^1.7.3",
@@ -38,7 +39,6 @@
     "@typescript-eslint/eslint-plugin": "^5.33.0",
     "@typescript-eslint/parser": "^5.33.0",
     "autoprefixer": "^10.4.7",
-    "babel-jest": "^29.3.1",
     "eslint": "8.22.0",
     "eslint-config-next": "12.3.1",
     "eslint-plugin-react-hooks": "^4.6.0",
@@ -49,8 +49,7 @@
     "prettier": "^2.7.1",
     "prettier-plugin-tailwindcss": "^0.1.13",
     "prisma": "^4.4.0",
-    "tailwindcss": "^3.1.6",
-    "ts-jest": "^29.0.3",
+    "tailwindcss": "^3.2.4",
     "typescript": "^4.8.4"
   },
   "ct3aMetadata": {

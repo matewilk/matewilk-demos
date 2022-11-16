@@ -1,0 +1,16 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug Jest",
+      "type": "node",
+      "env": { "NODE_OPTIONS": "--experimental-vm-modules" },
+      "request": "launch",
+      "runtimeExecutable": "${workspaceRoot}/node_modules/jest/bin/jest.js",
+      "args": ["--runInBand", "--no-cache", "--env=jsdom", "--watchAll=false"],
+      "cwd": "${workspaceRoot}",
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen"
+    }
+  ]
+}

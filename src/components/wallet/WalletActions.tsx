@@ -16,7 +16,7 @@ const SendButton = () => {
         !isConnected && "text-slate-400"
       }`}
     >
-      <button className="flex flex-col items-center" onClick={() => {}}>
+      <button className="flex flex-col items-center">
         <ChevronDoubleUpIcon
           className={`h-14 w-14 rounded-md ${
             isConnected
