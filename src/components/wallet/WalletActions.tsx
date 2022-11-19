@@ -3,12 +3,12 @@ import {
   ChevronDoubleDownIcon,
   PlusIcon,
 } from "@heroicons/react/24/outline";
-import { GetAccountResult, Connector } from "@wagmi/core";
+import { GetAccountResult } from "@wagmi/core";
 import { useWallet } from "@/hooks/useWallet";
 
-const SendButton = () => {
+const SendButton = ({ setShowSendForm }: { setShowSendForm: Function }) => {
   const { account } = useWallet();
-  const { isConnected }: GetAccountResult = account;
+  const { isConnected } = account;
 
   return (
     <div
@@ -16,7 +16,10 @@ const SendButton = () => {
         !isConnected && "text-slate-400"
       }`}
     >
-      <button className="flex flex-col items-center">
+      <button
+        className="flex flex-col items-center"
+        onClick={() => setShowSendForm(true)}
+      >
         <ChevronDoubleUpIcon
           className={`h-14 w-14 rounded-md ${
             isConnected
@@ -31,15 +34,7 @@ const SendButton = () => {
 };
 
 const ConnectButton = () => {
-  const {
-    connect,
-    account,
-    disconnect,
-  }: {
-    connect: Connector;
-    disconnect: Connector;
-    account: GetAccountResult;
-  } = useWallet();
+  const { connect, account, disconnect } = useWallet();
   const { isConnected } = account;
 
   const handler = isConnected ? disconnect.disconnect : connect.connect;
@@ -80,10 +75,10 @@ const ReceiveButton = () => {
   );
 };
 
-const WalletActions = () => {
+const WalletActions = ({ setShowSendForm }: { setShowSendForm: Function }) => {
   return (
     <div className="flex w-full max-w-2xl flex-row items-center justify-around rounded-xl bg-white pt-2 sm:w-3/4 lg:w-1/2">
-      <SendButton />
+      <SendButton setShowSendForm={setShowSendForm} />
       <ConnectButton />
       <ReceiveButton />
     </div>

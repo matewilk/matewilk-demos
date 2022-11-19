@@ -1,8 +1,24 @@
 import { createContext } from "react";
+import { FetchBalanceResult, GetAccountResult } from "@wagmi/core";
 import { useAccount, useDisconnect, useConnect, useBalance } from "wagmi";
 import { InjectedConnector } from "wagmi/connectors/injected";
 
-export const WalletContext = createContext(null);
+// since wagmi does not export proper Connector type
+export type ConnectorType = {
+  isLoading: boolean;
+  error: Error;
+  connect: Function;
+  disconnect: Function;
+};
+
+export type WalletContextType = {
+  account: GetAccountResult;
+  balance: { data: FetchBalanceResult };
+  connect: ConnectorType;
+  disconnect: ConnectorType;
+};
+
+export const WalletContext = createContext<WalletContextType | null>(null);
 
 export const WalletProvider = (props: any) => {
   const connect = useConnect({
@@ -12,7 +28,7 @@ export const WalletProvider = (props: any) => {
   const account = useAccount();
   const balance = useBalance({
     address: account.address,
-    watch: true,
+    watch: false,
   });
 
   const value = { connect, disconnect, account, balance };
