@@ -3,10 +3,23 @@ import { useDebounce } from "use-debounce";
 import {
   usePrepareSendTransaction,
   useSendTransaction,
-  useFeeData,
+  useWaitForTransaction,
 } from "wagmi";
-import { BigNumberish, utils } from "ethers";
+import { utils } from "ethers";
 import CoinGecko from "coingecko-api";
+
+import { getGasPrice } from "@/utils/ethereum";
+import { useWallet } from "@/hooks/useWallet";
+
+type CGFiatType = {
+  gbp: number;
+  usd: number;
+  eur: number;
+};
+
+type CGSimplePriceResponseType = {
+  ethereum: CGFiatType;
+};
 
 const coinGeckoClient = new CoinGecko();
 
@@ -15,38 +28,32 @@ export const SendTransactionForm = ({
 }: {
   setShowSendForm: Function;
 }) => {
+  // get gas data from WalletProvider
+  const {
+    gas: {
+      isFetching,
+      data: {
+        formatted: { gasPrice, maxFeePerGas },
+      },
+    },
+  } = useWallet();
+
+  // state to keep CoinGecko response in
+  const [eth, setEthPrice]: [
+    eth: CGSimplePriceResponseType | undefined,
+    setEthPrice: Function
+  ] = useState();
+
+  // send transaction form state
   const [to, setTo] = useState("");
   const [debouncedTo] = useDebounce(to, 500);
 
   const [amount, setAmount] = useState("");
   const [debouncedAmount] = useDebounce(amount, 500);
 
-  const { data, isFetching } = useFeeData({
-    formatUnits: "ether",
-    watch: true,
-  });
+  const [transactionGas, setTransactionGas] = useState("");
 
-  const gasPrice = data?.gasPrice;
-  const maxFeePerGas = data?.maxFeePerGas;
-
-  const { config } = usePrepareSendTransaction({
-    request: {
-      to: debouncedTo,
-      value: debouncedAmount ? utils.parseEther(debouncedAmount) : undefined,
-    },
-  });
-  const { sendTransaction } = useSendTransaction(config);
-
-  const total = debouncedAmount
-    ? utils.parseUnits(debouncedAmount).add(gasPrice as BigNumberish)
-    : gasPrice;
-
-  const maxTotal = debouncedAmount
-    ? utils.parseUnits(debouncedAmount).add(maxFeePerGas as BigNumberish)
-    : maxFeePerGas;
-
-  const [eth, setEthPrice] = useState();
-  const amountInFiat = parseFloat(debouncedAmount) * eth?.ethereum?.gbp;
+  // TODO: move CoinGecko logic to Provider
   useEffect(() => {
     const getEthPrice = async () => {
       const { data, success } = await coinGeckoClient.simple.price({
@@ -55,17 +62,51 @@ export const SendTransactionForm = ({
       });
       if (success) {
         setEthPrice(data);
+        setTransactionGas(ethGasPrice);
       }
     };
     getEthPrice();
-  }, []);
+  }, [debouncedAmount]);
+
+  // prepare transaction
+  const { config } = usePrepareSendTransaction({
+    request: {
+      to: debouncedTo,
+      value: debouncedAmount ? utils.parseEther(debouncedAmount) : undefined,
+    },
+  });
+
+  // send transaction hanlers
+  const { data, sendTransaction } = useSendTransaction(config);
+  const { isLoading, isSuccess } = useWaitForTransaction({
+    hash: data?.hash,
+  });
+
+  const ethGasPrice = getGasPrice(gasPrice as string);
+  const ethMaxGasPrice = getGasPrice(maxFeePerGas as string);
+
+  // UI display values
+  const total = parseFloat(debouncedAmount || "0") + parseFloat(ethGasPrice);
+  const totalMax =
+    parseFloat(debouncedAmount || "0") + parseFloat(ethMaxGasPrice);
+
+  const amountFiat = (
+    parseFloat(debouncedAmount) * eth?.ethereum?.gbp!
+  ).toFixed(2);
+
+  const feeFiat = (parseFloat(ethGasPrice) * eth?.ethereum?.gbp!).toFixed(2);
+
+  const totalFiat = (
+    (parseFloat(ethGasPrice) + parseFloat(debouncedAmount)) *
+    eth?.ethereum?.gbp!
+  ).toFixed(2);
 
   return (
     <form
       className="flex w-full flex-col gap-2"
       onSubmit={(e) => {
         e.preventDefault();
-        // sendTransaction?.(); // <<---- START FROM HERE !!!
+        sendTransaction?.(); // <<---- START FROM HERE !!!
       }}
     >
       <div className="flex flex-col">
@@ -105,9 +146,11 @@ export const SendTransactionForm = ({
           <input
             id="amount-fiat"
             aria-label="Amount (fiat)"
-            placeholder="£50"
+            placeholder={`£ ${
+              isNaN(parseFloat(amountFiat)) ? "50" : amountFiat
+            }`}
             className="h-8 rounded bg-slate-50"
-            value={amountInFiat}
+            readOnly
           />
         </div>
       </div>
@@ -120,16 +163,16 @@ export const SendTransactionForm = ({
           <input
             id="gas"
             aria-label="Gas (ether)"
-            placeholder="0.0005"
+            placeholder={ethGasPrice || "0.0005"}
             className={`${
               isFetching ? "text-slate-300" : "text-gray-500"
             } h-8 grow rounded bg-slate-50`}
-            value={data?.formatted.gasPrice || undefined}
+            readOnly
           />
           <input
             id="gas-fiat"
             aria-label="Gas (fiat)"
-            placeholder="£2.36"
+            placeholder={`£ ${feeFiat || "2.36"}`}
             className="h-8 rounded bg-slate-50"
           />
         </div>
@@ -137,10 +180,10 @@ export const SendTransactionForm = ({
           <div>{"Likely in < 30 seconds"}</div>
           <div
             className={`${
-              isFetching ? "text-slate-400" : "text-gray-500"
+              isFetching ? "text-slate-300" : "text-gray-500"
             } transition-all duration-200 ease-in-out`}
           >
-            Max fee: {data?.formatted.maxFeePerGas}
+            Max fee: {ethMaxGasPrice}
           </div>
         </div>
       </div>
@@ -153,16 +196,17 @@ export const SendTransactionForm = ({
           <input
             id="total"
             aria-label="Total (ether)"
-            placeholder="0.5"
+            placeholder={total.toString()}
             className={`${
-              isFetching ? "text-slate-400" : "text-gray-500"
+              isFetching ? "text-slate-300" : "text-gray-500"
             } h-8 grow rounded bg-slate-50`}
-            value={utils.formatUnits(total as BigNumberish)}
           />
           <input
             id="total-fiat"
             aria-label="Total (fiat)"
-            placeholder="£52.36"
+            placeholder={`£ ${
+              isNaN(parseFloat(totalFiat)) ? feeFiat : totalFiat
+            }`}
             className="h-8 rounded bg-slate-50"
           />
         </div>
@@ -170,10 +214,10 @@ export const SendTransactionForm = ({
           <div>{"Amount + gas fee"}</div>
           <div
             className={`${
-              isFetching ? "text-slate-400" : "text-gray-500"
+              isFetching ? "text-slate-300" : "text-gray-500"
             } transition-all duration-200 ease-in-out`}
           >
-            Max total: {utils.formatUnits(maxTotal as BigNumberish)}
+            Max total: {totalMax}
           </div>
         </div>
       </div>
@@ -182,8 +226,20 @@ export const SendTransactionForm = ({
         <button className="btn-white" onClick={() => setShowSendForm(false)}>
           Cancel
         </button>
-        <button className="btn-blue">Send</button>
+        <button className="btn-blue">
+          {isLoading ? "Sending..." : "Send"}
+        </button>
       </div>
+      {isSuccess && (
+        <div className="flex flex-col items-center pt-5">
+          <div>Successfuly sent {amount} ETH</div>
+          <div className="text-blue-500">
+            <a target="_blank" href={`https://etherscan.io/tx/${data?.hash}`}>
+              see details on etherscan.io
+            </a>
+          </div>
+        </div>
+      )}
     </form>
   );
 };

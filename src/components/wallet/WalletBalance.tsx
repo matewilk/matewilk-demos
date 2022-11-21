@@ -1,4 +1,4 @@
-import truncateEthAddress from "../../utils/truncate-eth-address";
+import { truncateEthAddress } from "@/utils/ethereum";
 import { useWallet } from "@/hooks/useWallet";
 import { SendTransactionForm } from "./SendTransactionForm";
 
@@ -62,7 +62,7 @@ const WalletBalance = ({
   const { isConnected } = account;
 
   return (
-    <div className="min-h-64 w-full max-w-2xl rounded-xl bg-white p-10 sm:w-3/4 lg:w-1/2">
+    <div className="w-full max-w-2xl rounded-xl bg-white p-10 sm:w-3/4 lg:w-1/2">
       {isLoading || !isConnected ? (
         <WalletPlaceholder />
       ) : (

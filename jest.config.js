@@ -21,6 +21,7 @@ const customJestConfig = {
     "^@/pages/(.*)$": "<rootDir>/src/pages/$1",
     "^@/hooks/(.*)$": "<rootDir>/src/hooks/$1",
     "^@/providers/(.*)$": "<rootDir>/src/providers/$1",
+    "^@/utils/(.*)$": "<rootDir>/src/utils/$1",
   },
 
   // allows runing jest in ESM mode

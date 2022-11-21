@@ -20,7 +20,8 @@
       "@/components/*": ["./src/components/*"],
       "@/pages/*": ["./src/pages/*"],
       "@/hooks/*": ["./src/hooks/*"],
-      "@/providers/*": ["./src/providers/*"]
+      "@/providers/*": ["./src/providers/*"],
+      "@/utils/*": ["./src/utils/*"]
     }
   },
   "include": [
@@ -29,7 +30,7 @@
     "**/*.tsx",
     "**/*.cjs",
     "**/*.mjs",
-    "src/utils/truncate-eth-address.ts"
+    "src/utils/ethereum.ts"
   ],
   "exclude": ["node_modules"]
 }
