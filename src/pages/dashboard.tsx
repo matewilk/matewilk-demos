@@ -1,8 +1,8 @@
 import type { NextPage } from "next";
+import { WagmiConfig } from "wagmi";
+
 import Header from "@/components/layout/Header";
 import Wallet from "@/components/wallet/Wallet";
-
-import { WagmiConfig } from "wagmi";
 import { client } from "@/components/wallet/wagmi.config";
 
 const Dashboard: NextPage = () => {

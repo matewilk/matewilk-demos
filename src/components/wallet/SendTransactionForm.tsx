@@ -51,8 +51,6 @@ export const SendTransactionForm = ({
   const [amount, setAmount] = useState("");
   const [debouncedAmount] = useDebounce(amount, 500);
 
-  const [transactionGas, setTransactionGas] = useState("");
-
   // TODO: move CoinGecko logic to Provider
   useEffect(() => {
     const getEthPrice = async () => {
@@ -62,7 +60,6 @@ export const SendTransactionForm = ({
       });
       if (success) {
         setEthPrice(data);
-        setTransactionGas(ethGasPrice);
       }
     };
     getEthPrice();

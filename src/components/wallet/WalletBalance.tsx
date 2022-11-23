@@ -28,23 +28,20 @@ const Balance = () => {
   const { address } = account;
   const { data } = balance;
 
+  const shortBalance = parseFloat(data?.formatted).toFixed(8);
+
   return (
     <div className="flex flex-row justify-around">
       <div>
         <div>
           <span>Total Balance</span>
-          <h3 className="py-5 text-2xl">{`${data?.formatted} ${data?.symbol}`}</h3>
-        </div>
-        <div className="mt-6">
-          <span>Monthly change</span>
-          <div>
-            <h3 className="py-1 text-xl">$ 1,264.05</h3>
-          </div>
+          <h3 className="text-2xl">{`${shortBalance} ${data?.symbol}`}</h3>
+          <span className="text-slate-500">{`${data?.formatted} ${data?.symbol}`}</span>
         </div>
       </div>
       <div className="flex flex-col">
         <span>Address</span>
-        <span className="text-md py-7">{truncateEthAddress(address)}</span>
+        <h3 className="text-2xl">{truncateEthAddress(address)}</h3>
       </div>
     </div>
   );
