@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useDebounce } from "use-debounce";
 import {
   usePrepareSendTransaction,
@@ -6,22 +6,11 @@ import {
   useWaitForTransaction,
 } from "wagmi";
 import { utils } from "ethers";
-import CoinGecko from "coingecko-api";
 
 import { getGasPrice } from "@/utils/ethereum";
 import { useWallet } from "@/hooks/useWallet";
 
-type CGFiatType = {
-  gbp: number;
-  usd: number;
-  eur: number;
-};
-
-type CGSimplePriceResponseType = {
-  ethereum: CGFiatType;
-};
-
-const coinGeckoClient = new CoinGecko();
+import { useCoinGecko } from "@/hooks/useCoinGecko";
 
 export const SendTransactionForm = ({
   setShowSendForm,
@@ -29,20 +18,13 @@ export const SendTransactionForm = ({
   setShowSendForm: Function;
 }) => {
   // get gas data from WalletProvider
+  const { gas } = useWallet();
   const {
-    gas: {
-      isFetching,
-      data: {
-        formatted: { gasPrice, maxFeePerGas },
-      },
+    isFetching,
+    data: {
+      formatted: { gasPrice, maxFeePerGas },
     },
-  } = useWallet();
-
-  // state to keep CoinGecko response in
-  const [eth, setEthPrice]: [
-    eth: CGSimplePriceResponseType | undefined,
-    setEthPrice: Function
-  ] = useState();
+  } = gas;
 
   // send transaction form state
   const [to, setTo] = useState("");
@@ -51,19 +33,8 @@ export const SendTransactionForm = ({
   const [amount, setAmount] = useState("");
   const [debouncedAmount] = useDebounce(amount, 500);
 
-  // TODO: move CoinGecko logic to Provider
-  useEffect(() => {
-    const getEthPrice = async () => {
-      const { data, success } = await coinGeckoClient.simple.price({
-        ids: ["ethereum"],
-        vs_currencies: ["eur", "usd", "gbp"],
-      });
-      if (success) {
-        setEthPrice(data);
-      }
-    };
-    getEthPrice();
-  }, [debouncedAmount]);
+  // get eth price in fiat from CoinGecko
+  const eth = useCoinGecko(debouncedAmount);
 
   // prepare transaction
   const { config } = usePrepareSendTransaction({
@@ -73,7 +44,7 @@ export const SendTransactionForm = ({
     },
   });
 
-  // send transaction hanlers
+  // send transaction handlers
   const { data, sendTransaction } = useSendTransaction(config);
   const { isLoading, isSuccess } = useWaitForTransaction({
     hash: data?.hash,
