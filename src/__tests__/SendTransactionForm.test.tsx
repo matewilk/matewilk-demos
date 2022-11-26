@@ -13,6 +13,19 @@ import { screen, render } from "@testing-library/react";
 import { WalletContext } from "../providers/WalletContextProvider";
 import { SendTransactionForm } from "@/components/wallet/SendTransactionForm";
 
+// mock useCoingGecko hook return values
+jest.mock("../hooks/useCoinGecko", () => {
+  return {
+    useCoinGecko: () => {
+      return {
+        ethereum: {
+          gbp: 1000,
+        },
+      };
+    },
+  };
+});
+
 // useWallet hook mocked return value
 const contextValue = {
   gas: {

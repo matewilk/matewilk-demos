@@ -8,8 +8,7 @@
     "postinstall": "prisma generate",
     "lint": "next lint",
     "start": "next start",
-    "test": "NODE_OPTIONS=--experimental-vm-modules jest",
-    "tailwind:test:css": "tailwindcss -c tailwind.config.cjs -i ./src/styles/globals.css -o ./src/__tests__/index.css"
+    "test": "jest"
   },
   "dependencies": {
     "@headlessui/react": "^1.7.3",

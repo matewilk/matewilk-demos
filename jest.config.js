@@ -24,11 +24,18 @@ const customJestConfig = {
     "^@/utils/(.*)$": "<rootDir>/src/utils/$1",
   },
 
-  // allows runing jest in ESM mode
-  extensionsToTreatAsEsm: [".ts", ".tsx"],
-
   setupFilesAfterEnv: ["<rootDir>/jest.setup.ts"],
 };
 
 // createJestConfig is exported this way to ensure that next/jest can load the Next.js config which is async
-module.exports = createJestConfig(customJestConfig);
+const asyncConfig = createJestConfig(customJestConfig);
+
+// workaround for not being able to override transformIgnorePatterns in Nextjs
+// https://github.com/vercel/next.js/discussions/31152#discussioncomment-1697047
+const esModules = ["wagmi", "@wagmi"].join("|");
+
+module.exports = async () => {
+  const config = await asyncConfig();
+  config.transformIgnorePatterns = [`/node_modules/(?!${esModules})`];
+  return config;
+};
