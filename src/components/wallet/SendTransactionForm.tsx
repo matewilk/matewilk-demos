@@ -142,6 +142,7 @@ export const SendTransactionForm = ({
             aria-label="Gas (fiat)"
             placeholder={`£ ${feeFiat || "2.36"}`}
             className="h-8 rounded bg-slate-50"
+            readOnly
           />
         </div>
         <div className="flex flex-row justify-between pt-1 text-sm text-gray-500">
@@ -168,6 +169,7 @@ export const SendTransactionForm = ({
             className={`${
               isFetching ? "text-slate-300" : "text-gray-500"
             } h-8 grow rounded bg-slate-50`}
+            readOnly
           />
           <input
             id="total-fiat"
@@ -176,6 +178,7 @@ export const SendTransactionForm = ({
               isNaN(parseFloat(totalFiat)) ? feeFiat : totalFiat
             }`}
             className="h-8 rounded bg-slate-50"
+            readOnly
           />
         </div>
         <div className="flex flex-row justify-between pt-1 text-sm text-gray-500">

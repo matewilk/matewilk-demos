@@ -9,6 +9,7 @@ import { Client, createClient, WagmiConfig, useConnect } from "wagmi";
 import { InjectedConnector } from "wagmi/connectors/injected";
 import { ethers } from "ethers";
 import { generateTestingUtils } from "eth-testing";
+
 import userEvent from "@testing-library/user-event";
 import Wallet from "@/components/wallet/Wallet";
 
