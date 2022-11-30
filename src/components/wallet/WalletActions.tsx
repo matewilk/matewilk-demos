@@ -3,32 +3,26 @@ import {
   ChevronDoubleDownIcon,
   PlusIcon,
 } from "@heroicons/react/24/outline";
-import { connectWallet, sendTransaction } from "./actions";
-import { useWallet } from "./WalletContext";
+import { GetAccountResult } from "@wagmi/core";
+import { useWallet } from "@/hooks/useWallet";
 
-const SendButton = () => {
-  const {
-    wallet: {
-      data: { connected },
-    },
-    dispatch,
-  } = useWallet();
+const SendButton = ({ setShowSendForm }: { setShowSendForm: Function }) => {
+  const { account } = useWallet();
+  const { isConnected } = account;
 
   return (
     <div
       className={`flex flex-col items-center gap-1 p-3 ${
-        !connected && "text-slate-400"
+        !isConnected && "text-slate-400"
       }`}
     >
       <button
         className="flex flex-col items-center"
-        onClick={() => {
-          sendTransaction(dispatch);
-        }}
+        onClick={() => setShowSendForm(true)}
       >
         <ChevronDoubleUpIcon
           className={`h-14 w-14 rounded-md ${
-            connected
+            isConnected
               ? "bg-blue-300 hover:bg-blue-400 active:bg-blue-500"
               : "bg-slate-200"
           } p-3`}
@@ -40,46 +34,38 @@ const SendButton = () => {
 };
 
 const ConnectButton = () => {
-  const {
-    wallet: {
-      data: { connected },
-    },
-    dispatch,
-  } = useWallet();
+  const { connect, account, disconnect } = useWallet();
+  const { isConnected } = account;
+
+  const handler = isConnected ? disconnect.disconnect : connect.connect;
 
   return (
     <div className="flex flex-col items-center gap-1 p-3">
-      <button
-        className="flex flex-col items-center"
-        onClick={() => connectWallet(dispatch)}
-      >
+      <button className="flex flex-col items-center" onClick={() => handler()}>
         <PlusIcon
           className={`h-14 w-14 rounded-md ${
-            connected ? "bg-slate-200" : "bg-blue-300"
+            isConnected ? "bg-slate-200" : "bg-blue-300"
           }  p-3 hover:bg-blue-400 active:bg-blue-500`}
         />
-        {connected ? "Reconnect Wallet" : "Connect Wallet"}
+        {isConnected ? "Disconnect Wallet" : "Connect Wallet"}
       </button>
     </div>
   );
 };
 
 const ReceiveButton = () => {
-  const {
-    wallet: {
-      data: { connected },
-    },
-  } = useWallet();
+  const { account } = useWallet();
+  const { isConnected }: GetAccountResult = account;
 
   return (
     <div
       className={`flex flex-col items-center gap-1 p-3 ${
-        !connected && "text-slate-400"
+        !isConnected && "text-slate-400"
       }`}
     >
       <ChevronDoubleDownIcon
         className={`h-14 w-14 rounded-md ${
-          connected
+          isConnected
             ? "bg-blue-300 hover:bg-blue-400 active:bg-blue-500"
             : "bg-slate-200"
         } p-3`}
@@ -89,10 +75,10 @@ const ReceiveButton = () => {
   );
 };
 
-const WalletActions = () => {
+const WalletActions = ({ setShowSendForm }: { setShowSendForm: Function }) => {
   return (
     <div className="flex w-full max-w-2xl flex-row items-center justify-around rounded-xl bg-white pt-2 sm:w-3/4 lg:w-1/2">
-      <SendButton />
+      <SendButton setShowSendForm={setShowSendForm} />
       <ConnectButton />
       <ReceiveButton />
     </div>

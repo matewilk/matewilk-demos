@@ -1,7 +1,25 @@
 import type { NextPage } from "next";
+import { WagmiConfig } from "wagmi";
+
 import Header from "@/components/layout/Header";
 import Wallet from "@/components/wallet/Wallet";
-import { WalletProvider } from "@/components/wallet/WalletContext";
+import { client } from "@/components/wallet/wagmi.config";
+
+const Dashboard: NextPage = () => {
+  return (
+    <WagmiConfig client={client}>
+      <Header signedIn={true} />
+      <Wallet />
+      <section id="portfolio" aria-label="portfolio">
+        <div className="mx-auto max-w-3xl">
+          <TokenTable />
+        </div>
+      </section>
+    </WagmiConfig>
+  );
+};
+
+export default Dashboard;
 
 const TokenTableRow = ({
   token,
@@ -54,22 +72,6 @@ const TokenTable = () => {
     </div>
   );
 };
-
-const Dashboard: NextPage = () => {
-  return (
-    <WalletProvider>
-      <Header signedIn={true} />
-      <Wallet />
-      <section id="portfolio" aria-label="portfolio">
-        <div className="mx-auto max-w-3xl">
-          <TokenTable />
-        </div>
-      </section>
-    </WalletProvider>
-  );
-};
-
-export default Dashboard;
 
 const headers = ["token", "value", "quantity", "symbol"];
 
