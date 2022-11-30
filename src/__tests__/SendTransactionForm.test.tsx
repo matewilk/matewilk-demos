@@ -9,7 +9,13 @@ const client = createClient({
   provider,
 });
 
-import { screen, render } from "@testing-library/react";
+import {
+  screen,
+  render,
+  fireEvent,
+  act,
+  waitFor,
+} from "@testing-library/react";
 import { WalletContext } from "../providers/WalletContextProvider";
 import { SendTransactionForm } from "@/components/wallet/SendTransactionForm";
 
@@ -23,6 +29,36 @@ jest.mock("../hooks/useCoinGecko", () => {
         },
       };
     },
+  };
+});
+
+// mock use-debounce to avoid using jest timers
+jest.mock("use-debounce", () => {
+  return {
+    useDebounce: (value: string) => {
+      return [value];
+    },
+  };
+});
+
+// mock wagmi - only hooks used in SendTransactionForm
+// do not mock the rest to be able to setup this test file properly
+const sendTransactionMock = jest.fn();
+jest.mock("wagmi", () => {
+  return {
+    ...jest.requireActual("wagmi"),
+    usePrepareSendTransaction: jest
+      .fn()
+      .mockImplementation(() => ({ config: "mock" })),
+    useSendTransaction: jest.fn().mockImplementation(() => ({
+      data: {
+        hash: "mock",
+      },
+      sendTransaction: sendTransactionMock,
+    })),
+    useWaitForTransaction: jest
+      .fn()
+      .mockImplementation(() => ({ isLoading: false, isSuccess: false })),
   };
 });
 
@@ -52,14 +88,16 @@ const Wrapper = () => {
   };
 };
 
+const validAddress = "0x94CCbba1FE2a9fe68F328E40832858aB8730613F";
+
 describe("SendTransactionForm", () => {
-  it("displays correctly", async () => {
-    // const { usePrepareSendTransaction } = await import("wagmi");
+  beforeEach(() => {
     render(<SendTransactionForm setShowSendForm={() => {}} />, {
       wrapper: Wrapper(),
     });
+  });
 
-    // screen.logTestingPlaygroundURL();
+  it("displays correctly", async () => {
     screen.getByText(/recipient address/i);
     const address = screen.getByRole("textbox", { name: /recipient/i });
     expect(address.getAttribute("placeholder")).toBe("0xA0Cf…342e");
@@ -109,22 +147,105 @@ describe("SendTransactionForm", () => {
   });
 
   describe("Recipient address field", () => {
-    it("validates address as expected", () => {});
+    it("displays error message when address field is empty", async () => {
+      fireEvent.click(screen.getByText(/send/i));
+
+      await screen.findByText(/recipient address is required/i);
+    });
+
+    it("validates address as expected", async () => {
+      const address: HTMLInputElement = screen.getByRole("textbox", {
+        name: /address/i,
+      });
+      fireEvent.change(address, { target: { value: validAddress } });
+
+      fireEvent.click(screen.getByText(/send/i));
+
+      await waitFor(() => {
+        expect(address.value).toBe(validAddress);
+      });
+    });
+
+    it("displays error message when address format is invalid", async () => {
+      const invalidAddress = "0x94CCbba1FE2a9fe68F328E40832858aB8730613";
+      const address = screen.getByRole("textbox", { name: /address/i });
+
+      fireEvent.change(address, { target: { value: invalidAddress } });
+
+      fireEvent.click(screen.getByText(/send/i));
+      await screen.findByText(
+        /invalid ethereum address \(cheksum or format\)/i
+      );
+    });
   });
 
   describe("Amount (ether) field", () => {
-    it("allows numeric values only", () => {});
+    it("allows numeric values only", async () => {
+      const amount = screen.getByRole("textbox", { name: /amount \(ether\)/i });
 
-    it("has a character limit of 18 decimal places", () => {});
+      fireEvent.change(amount, { target: { value: "abc" } });
+      expect(amount.getAttribute("value")).toBe("");
 
-    it("updates amount (fiat) field", () => {});
+      fireEvent.change(amount, { target: { value: 0.567 } });
+      await screen.findByDisplayValue("0.567");
+    });
 
-    it("updates total (ether) & total (fiat) fields", () => {});
+    it("has a character limit of 18 decimal places", async () => {
+      const amount = screen.getByRole("textbox", { name: /amount \(ether\)/i });
+
+      fireEvent.change(amount, { target: { value: "0.123456789123456789" } });
+      await screen.findByDisplayValue("0.123456789123456789");
+
+      // does not update field when value exceeds decimal places limit
+      fireEvent.change(amount, { target: { value: "0.12345678912345678912" } });
+      await screen.findByDisplayValue("0.123456789123456789");
+    });
+
+    it("updates amount (fiat) field", async () => {
+      const amount = screen.getByRole("textbox", { name: /amount \(ether\)/i });
+      const amountFiat = screen.getByRole("textbox", {
+        name: /amount \(fiat\)/i,
+      });
+
+      fireEvent.change(amount, { target: { value: "0.567" } });
+
+      expect(amountFiat.getAttribute("placeholder")).toBe("£ 567.00");
+    });
+
+    it("updates total (ether), total (fiat) & max total values", async () => {
+      const eth = "0.999";
+      const amount = screen.getByRole("textbox", { name: /amount \(ether\)/i });
+      const totalEther = screen.getByRole("textbox", {
+        name: /total \(ether\)/i,
+      });
+      const totalFiat = screen.getByRole("textbox", {
+        name: /total \(fiat\)/i,
+      });
+
+      fireEvent.change(amount, { target: { value: eth } });
+
+      expect(totalEther.getAttribute("placeholder")).toBe("0.99904925");
+      expect(totalFiat.getAttribute("placeholder")).toBe("£ 999.05");
+
+      const maxTotal = (
+        parseFloat(eth) +
+        21000 * parseFloat(maxFeePerGas)
+      ).toFixed(8);
+      screen.getByText(`Max total: ${maxTotal}`);
+    });
   });
 
   describe("Send form button", () => {
-    it("is enabled when fields are filled in correctly", () => {});
+    it("Triggers transaction send when fields are filled in correctly", async () => {
+      const address = screen.getByRole("textbox", { name: /address/i });
+      const amount = screen.getByRole("textbox", { name: /amount \(ether\)/i });
 
-    it("changes text when form is being sent", () => {});
+      fireEvent.change(address, { target: { value: validAddress } });
+      fireEvent.change(amount, { target: { value: "0.1" } });
+
+      fireEvent.submit(screen.getByText(/send/i));
+
+      await waitFor(() => expect(sendTransactionMock).toHaveBeenCalled());
+    });
   });
 });

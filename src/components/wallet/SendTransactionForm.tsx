@@ -6,11 +6,17 @@ import {
   useWaitForTransaction,
 } from "wagmi";
 import { utils } from "ethers";
+import { useForm, SubmitHandler } from "react-hook-form";
 
 import { getGasPrice } from "@/utils/ethereum";
 import { useWallet } from "@/hooks/useWallet";
 
 import { useCoinGecko } from "@/hooks/useCoinGecko";
+
+type Inputs = {
+  address: string;
+  amount: string;
+};
 
 export const SendTransactionForm = ({
   setShowSendForm,
@@ -69,24 +75,50 @@ export const SendTransactionForm = ({
     eth?.ethereum?.gbp!
   ).toFixed(2);
 
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    setValue,
+  } = useForm<Inputs>({
+    mode: "onSubmit",
+    defaultValues: {
+      address: "",
+      amount: "",
+    },
+  });
+  const onSubmit: SubmitHandler<Inputs> = (/* data */) => {
+    sendTransaction?.();
+  };
+
   return (
     <form
       className="flex w-full flex-col gap-2"
-      onSubmit={(e) => {
-        e.preventDefault();
-        sendTransaction?.(); // <<---- START FROM HERE !!!
-      }}
+      onSubmit={handleSubmit(onSubmit)}
     >
       <div className="flex flex-col">
         <label htmlFor="address">Recipient address</label>
         <input
           id="address"
-          aria-label="Recipient"
+          {...register("address", {
+            required: "recipient address is required",
+            validate: (value) => {
+              const isValid = utils.isAddress(value);
+              if (!isValid) {
+                return "invalid ethereum address (cheksum or format)";
+              }
+            },
+          })}
+          aria-label="Recipient address"
           placeholder="0xA0Cf…342e"
           className="h-8 rounded bg-slate-50"
-          onChange={(e) => setTo(e.target.value)}
+          onChange={(e) => {
+            setTo(e.target.value);
+            setValue("address", e.target.value);
+          }}
           value={to}
         />
+        <p>{errors.address?.message}</p>
       </div>
 
       <div className="flex flex-col">
@@ -105,10 +137,24 @@ export const SendTransactionForm = ({
         <div className="flex flex-row gap-4">
           <input
             id="amount"
+            {...register("amount", {
+              required: "eth amount is required",
+              // pattern: {
+              //   // matches agains 18 decimal places
+              //   value: /^\d+(\.\d{0,18})?$/,
+              //   message: "invalid amount format",
+              // },
+            })}
             aria-label="Amount (ether)"
             placeholder="0.5"
             className="h-8 grow rounded bg-slate-50"
-            onChange={(e) => setAmount(e.target.value)}
+            onChange={(e) => {
+              const re = /^\d+(\.\d{0,18})?$/;
+              if (e.target.value === "" || re.test(e.target.value)) {
+                setValue("amount", e.target.value);
+                setAmount(e.target.value);
+              }
+            }}
             value={amount}
           />
           <input
@@ -121,6 +167,7 @@ export const SendTransactionForm = ({
             readOnly
           />
         </div>
+        <p>{errors.amount?.message}</p>
       </div>
 
       <span className="mt-3 mb-1 h-0.5 w-full bg-slate-100"></span>
