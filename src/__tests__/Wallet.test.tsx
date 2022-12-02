@@ -13,6 +13,13 @@ import { generateTestingUtils } from "eth-testing";
 import userEvent from "@testing-library/user-event";
 import Wallet from "@/components/wallet/Wallet";
 
+// Mock SendTransactionForm
+jest.mock("@/components/wallet/SendTransactionForm", () => {
+  return {
+    SendTransactionForm: () => <div>mock</div>,
+  };
+});
+
 function WrapperGenerator(client: Client) {
   return function TestWagmiProvider(props: any) {
     return <WagmiConfig client={client} {...props} />;
@@ -122,7 +129,7 @@ describe("Wallet", () => {
     );
 
     // balance
-    await screen.findByText(/2000.0 ETH/i);
+    await screen.findByText(/2000.0/i);
     // shortened address
     await screen.findByText(/0xf61B…9EEf/i);
   });
@@ -147,7 +154,7 @@ describe("Wallet", () => {
     render(<Wallet />, { wrapper: WrapperGenerator(client) });
 
     // wait for connection
-    await screen.findByText(/2.0 ETH/i);
+    await screen.findByText(/2.0/i);
 
     // Mock the balance of the new account
     mainnetReadonlyTestingUtils.mockBalance(
@@ -163,7 +170,7 @@ describe("Wallet", () => {
     });
 
     // wait for new account connection
-    await screen.findByText(/1.0 ETH/i);
+    await screen.findByText(/1.0/i);
   });
 
   it("updates wallet when user changes network", async () => {
@@ -186,7 +193,7 @@ describe("Wallet", () => {
     render(<Wallet />, { wrapper: WrapperGenerator(client) });
 
     // wait for connection
-    await screen.findByText(/2.0 ETH/i);
+    await screen.findByText(/2.0/i);
 
     // Mock account balance on the new chain
     goerliReadonlyTestingUtils.mockBalance(
@@ -200,7 +207,7 @@ describe("Wallet", () => {
     });
 
     // wait for new account connection
-    await screen.findByText(/5.0 ETH/i);
+    await screen.findByText(/5.0/i);
   });
 
   it("removes balance view when user disconnects wallet", async () => {

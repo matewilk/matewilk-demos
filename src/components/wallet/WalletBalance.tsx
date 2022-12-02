@@ -23,25 +23,30 @@ const WalletPlaceholder = () => {
   );
 };
 
-const Balance = () => {
+const Balance = ({ showSendForm }: { showSendForm: boolean }) => {
   const { account, balance } = useWallet();
   const { address } = account;
   const { data } = balance;
 
-  const shortBalance = parseFloat(data?.formatted).toFixed(8);
+  const animateText = `${
+    showSendForm ? "text-sm" : "text-md"
+  } transition-all duration-300 ease-in-out`;
+
+  const animateMargin = `${
+    showSendForm ? "mt-[-1rem] mb-2" : ""
+  } transition-all duration-300 ease-in-out`;
 
   return (
-    <div className="flex flex-row justify-around">
-      <div>
+    <div className={`flex flex-row gap-5 ${animateMargin} ${animateText}`}>
+      <div className="flex-1">
         <div>
-          <span>Total Balance</span>
-          <h3 className="text-2xl">{`${shortBalance} ${data?.symbol}`}</h3>
-          <span className="text-slate-500">{`${data?.formatted} ${data?.symbol}`}</span>
+          <span>{`Your Balance (${data?.symbol})`}</span>
+          <h3 className="">{`${data?.formatted}`}</h3>
         </div>
       </div>
-      <div className="flex flex-col">
-        <span>Address</span>
-        <h3 className="text-2xl">{truncateEthAddress(address)}</h3>
+      <div className="flex-1 flex-col">
+        <span>Your Address</span>
+        <h3 className="">{truncateEthAddress(address)}</h3>
       </div>
     </div>
   );
@@ -58,17 +63,25 @@ const WalletBalance = ({
   const { isLoading } = connect;
   const { isConnected } = account;
 
+  const animateHeight = `${
+    // provide max-h-[val] arbitary maximum value
+    // for the component to animate to its content height
+    showSendForm ? "max-h-[43rem]" : "max-h-32"
+  } transition-all duration-700 ease-in-out`;
+
   return (
-    <div className="w-full max-w-2xl rounded-xl bg-white p-10 sm:w-3/4 lg:w-1/2">
+    <div
+      className={`${animateHeight} w-full max-w-2xl overflow-hidden rounded-xl bg-white px-10 py-10 sm:w-3/4 lg:w-1/2`}
+    >
       {isLoading || !isConnected ? (
         <WalletPlaceholder />
       ) : (
         <>
-          {showSendForm ? (
-            <SendTransactionForm setShowSendForm={setShowSendForm} />
-          ) : (
-            <Balance />
-          )}
+          <Balance showSendForm={showSendForm} />
+          <SendTransactionForm
+            setShowSendForm={setShowSendForm}
+            showSendForm={showSendForm}
+          />
         </>
       )}
     </div>

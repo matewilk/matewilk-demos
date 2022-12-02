@@ -8,11 +8,13 @@ export const MessageForm = ({ send }: { send: Function }) => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { isValid },
   } = useForm<Inputs>({ mode: "onChange" });
 
   const onSubmit: SubmitHandler<Inputs> = (data: Inputs) => {
     send(data);
+    reset();
   };
 
   return (

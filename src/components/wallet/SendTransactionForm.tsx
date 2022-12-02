@@ -19,8 +19,10 @@ type Inputs = {
 };
 
 export const SendTransactionForm = ({
+  showSendForm,
   setShowSendForm,
 }: {
+  showSendForm: boolean;
   setShowSendForm: Function;
 }) => {
   // get gas data from WalletProvider
@@ -91,9 +93,13 @@ export const SendTransactionForm = ({
     sendTransaction?.();
   };
 
+  const animateVisibility = `${
+    showSendForm ? "visible opacity-100" : "invisible opacity-0"
+  } transition-all duration-300 ease-in`;
+
   return (
     <form
-      className="flex w-full flex-col gap-2"
+      className={`flex w-full flex-col gap-2 ${animateVisibility}`}
       onSubmit={handleSubmit(onSubmit)}
     >
       <div className="flex flex-col">
@@ -118,7 +124,7 @@ export const SendTransactionForm = ({
           }}
           value={to}
         />
-        <p>{errors.address?.message}</p>
+        <p className="text-sm text-red-600">{errors.address?.message}</p>
       </div>
 
       <div className="flex flex-col">
@@ -167,7 +173,7 @@ export const SendTransactionForm = ({
             readOnly
           />
         </div>
-        <p>{errors.amount?.message}</p>
+        <p className="text-sm text-red-600">{errors.amount?.message}</p>
       </div>
 
       <span className="mt-3 mb-1 h-0.5 w-full bg-slate-100"></span>
@@ -244,7 +250,7 @@ export const SendTransactionForm = ({
         <button className="btn-white" onClick={() => setShowSendForm(false)}>
           Cancel
         </button>
-        <button className="btn-blue">
+        <button className="btn-blue" type="submit">
           {isLoading ? "Sending..." : "Send"}
         </button>
       </div>
