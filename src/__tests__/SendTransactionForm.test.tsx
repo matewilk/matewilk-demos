@@ -9,13 +9,7 @@ const client = createClient({
   provider,
 });
 
-import {
-  screen,
-  render,
-  fireEvent,
-  act,
-  waitFor,
-} from "@testing-library/react";
+import { screen, render, fireEvent, waitFor } from "@testing-library/react";
 import { WalletContext } from "../providers/WalletContextProvider";
 import { SendTransactionForm } from "@/components/wallet/SendTransactionForm";
 
@@ -52,7 +46,7 @@ jest.mock("wagmi", () => {
       .mockImplementation(() => ({ config: "mock" })),
     useSendTransaction: jest.fn().mockImplementation(() => ({
       data: {
-        hash: "mock",
+        hash: "0xmock",
       },
       sendTransaction: sendTransactionMock,
     })),
@@ -75,6 +69,11 @@ const contextValue = {
       },
     },
   },
+  balance: {
+    data: {
+      symbol: "ETH",
+    },
+  },
 };
 
 // wrap in wagmi and wallet providers
@@ -92,9 +91,12 @@ const validAddress = "0x94CCbba1FE2a9fe68F328E40832858aB8730613F";
 
 describe("SendTransactionForm", () => {
   beforeEach(() => {
-    render(<SendTransactionForm setShowSendForm={() => {}} />, {
-      wrapper: Wrapper(),
-    });
+    render(
+      <SendTransactionForm setShowSendForm={() => {}} showSendForm={true} />,
+      {
+        wrapper: Wrapper(),
+      }
+    );
   });
 
   it("displays correctly", async () => {
@@ -207,9 +209,9 @@ describe("SendTransactionForm", () => {
         name: /amount \(fiat\)/i,
       });
 
-      fireEvent.change(amount, { target: { value: "0.567" } });
+      fireEvent.change(amount, { target: { value: "0.56789" } });
 
-      expect(amountFiat.getAttribute("placeholder")).toBe("£ 567.00");
+      expect(amountFiat.getAttribute("placeholder")).toBe("£ 567.89");
     });
 
     it("updates total (ether), total (fiat) & max total values", async () => {

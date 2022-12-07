@@ -77,7 +77,7 @@ const ReceiveButton = () => {
 
 const WalletActions = ({ setShowSendForm }: { setShowSendForm: Function }) => {
   return (
-    <div className="flex w-full max-w-2xl flex-row items-center justify-around rounded-xl bg-white pt-2 sm:w-3/4 lg:w-1/2">
+    <div className="flex w-full max-w-3xl flex-row items-center justify-around rounded-xl bg-white pt-2">
       <SendButton setShowSendForm={setShowSendForm} />
       <ConnectButton />
       <ReceiveButton />

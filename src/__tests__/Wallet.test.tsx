@@ -10,6 +10,7 @@ import { InjectedConnector } from "wagmi/connectors/injected";
 import { ethers } from "ethers";
 import { generateTestingUtils } from "eth-testing";
 
+import { WalletProvider } from "@/providers/WalletContextProvider";
 import userEvent from "@testing-library/user-event";
 import Wallet from "@/components/wallet/Wallet";
 
@@ -22,7 +23,11 @@ jest.mock("@/components/wallet/SendTransactionForm", () => {
 
 function WrapperGenerator(client: Client) {
   return function TestWagmiProvider(props: any) {
-    return <WagmiConfig client={client} {...props} />;
+    return (
+      <WagmiConfig client={client}>
+        <WalletProvider {...props} />
+      </WagmiConfig>
+    );
   };
 }
 

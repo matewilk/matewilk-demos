@@ -48,7 +48,7 @@ export const WalletProvider = (props: any) => {
   });
   const gas = useFeeData({
     formatUnits: "ether",
-    watch: true,
+    watch: false,
   });
 
   const value = { connect, disconnect, account, balance, gas };
