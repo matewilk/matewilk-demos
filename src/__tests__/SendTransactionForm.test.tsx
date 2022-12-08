@@ -1,4 +1,4 @@
-import { WagmiConfig } from "wagmi";
+import { usePrepareSendTransaction, WagmiConfig } from "wagmi";
 import { createClient, configureChains, defaultChains } from "wagmi";
 import { publicProvider } from "wagmi/providers/public";
 
@@ -9,7 +9,13 @@ const client = createClient({
   provider,
 });
 
-import { screen, render, fireEvent, waitFor } from "@testing-library/react";
+import {
+  screen,
+  render,
+  fireEvent,
+  waitFor,
+  act,
+} from "@testing-library/react";
 import { WalletContext } from "../providers/WalletContextProvider";
 import { SendTransactionForm } from "@/components/wallet/SendTransactionForm";
 
@@ -36,20 +42,20 @@ jest.mock("use-debounce", () => {
 });
 
 // mock wagmi - only hooks used in SendTransactionForm
-// do not mock the rest to be able to setup this test file properly
+// do not mock the rest - requireActual - to be able to setup this test file properly
+const usePrepareSendTransactionMock = jest.fn();
 const sendTransactionMock = jest.fn();
+const useSendTransactionMock = jest.fn().mockImplementation(() => ({
+  data: {
+    hash: "0xmock",
+  },
+  sendTransaction: sendTransactionMock,
+}));
 jest.mock("wagmi", () => {
   return {
     ...jest.requireActual("wagmi"),
-    usePrepareSendTransaction: jest
-      .fn()
-      .mockImplementation(() => ({ config: "mock" })),
-    useSendTransaction: jest.fn().mockImplementation(() => ({
-      data: {
-        hash: "0xmock",
-      },
-      sendTransaction: sendTransactionMock,
-    })),
+    usePrepareSendTransaction: () => usePrepareSendTransactionMock(),
+    useSendTransaction: () => useSendTransactionMock(),
     useWaitForTransaction: jest
       .fn()
       .mockImplementation(() => ({ isLoading: false, isSuccess: false })),
@@ -91,12 +97,20 @@ const validAddress = "0x94CCbba1FE2a9fe68F328E40832858aB8730613F";
 
 describe("SendTransactionForm", () => {
   beforeEach(() => {
+    usePrepareSendTransactionMock.mockImplementation(() => ({
+      config: "mock",
+    }));
+
     render(
       <SendTransactionForm setShowSendForm={() => {}} showSendForm={true} />,
       {
         wrapper: Wrapper(),
       }
     );
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
   });
 
   it("displays correctly", async () => {
@@ -248,6 +262,65 @@ describe("SendTransactionForm", () => {
       fireEvent.submit(screen.getByText(/send/i));
 
       await waitFor(() => expect(sendTransactionMock).toHaveBeenCalled());
+    });
+
+    it("does not trigger transaction send when fields are not filled in correctly", async () => {
+      fireEvent.submit(screen.getByText(/send/i));
+
+      await waitFor(() => expect(sendTransactionMock).not.toHaveBeenCalled());
+    });
+  });
+});
+
+describe("Transaction Errors", () => {
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it("displays error message on insufficient funds preprare transaction error", async () => {
+    usePrepareSendTransactionMock.mockReturnValue({
+      config: "mock",
+      error: { message: "insufficient funds" },
+    });
+
+    act(() => {
+      render(
+        <SendTransactionForm setShowSendForm={() => {}} showSendForm={true} />,
+        {
+          wrapper: Wrapper(),
+        }
+      );
+    });
+
+    await waitFor(() => {
+      expect(screen.getByText(/insufficient funds/i)).toBeInTheDocument();
+    });
+  });
+
+  it("displays error message when user rejects transaction", async () => {
+    usePrepareSendTransactionMock.mockReturnValue({
+      config: "mock",
+    });
+    useSendTransactionMock.mockReturnValue({
+      data: {
+        hash: "0xmock",
+      },
+      error: { message: "user rejected request" },
+    });
+
+    act(() => {
+      render(
+        <SendTransactionForm setShowSendForm={() => {}} showSendForm={true} />,
+        {
+          wrapper: Wrapper(),
+        }
+      );
+    });
+
+    await waitFor(() => {
+      expect(
+        screen.getByText(/User rejected transaction/i)
+      ).toBeInTheDocument();
     });
   });
 });
