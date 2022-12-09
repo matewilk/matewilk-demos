@@ -1,4 +1,4 @@
-import { createContext } from "react";
+import { createContext, useState, PropsWithChildren } from "react";
 import {
   FetchBalanceResult,
   GetAccountResult,
@@ -10,6 +10,7 @@ import {
   useConnect,
   useBalance,
   useFeeData,
+  useWaitForTransaction,
 } from "wagmi";
 import { InjectedConnector } from "wagmi/connectors/injected";
 
@@ -17,8 +18,8 @@ import { InjectedConnector } from "wagmi/connectors/injected";
 export type ConnectorType = {
   isLoading: boolean;
   error: Error;
-  connect: Function;
-  disconnect: Function;
+  connect: () => Promise<void>;
+  disconnect: () => Promise<void>;
 };
 
 export type FetchFeeDataResultType = {
@@ -28,15 +29,26 @@ export type FetchFeeDataResultType = {
 
 export type WalletContextType = {
   account: GetAccountResult;
-  balance: { data: FetchBalanceResult };
+  balance: { data: FetchBalanceResult | undefined };
   connect: ConnectorType;
   disconnect: ConnectorType;
   gas: FetchFeeDataResultType;
+  transaction: {
+    setTxHash: (hash: `0x${string}` | undefined) => void;
+    isLoading: boolean;
+    isSuccess: boolean;
+    isError: boolean;
+  };
 };
 
 export const WalletContext = createContext<WalletContextType | null>(null);
 
 export const WalletProvider = (props: any) => {
+  const [hash, setTxHash] = useState<`0x${string}` | undefined>(undefined);
+  const { isLoading, isSuccess, isError } = useWaitForTransaction({
+    hash,
+  });
+
   const connect = useConnect({
     connector: new InjectedConnector(),
   });
@@ -44,14 +56,26 @@ export const WalletProvider = (props: any) => {
   const account = useAccount();
   const balance = useBalance({
     address: account.address,
-    watch: false,
+    watch: true,
   });
   const gas = useFeeData({
     formatUnits: "ether",
     watch: true,
   });
 
-  const value = { connect, disconnect, account, balance, gas };
+  const value = {
+    connect,
+    disconnect,
+    account,
+    balance,
+    gas,
+    transaction: {
+      setTxHash,
+      isLoading,
+      isSuccess,
+      isError,
+    },
+  };
 
   return <WalletContext.Provider value={value} {...props} />;
 };

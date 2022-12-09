@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, Dispatch } from "react";
 
 import CoinGecko from "coingecko-api";
 
@@ -18,7 +18,7 @@ export const useCoinGecko = (trigger: any) => {
   // state to keep CoinGecko response in
   const [fiatPrice, setFiatPrice]: [
     eth: CGSimplePriceResponseType | undefined,
-    setEthPrice: Function
+    setEthPrice: Dispatch<CGSimplePriceResponseType | undefined>
   ] = useState();
 
   useEffect(() => {

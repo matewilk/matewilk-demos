@@ -1,17 +1,15 @@
-import { useState } from "react";
+import { useState, Dispatch, SetStateAction } from "react";
 import { useDebounce } from "use-debounce";
-import {
-  usePrepareSendTransaction,
-  useSendTransaction,
-  useWaitForTransaction,
-} from "wagmi";
+import { usePrepareSendTransaction, useSendTransaction } from "wagmi";
 import { utils } from "ethers";
 import { useForm, SubmitHandler } from "react-hook-form";
 
-import { getGasPrice } from "@/utils/ethereum";
+import { getGasPrice, sumFloats, multiplyFloats } from "@/utils/ethereum";
 import { useWallet } from "@/hooks/useWallet";
-
 import { useCoinGecko } from "@/hooks/useCoinGecko";
+import { DisplayTxError } from "@/components/wallet/DisplayTxError";
+import { TransactionSummary } from "./TransactionSummary";
+import { TransactionActions } from "./TransactionActions";
 
 type Inputs = {
   address: string;
@@ -23,16 +21,18 @@ export const SendTransactionForm = ({
   setShowSendForm,
 }: {
   showSendForm: boolean;
-  setShowSendForm: Function;
+  setShowSendForm: Dispatch<SetStateAction<boolean>>;
 }) => {
   // get gas data from WalletProvider
-  const { gas } = useWallet();
+  const { gas, balance, transaction } = useWallet();
+  const { data: balanceData } = balance;
   const {
     isFetching,
     data: {
       formatted: { gasPrice, maxFeePerGas },
     },
   } = gas;
+  const { isLoading, isSuccess, isError, setTxHash } = transaction;
 
   // send transaction form state
   const [to, setTo] = useState("");
@@ -41,11 +41,13 @@ export const SendTransactionForm = ({
   const [amount, setAmount] = useState("");
   const [debouncedAmount] = useDebounce(amount, 500);
 
+  const [sentAmount, setSentAmount] = useState("");
+
   // get eth price in fiat from CoinGecko
   const eth = useCoinGecko(debouncedAmount);
 
   // prepare transaction
-  const { config } = usePrepareSendTransaction({
+  const { config, error: prepareTxError } = usePrepareSendTransaction({
     request: {
       to: debouncedTo,
       value: debouncedAmount ? utils.parseEther(debouncedAmount) : undefined,
@@ -53,29 +55,42 @@ export const SendTransactionForm = ({
   });
 
   // send transaction handlers
-  const { data, sendTransaction } = useSendTransaction(config);
-  const { isLoading, isSuccess } = useWaitForTransaction({
-    hash: data?.hash,
+  const {
+    data: txData,
+    sendTransaction,
+    error: txError,
+  } = useSendTransaction({
+    ...config,
+    onSuccess() {
+      // set sent amount to display in TransactionSummary
+      setSentAmount(debouncedAmount);
+      // reset form on successfull tx send
+      resetForm();
+    },
   });
+
+  // update tx hash in WalletProvider
+  // which uses useWaitForTransaction hook internally
+  // and its result is used in TransactionHistory component
+  setTxHash(txData?.hash);
 
   const ethGasPrice = getGasPrice(gasPrice as string);
   const ethMaxGasPrice = getGasPrice(maxFeePerGas as string);
 
   // UI display values
-  const total = parseFloat(debouncedAmount || "0") + parseFloat(ethGasPrice);
-  const totalMax =
-    parseFloat(debouncedAmount || "0") + parseFloat(ethMaxGasPrice);
+  const total = sumFloats([debouncedAmount || "0", ethGasPrice]);
+  const totalMax = sumFloats([debouncedAmount || "0", ethMaxGasPrice]);
 
-  const amountFiat = (
-    parseFloat(debouncedAmount) * eth?.ethereum?.gbp!
-  ).toFixed(2);
+  const amountFiat = multiplyFloats(
+    [debouncedAmount],
+    eth?.ethereum?.gbp as number
+  );
+  const feeFiat = multiplyFloats([ethGasPrice], eth?.ethereum?.gbp as number);
 
-  const feeFiat = (parseFloat(ethGasPrice) * eth?.ethereum?.gbp!).toFixed(2);
-
-  const totalFiat = (
-    (parseFloat(ethGasPrice) + parseFloat(debouncedAmount)) *
-    eth?.ethereum?.gbp!
-  ).toFixed(2);
+  const totalFiat = multiplyFloats(
+    [ethGasPrice, debouncedAmount],
+    eth?.ethereum?.gbp as number
+  );
 
   const {
     register,
@@ -89,12 +104,23 @@ export const SendTransactionForm = ({
       amount: "",
     },
   });
+
+  const resetForm: () => void = (): void => {
+    setTo("");
+    setAmount("");
+  };
+
+  const onCancel: () => void = (): void => {
+    setShowSendForm(false);
+    resetForm();
+  };
+
   const onSubmit: SubmitHandler<Inputs> = (/* data */) => {
     sendTransaction?.();
   };
 
   const animateVisibility = `${
-    showSendForm ? "visible opacity-100" : "invisible opacity-0"
+    showSendForm ? "visible opacity-100 pt-5" : "invisible opacity-0"
   } transition-all duration-300 ease-in`;
 
   return (
@@ -123,6 +149,7 @@ export const SendTransactionForm = ({
             setValue("address", e.target.value);
           }}
           value={to}
+          disabled={isLoading}
         />
         <p className="text-sm text-red-600">{errors.address?.message}</p>
       </div>
@@ -162,6 +189,7 @@ export const SendTransactionForm = ({
               }
             }}
             value={amount}
+            disabled={isLoading}
           />
           <input
             id="amount-fiat"
@@ -247,23 +275,19 @@ export const SendTransactionForm = ({
       </div>
 
       <div className="mt-5 flex w-full flex-col justify-center gap-5 md:flex-row">
-        <button className="btn-white" onClick={() => setShowSendForm(false)}>
-          Cancel
-        </button>
-        <button className="btn-blue" type="submit">
-          {isLoading ? "Sending..." : "Send"}
-        </button>
+        <TransactionActions isLoading={isLoading} onCancel={onCancel} />
       </div>
-      {isSuccess && (
-        <div className="flex flex-col items-center pt-5">
-          <div>Successfuly sent {amount} ETH</div>
-          <div className="text-blue-500">
-            <a target="_blank" href={`https://etherscan.io/tx/${data?.hash}`}>
-              see details on etherscan.io
-            </a>
-          </div>
-        </div>
-      )}
+
+      <div className="flex justify-center">
+        <DisplayTxError prepareTxError={prepareTxError} txError={txError} />
+        <TransactionSummary
+          isSuccess={isSuccess}
+          isError={isError}
+          amount={sentAmount}
+          txHash={txData?.hash}
+          symbol={balanceData?.symbol}
+        />
+      </div>
     </form>
   );
 };

@@ -1,3 +1,4 @@
+import { Dispatch, SetStateAction } from "react";
 import { truncateEthAddress } from "@/utils/ethereum";
 import { useWallet } from "@/hooks/useWallet";
 import { SendTransactionForm } from "./SendTransactionForm";
@@ -32,12 +33,8 @@ const Balance = ({ showSendForm }: { showSendForm: boolean }) => {
     showSendForm ? "text-sm" : "text-md"
   } transition-all duration-300 ease-in-out`;
 
-  const animateMargin = `${
-    showSendForm ? "mt-[-1rem] mb-2" : ""
-  } transition-all duration-300 ease-in-out`;
-
   return (
-    <div className={`flex flex-row gap-5 ${animateMargin} ${animateText}`}>
+    <div className={`flex flex-row gap-5 ${animateText}`}>
       <div className="flex-1">
         <div>
           <span>{`Your Balance (${data?.symbol})`}</span>
@@ -57,7 +54,7 @@ const WalletBalance = ({
   setShowSendForm,
 }: {
   showSendForm: boolean;
-  setShowSendForm: Function;
+  setShowSendForm: Dispatch<SetStateAction<boolean>>;
 }) => {
   const { connect, account } = useWallet();
   const { isLoading } = connect;
@@ -66,12 +63,12 @@ const WalletBalance = ({
   const animateHeight = `${
     // provide max-h-[val] arbitary maximum value
     // for the component to animate to its content height
-    showSendForm ? "max-h-[43rem]" : "max-h-32"
+    showSendForm ? "max-h-[60rem] py-5" : "max-h-32 py-10"
   } transition-all duration-700 ease-in-out`;
 
   return (
     <div
-      className={`${animateHeight} w-full max-w-2xl overflow-hidden rounded-xl bg-white px-10 py-10 sm:w-3/4 lg:w-1/2`}
+      className={`${animateHeight} w-full max-w-3xl overflow-hidden rounded-xl bg-white px-10`}
     >
       {isLoading || !isConnected ? (
         <WalletPlaceholder />
