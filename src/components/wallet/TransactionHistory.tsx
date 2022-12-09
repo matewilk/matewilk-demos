@@ -138,7 +138,7 @@ const TxTable = () => {
         const blockTime = 15; // ETH block time is 15 seconds
 
         //Block number 2 hours, 24 hours and 48 hours ago
-        const block2 = currentBlock - (96 * 60 * 60) / blockTime;
+        const block2 = currentBlock - (2 * 60 * 60) / blockTime;
         const block24 = currentBlock - (24 * 60 * 60) / blockTime;
         const block48 = currentBlock - (48 * 60 * 60) / blockTime;
 
@@ -180,15 +180,6 @@ const TxTable = () => {
   return (
     <div className="overflow-x-auto rounded-lg">
       <table className="w-full text-sm">
-        {/* <thead className="uppercase">
-          <tr>
-            {headers.map((header, index) => (
-              <th key={index} scope="col" className="py-3 px-4 text-center">
-                {header}
-              </th>
-            ))}
-          </tr>
-        </thead> */}
         <tbody>
           {isLoading ? (
             <>
@@ -210,7 +201,9 @@ const TxTable = () => {
           ))}
           {history.length === 0 && !isLoading ? (
             <div className="grid h-14 place-items-center text-base">
-              No transaction history to display
+              {`No ${
+                isConnected ? "recent" : ""
+              } transaction history to display`}
             </div>
           ) : null}
         </tbody>

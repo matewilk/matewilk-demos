@@ -44,11 +44,11 @@ export const WalletProvider = (props: any) => {
   const account = useAccount();
   const balance = useBalance({
     address: account.address,
-    watch: false,
+    watch: true,
   });
   const gas = useFeeData({
     formatUnits: "ether",
-    watch: false,
+    watch: true,
   });
 
   const value = { connect, disconnect, account, balance, gas };
