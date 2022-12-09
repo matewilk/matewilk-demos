@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, Dispatch, SetStateAction } from "react";
 import { useDebounce } from "use-debounce";
 import { usePrepareSendTransaction, useSendTransaction } from "wagmi";
 import { utils } from "ethers";
@@ -21,7 +21,7 @@ export const SendTransactionForm = ({
   setShowSendForm,
 }: {
   showSendForm: boolean;
-  setShowSendForm: Function;
+  setShowSendForm: Dispatch<SetStateAction<boolean>>;
 }) => {
   // get gas data from WalletProvider
   const { gas, balance, transaction } = useWallet();
@@ -81,12 +81,15 @@ export const SendTransactionForm = ({
   const total = sumFloats([debouncedAmount || "0", ethGasPrice]);
   const totalMax = sumFloats([debouncedAmount || "0", ethMaxGasPrice]);
 
-  const amountFiat = multiplyFloats([debouncedAmount], eth?.ethereum?.gbp!);
-  const feeFiat = multiplyFloats([ethGasPrice], eth?.ethereum?.gbp!);
+  const amountFiat = multiplyFloats(
+    [debouncedAmount],
+    eth?.ethereum?.gbp as number
+  );
+  const feeFiat = multiplyFloats([ethGasPrice], eth?.ethereum?.gbp as number);
 
   const totalFiat = multiplyFloats(
     [ethGasPrice, debouncedAmount],
-    eth?.ethereum?.gbp!
+    eth?.ethereum?.gbp as number
   );
 
   const {
@@ -102,12 +105,12 @@ export const SendTransactionForm = ({
     },
   });
 
-  const resetForm: Function = (): void => {
+  const resetForm: () => void = (): void => {
     setTo("");
     setAmount("");
   };
 
-  const onCancel: Function = (): void => {
+  const onCancel: () => void = (): void => {
     setShowSendForm(false);
     resetForm();
   };
@@ -282,7 +285,7 @@ export const SendTransactionForm = ({
           isError={isError}
           amount={sentAmount}
           txHash={txData?.hash}
-          symbol={balanceData.symbol}
+          symbol={balanceData?.symbol}
         />
       </div>
     </form>

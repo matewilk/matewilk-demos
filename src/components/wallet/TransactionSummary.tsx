@@ -9,7 +9,7 @@ export const TransactionSummary = ({
   isError: boolean;
   amount: string;
   txHash: `0x${string}` | undefined;
-  symbol: string;
+  symbol: string | undefined;
 }) => {
   return (
     <>
@@ -19,7 +19,11 @@ export const TransactionSummary = ({
             Successfully sent {amount} {symbol}
           </div>
           <div className="text-blue-500">
-            <a target="_blank" href={`https://etherscan.io/tx/${txHash}`}>
+            <a
+              target="_blank"
+              rel="noreferrer"
+              href={`https://etherscan.io/tx/${txHash}`}
+            >
               see details on etherscan.io
             </a>
           </div>

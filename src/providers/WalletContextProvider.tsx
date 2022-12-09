@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useState, PropsWithChildren } from "react";
 import {
   FetchBalanceResult,
   GetAccountResult,
@@ -18,8 +18,8 @@ import { InjectedConnector } from "wagmi/connectors/injected";
 export type ConnectorType = {
   isLoading: boolean;
   error: Error;
-  connect: Function;
-  disconnect: Function;
+  connect: () => Promise<void>;
+  disconnect: () => Promise<void>;
 };
 
 export type FetchFeeDataResultType = {
@@ -29,12 +29,12 @@ export type FetchFeeDataResultType = {
 
 export type WalletContextType = {
   account: GetAccountResult;
-  balance: { data: FetchBalanceResult };
+  balance: { data: FetchBalanceResult | undefined };
   connect: ConnectorType;
   disconnect: ConnectorType;
   gas: FetchFeeDataResultType;
   transaction: {
-    setTxHash: Function;
+    setTxHash: (hash: `0x${string}` | undefined) => void;
     isLoading: boolean;
     isSuccess: boolean;
     isError: boolean;

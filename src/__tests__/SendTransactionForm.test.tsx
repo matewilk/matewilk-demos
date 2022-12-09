@@ -108,7 +108,7 @@ describe("SendTransactionForm", () => {
     }));
 
     render(
-      <SendTransactionForm setShowSendForm={() => {}} showSendForm={true} />,
+      <SendTransactionForm setShowSendForm={jest.fn()} showSendForm={true} />,
       {
         wrapper: Wrapper(),
       }
@@ -291,7 +291,7 @@ describe("Transaction Errors", () => {
 
     act(() => {
       render(
-        <SendTransactionForm setShowSendForm={() => {}} showSendForm={true} />,
+        <SendTransactionForm setShowSendForm={jest.fn()} showSendForm={true} />,
         {
           wrapper: Wrapper(),
         }
@@ -316,7 +316,7 @@ describe("Transaction Errors", () => {
 
     act(() => {
       render(
-        <SendTransactionForm setShowSendForm={() => {}} showSendForm={true} />,
+        <SendTransactionForm setShowSendForm={jest.fn()} showSendForm={true} />,
         {
           wrapper: Wrapper(),
         }
@@ -341,7 +341,7 @@ describe("Transaction Errors", () => {
 
     act(() => {
       render(
-        <SendTransactionForm setShowSendForm={() => {}} showSendForm={true} />,
+        <SendTransactionForm setShowSendForm={jest.fn()} showSendForm={true} />,
         {
           wrapper: Wrapper(),
         }

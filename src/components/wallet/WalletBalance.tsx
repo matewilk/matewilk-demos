@@ -1,3 +1,4 @@
+import { Dispatch, SetStateAction } from "react";
 import { truncateEthAddress } from "@/utils/ethereum";
 import { useWallet } from "@/hooks/useWallet";
 import { SendTransactionForm } from "./SendTransactionForm";
@@ -53,7 +54,7 @@ const WalletBalance = ({
   setShowSendForm,
 }: {
   showSendForm: boolean;
-  setShowSendForm: Function;
+  setShowSendForm: Dispatch<SetStateAction<boolean>>;
 }) => {
   const { connect, account } = useWallet();
   const { isLoading } = connect;

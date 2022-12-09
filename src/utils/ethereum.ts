@@ -21,7 +21,7 @@ const truncateEthAddress = (address: `0x${string}` | undefined) => {
  * @returns total gas price in eth rounded to 8 decimal points
  * units of gas used * (base fee + priority fee) - priority fee ignored
  */
-const getGasPrice = (fee: string, units: number = 21000): string => {
+const getGasPrice = (fee: string, units = 21000): string => {
   return (units * parseFloat(fee)).toFixed(8);
 };
 
@@ -48,7 +48,7 @@ const sumFloats = (values: string[]): string => {
 const multiplyFloats = (
   values: string[],
   multiplier: number,
-  decimalPlaces: number = 2
+  decimalPlaces = 2
 ): string => {
   return values.reduce((sum, value) => {
     return (

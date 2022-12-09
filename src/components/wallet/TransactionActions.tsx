@@ -3,15 +3,11 @@ export const TransactionActions = ({
   onCancel,
 }: {
   isLoading: boolean;
-  onCancel: Function;
+  onCancel: () => void;
 }) => {
   return (
     <>
-      <button
-        type="reset"
-        className="btn-white"
-        onClick={onCancel as () => void}
-      >
+      <button type="reset" className="btn-white" onClick={onCancel}>
         Cancel
       </button>
       <button

@@ -89,7 +89,11 @@ const TxTableRow = ({
       <td className="py-4 px-4">{txIcon(to, from, address)}</td>
       <td className="py-4 px-4 text-xs">{from}</td>
       <td className="py-4 px-4 text-blue-500">
-        <a target="_blank" href={`https://etherscan.io/tx/${hash}`}>
+        <a
+          target="_blank"
+          rel="noreferrer"
+          href={`https://etherscan.io/tx/${hash}`}
+        >
           etherscan.io
         </a>
       </td>

@@ -1,3 +1,4 @@
+import { Dispatch, SetStateAction } from "react";
 import {
   ChevronDoubleUpIcon,
   ChevronDoubleDownIcon,
@@ -5,8 +6,13 @@ import {
 } from "@heroicons/react/24/outline";
 import { GetAccountResult } from "@wagmi/core";
 import { useWallet } from "@/hooks/useWallet";
+import { ReducerStateWithoutAction } from "react";
 
-const SendButton = ({ setShowSendForm }: { setShowSendForm: Function }) => {
+const SendButton = ({
+  setShowSendForm,
+}: {
+  setShowSendForm: Dispatch<SetStateAction<boolean>>;
+}) => {
   const { account } = useWallet();
   const { isConnected } = account;
 
@@ -75,7 +81,11 @@ const ReceiveButton = () => {
   );
 };
 
-const WalletActions = ({ setShowSendForm }: { setShowSendForm: Function }) => {
+const WalletActions = ({
+  setShowSendForm,
+}: {
+  setShowSendForm: Dispatch<SetStateAction<boolean>>;
+}) => {
   return (
     <div className="flex w-full max-w-3xl flex-row items-center justify-around rounded-xl bg-white pt-2">
       <SendButton setShowSendForm={setShowSendForm} />

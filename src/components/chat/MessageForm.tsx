@@ -4,7 +4,7 @@ type Inputs = {
   message: string;
 };
 
-export const MessageForm = ({ send }: { send: Function }) => {
+export const MessageForm = ({ send }: { send: (data: any) => void }) => {
   const {
     register,
     handleSubmit,
