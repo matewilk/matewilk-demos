@@ -10,13 +10,12 @@ const Wallet = () => {
   return (
     <section id="wallet" aria-label="wallet">
       <div className="mx-auto flex h-min w-full flex-col items-center justify-between gap-10 bg-blue-100 py-10">
-        {isMounted ? (
-          <WalletBalance
-            showSendForm={showSendForm}
-            setShowSendForm={setShowSendForm}
-          />
-        ) : null}
-        {isMounted ? <WalletActions setShowSendForm={setShowSendForm} /> : null}
+        <WalletBalance
+          showSendForm={showSendForm}
+          setShowSendForm={setShowSendForm}
+        />
+
+        <WalletActions setShowSendForm={setShowSendForm} />
       </div>
     </section>
   );

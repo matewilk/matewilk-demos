@@ -1,4 +1,4 @@
-import { usePrepareSendTransaction, WagmiConfig } from "wagmi";
+import { WagmiConfig } from "wagmi";
 import { createClient, configureChains, defaultChains } from "wagmi";
 import { publicProvider } from "wagmi/providers/public";
 
@@ -321,6 +321,32 @@ describe("Transaction Errors", () => {
       expect(
         screen.getByText(/User rejected transaction/i)
       ).toBeInTheDocument();
+    });
+  });
+
+  it("does not show error message if is not handled", async () => {
+    usePrepareSendTransactionMock.mockReturnValue({ config: "mock" });
+    useSendTransactionMock.mockReturnValue({
+      data: {
+        hash: "0xmock",
+      },
+      error: { message: "mock error" },
+    });
+
+    act(() => {
+      render(
+        <SendTransactionForm setShowSendForm={() => {}} showSendForm={true} />,
+        {
+          wrapper: Wrapper(),
+        }
+      );
+    });
+
+    await waitFor(() => {
+      expect(
+        screen.queryByText(/User rejected transaction/i)
+      ).not.toBeInTheDocument();
+      expect(screen.queryByText(/insufficient funds/i)).not.toBeInTheDocument();
     });
   });
 });

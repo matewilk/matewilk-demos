@@ -45,14 +45,18 @@ const formatDate = (timestamp: number) => {
 };
 
 // show icon if equal to address
-const txIcon = (to: string, from: string) => {
+const txIcon = (
+  to: `0x${string}`,
+  from: `0x${string}`,
+  address: `0x${string}` | undefined
+) => {
   if (to === from) {
     return <ArrowsRightLeftIcon className="mx-auto h-5 w-5 text-gray-400" />;
   }
-  if (to === "0xd0C8837f161F0f6546D29FeBeB1F530bA66b5010") {
+  if (to === address) {
     return <ChevronDoubleDownIcon className="mx-auto h-5 w-5 text-green-400" />;
   }
-  if (from === "0xd0C8837f161F0f6546D29FeBeB1F530bA66b5010") {
+  if (from === address) {
     return <ChevronDoubleUpIcon className="mx-auto h-5 w-5 text-red-400" />;
   }
 };
@@ -63,12 +67,14 @@ const TxTableRow = ({
   from,
   to,
   value,
+  address,
 }: {
   timestamp: string;
   hash: `0x${string}`;
   from: `0x${string}`;
   to: `0x${string}`;
   value: string;
+  address: `0x${string}` | undefined;
 }) => {
   const { day, month } = formatDate(Number(timestamp));
   return (
@@ -80,7 +86,7 @@ const TxTableRow = ({
         {parseFloat(utils.formatEther(value)).toFixed(8)}
       </td>
 
-      <td className="py-4 px-4">{txIcon(to, from)}</td>
+      <td className="py-4 px-4">{txIcon(to, from, address)}</td>
       <td className="py-4 px-4 text-xs">{from}</td>
       <td className="py-4 px-4 text-blue-500">
         <a target="_blank" href={`https://etherscan.io/tx/${hash}`}>
@@ -93,7 +99,10 @@ const TxTableRow = ({
 
 const AnimatedRow = () => {
   return (
-    <tr className="h-12 animate-pulse rounded-xl border-b bg-slate-100 last:border-b-0">
+    <tr
+      className="h-12 animate-pulse border-b bg-slate-100 last:border-b-0"
+      data-testid="animated-loading-row"
+    >
       <th className="w-16">
         <p className="m-auto h-5 w-3/4 rounded bg-slate-200"></p>
       </th>
@@ -129,7 +138,7 @@ const TxTable = () => {
         const blockTime = 15; // ETH block time is 15 seconds
 
         //Block number 2 hours, 24 hours and 48 hours ago
-        const block2 = currentBlock - (480 * 60 * 60) / blockTime;
+        const block2 = currentBlock - (96 * 60 * 60) / blockTime;
         const block24 = currentBlock - (24 * 60 * 60) / blockTime;
         const block48 = currentBlock - (48 * 60 * 60) / blockTime;
 
@@ -169,7 +178,7 @@ const TxTable = () => {
   }, [isConnected, isDisconnected, address]);
 
   return (
-    <div className="relative overflow-x-auto">
+    <div className="overflow-x-auto rounded-lg">
       <table className="w-full text-sm">
         {/* <thead className="uppercase">
           <tr>
@@ -196,8 +205,14 @@ const TxTable = () => {
               from={tx.from}
               to={tx.to}
               value={tx.value}
+              address={address}
             />
           ))}
+          {history.length === 0 && !isLoading ? (
+            <div className="grid h-14 place-items-center text-base">
+              No transaction history to display
+            </div>
+          ) : null}
         </tbody>
       </table>
     </div>
