@@ -1,10 +1,6 @@
 import { useState } from "react";
 import { useDebounce } from "use-debounce";
-import {
-  usePrepareSendTransaction,
-  useSendTransaction,
-  useWaitForTransaction,
-} from "wagmi";
+import { usePrepareSendTransaction, useSendTransaction } from "wagmi";
 import { utils } from "ethers";
 import { useForm, SubmitHandler } from "react-hook-form";
 
@@ -28,7 +24,7 @@ export const SendTransactionForm = ({
   setShowSendForm: Function;
 }) => {
   // get gas data from WalletProvider
-  const { gas, balance } = useWallet();
+  const { gas, balance, transaction } = useWallet();
   const { data: balanceData } = balance;
   const {
     isFetching,
@@ -36,6 +32,7 @@ export const SendTransactionForm = ({
       formatted: { gasPrice, maxFeePerGas },
     },
   } = gas;
+  const { isLoading, isSuccess, isError, setTxHash } = transaction;
 
   // send transaction form state
   const [to, setTo] = useState("");
@@ -65,14 +62,17 @@ export const SendTransactionForm = ({
   } = useSendTransaction({
     ...config,
     onSuccess() {
+      // set sent amount to display in TransactionSummary
       setSentAmount(debouncedAmount);
       // reset form on successfull tx send
       resetForm();
     },
   });
-  const { isLoading, isSuccess, isError } = useWaitForTransaction({
-    hash: txData?.hash,
-  });
+
+  // update tx hash in WalletProvider
+  // which uses useWaitForTransaction hook internally
+  // and its result is used in TransactionHistory component
+  setTxHash(txData?.hash);
 
   const ethGasPrice = getGasPrice(gasPrice as string);
   const ethMaxGasPrice = getGasPrice(maxFeePerGas as string);

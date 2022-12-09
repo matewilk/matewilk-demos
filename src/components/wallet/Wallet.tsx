@@ -1,10 +1,8 @@
 import { useState } from "react";
 import WalletBalance from "./WalletBalance";
 import WalletActions from "./WalletActions";
-import { useIsMounted } from "@/hooks/useIsMounted";
 
 const Wallet = () => {
-  const isMounted = useIsMounted();
   const [showSendForm, setShowSendForm] = useState(false);
 
   return (

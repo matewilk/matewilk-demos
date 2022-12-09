@@ -123,7 +123,10 @@ const AnimatedRow = () => {
 };
 
 const TxTable = () => {
-  const { account } = useWallet();
+  const {
+    account,
+    transaction: { isSuccess },
+  } = useWallet();
   const { isConnected, isDisconnected, address } = account;
 
   const [history, setHistory] = useState<any>([]);
@@ -175,7 +178,7 @@ const TxTable = () => {
     };
 
     getHistory();
-  }, [isConnected, isDisconnected, address]);
+  }, [isConnected, isDisconnected, address, isSuccess]);
 
   return (
     <div className="overflow-x-auto rounded-lg">
@@ -187,18 +190,19 @@ const TxTable = () => {
               <AnimatedRow />
               <AnimatedRow />
             </>
-          ) : null}
-          {history.map((tx: any) => (
-            <TxTableRow
-              key={tx.hash}
-              timestamp={tx.timestamp}
-              hash={tx.hash}
-              from={tx.from}
-              to={tx.to}
-              value={tx.value}
-              address={address}
-            />
-          ))}
+          ) : (
+            history.map((tx: any) => (
+              <TxTableRow
+                key={tx.hash}
+                timestamp={tx.timestamp}
+                hash={tx.hash}
+                from={tx.from}
+                to={tx.to}
+                value={tx.value}
+                address={address}
+              />
+            ))
+          )}
           {history.length === 0 && !isLoading ? (
             <div className="grid h-14 place-items-center text-base">
               {`No ${

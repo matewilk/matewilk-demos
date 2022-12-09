@@ -10,6 +10,7 @@ import { WalletProvider } from "@/providers/WalletContextProvider";
 
 const Dashboard: NextPage = () => {
   const isMounted = useIsMounted();
+
   return (
     <WagmiConfig client={client}>
       <WalletProvider>

@@ -80,6 +80,12 @@ const contextValue = {
       symbol: "ETH",
     },
   },
+  transaction: {
+    isLoading: false,
+    isSuccess: false,
+    isError: false,
+    setTxHash: jest.fn(),
+  },
 };
 
 // wrap in wagmi and wallet providers

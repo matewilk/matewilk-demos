@@ -1,4 +1,4 @@
-import { createContext } from "react";
+import { createContext, useState } from "react";
 import {
   FetchBalanceResult,
   GetAccountResult,
@@ -10,6 +10,7 @@ import {
   useConnect,
   useBalance,
   useFeeData,
+  useWaitForTransaction,
 } from "wagmi";
 import { InjectedConnector } from "wagmi/connectors/injected";
 
@@ -32,11 +33,22 @@ export type WalletContextType = {
   connect: ConnectorType;
   disconnect: ConnectorType;
   gas: FetchFeeDataResultType;
+  transaction: {
+    setTxHash: Function;
+    isLoading: boolean;
+    isSuccess: boolean;
+    isError: boolean;
+  };
 };
 
 export const WalletContext = createContext<WalletContextType | null>(null);
 
 export const WalletProvider = (props: any) => {
+  const [hash, setTxHash] = useState<`0x${string}` | undefined>(undefined);
+  const { isLoading, isSuccess, isError } = useWaitForTransaction({
+    hash,
+  });
+
   const connect = useConnect({
     connector: new InjectedConnector(),
   });
@@ -51,7 +63,19 @@ export const WalletProvider = (props: any) => {
     watch: true,
   });
 
-  const value = { connect, disconnect, account, balance, gas };
+  const value = {
+    connect,
+    disconnect,
+    account,
+    balance,
+    gas,
+    transaction: {
+      setTxHash,
+      isLoading,
+      isSuccess,
+      isError,
+    },
+  };
 
   return <WalletContext.Provider value={value} {...props} />;
 };

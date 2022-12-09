@@ -24,6 +24,9 @@ describe("TransactionHistory", () => {
         address: undefined,
         isConnected: false,
       },
+      transaction: {
+        isSuccess: false,
+      },
     });
     mockGetHistory.mockReturnValue([]); // no transactions
 
@@ -37,6 +40,9 @@ describe("TransactionHistory", () => {
       account: {
         address: "0x1234",
         isConnected: true,
+      },
+      transaction: {
+        isSuccess: false,
       },
     });
     mockGetHistory.mockResolvedValue(
@@ -55,6 +61,9 @@ describe("TransactionHistory", () => {
       account: {
         address: "0x1234",
         isConnected: true,
+      },
+      transaction: {
+        isSuccess: false,
       },
     });
     mockGetHistory.mockReturnValue([
