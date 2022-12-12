@@ -178,7 +178,10 @@ const TxTable = () => {
         setHistory(txsHistory);
         setIsLoading(false);
       }
-      if (isDisconnected) setHistory([]);
+      if (isDisconnected) {
+        setIsLoading(false);
+        setHistory([]);
+      }
     };
 
     getHistory();
@@ -188,31 +191,30 @@ const TxTable = () => {
     <div className="overflow-x-auto rounded-lg">
       <table className="w-full text-sm">
         <tbody>
-          {isLoading ? (
-            <>
-              <AnimatedRow />
-              <AnimatedRow />
-              <AnimatedRow />
-            </>
-          ) : (
-            history.map((tx: any) => (
-              <TxTableRow
-                key={tx.hash}
-                timestamp={tx.timestamp}
-                hash={tx.hash}
-                from={tx.from}
-                to={tx.to}
-                value={tx.value}
-                address={address}
-              />
-            ))
-          )}
+          {isLoading
+            ? // iterate 3 times over the animated row
+              [...Array(3)].map((_, i) => <AnimatedRow key={i} />)
+            : history.map((tx: any) => (
+                <TxTableRow
+                  key={tx.hash}
+                  timestamp={tx.timestamp}
+                  hash={tx.hash}
+                  from={tx.from}
+                  to={tx.to}
+                  value={tx.value}
+                  address={address}
+                />
+              ))}
           {history.length === 0 && !isLoading ? (
-            <div className="grid h-14 place-items-center text-base">
-              {`No ${
-                isConnected ? "recent" : ""
-              } transaction history to display`}
-            </div>
+            <tr>
+              <td>
+                <div className="grid h-14 place-items-center text-base">
+                  {`No ${
+                    isConnected ? "recent" : ""
+                  } transaction history to display`}
+                </div>
+              </td>
+            </tr>
           ) : null}
         </tbody>
       </table>

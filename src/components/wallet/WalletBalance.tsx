@@ -1,7 +1,8 @@
 import { Dispatch, SetStateAction } from "react";
-import { truncateEthAddress } from "@/utils/ethereum";
+import { multiplyFloats, truncateEthAddress } from "@/utils/ethereum";
 import { useWallet } from "@/hooks/useWallet";
 import { SendTransactionForm } from "./SendTransactionForm";
+import { useCoinGecko } from "@/hooks/useCoinGecko";
 
 const WalletPlaceholder = () => {
   const { connect, account } = useWallet();
@@ -29,21 +30,34 @@ const Balance = ({ showSendForm }: { showSendForm: boolean }) => {
   const { address } = account;
   const { data } = balance;
 
-  const animateText = `${
-    showSendForm ? "text-sm" : "text-md"
-  } transition-all duration-300 ease-in-out`;
+  const eth = useCoinGecko(data?.value);
+
+  const balanceFiat = multiplyFloats(
+    [data?.formatted!],
+    eth?.ethereum?.gbp || 0
+  );
+
+  const animateText = (size = "md") =>
+    `${
+      showSendForm ? "text-sm" : `text-${size}`
+    } transition-all duration-300 ease-in-out`;
 
   return (
-    <div className={`flex flex-row gap-5 ${animateText}`}>
-      <div className="flex-1">
-        <div>
-          <span>{`Your Balance (${data?.symbol})`}</span>
-          <h3 className="">{`${data?.formatted}`}</h3>
-        </div>
-      </div>
-      <div className="flex-1 flex-col">
+    <div className={`flex flex-col gap-5 ${animateText()}`}>
+      <div className="flex-col text-center">
         <span>Your Address</span>
-        <h3 className="">{truncateEthAddress(address)}</h3>
+        <h3 className={animateText("lg")}>{truncateEthAddress(address)}</h3>
+      </div>
+      <div className="flex-col text-center">
+        <span>Your Balance</span>
+        <div className="flex items-center justify-center">
+          <h3
+            className={animateText("lg")}
+          >{`${data?.formatted} ${data?.symbol}`}</h3>
+        </div>
+        <div className="flex items-center justify-center">
+          <h3 className="text-lg text-slate-500">{`£ ${balanceFiat}`}</h3>
+        </div>
       </div>
     </div>
   );
@@ -63,7 +77,7 @@ const WalletBalance = ({
   const animateHeight = `${
     // provide max-h-[val] arbitary maximum value
     // for the component to animate to its content height
-    showSendForm ? "max-h-[60rem] py-5" : "max-h-32 py-10"
+    showSendForm ? "max-h-[60rem] py-5" : "max-h-52 py-8"
   } transition-all duration-700 ease-in-out`;
 
   return (

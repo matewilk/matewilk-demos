@@ -21,6 +21,19 @@ jest.mock("@/components/wallet/SendTransactionForm", () => {
   };
 });
 
+// mock useCoingGecko hook return values
+jest.mock("../hooks/useCoinGecko", () => {
+  return {
+    useCoinGecko: () => {
+      return {
+        ethereum: {
+          gbp: 1000,
+        },
+      };
+    },
+  };
+});
+
 function WrapperGenerator(client: Client) {
   return function TestWagmiProvider(props: any) {
     return (
@@ -133,10 +146,12 @@ describe("Wallet", () => {
       })
     );
 
-    // balance
-    await screen.findByText(/2000.0/i);
     // shortened address
     await screen.findByText(/0xf61B…9EEf/i);
+    // balance (eth)
+    await screen.findByText(/2000.0 ETH/i);
+    // balance fiat
+    await screen.findByText(/£ 2000000/i);
   });
 
   it("updates wallet when user changes account", async () => {
@@ -159,7 +174,8 @@ describe("Wallet", () => {
     render(<Wallet />, { wrapper: WrapperGenerator(client) });
 
     // wait for connection
-    await screen.findByText(/2.0/i);
+    await screen.findByText(/2.0 ETH/i);
+    await screen.findByText(/£ 2000/i);
 
     // Mock the balance of the new account
     mainnetReadonlyTestingUtils.mockBalance(
@@ -175,7 +191,8 @@ describe("Wallet", () => {
     });
 
     // wait for new account connection
-    await screen.findByText(/1.0/i);
+    await screen.findByText(/1.0 ETH/i);
+    await screen.findByText(/£ 1000/i);
   });
 
   it("updates wallet when user changes network", async () => {
@@ -198,7 +215,8 @@ describe("Wallet", () => {
     render(<Wallet />, { wrapper: WrapperGenerator(client) });
 
     // wait for connection
-    await screen.findByText(/2.0/i);
+    await screen.findByText(/2.0 ETH/i);
+    await screen.findByText(/£ 2000/i);
 
     // Mock account balance on the new chain
     goerliReadonlyTestingUtils.mockBalance(
@@ -212,7 +230,8 @@ describe("Wallet", () => {
     });
 
     // wait for new account connection
-    await screen.findByText(/5.0/i);
+    await screen.findByText(/5.0 ETH/i);
+    await screen.findByText(/£ 5000/i);
   });
 
   it("removes balance view when user disconnects wallet", async () => {

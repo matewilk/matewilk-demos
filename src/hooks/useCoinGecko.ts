@@ -23,12 +23,16 @@ export const useCoinGecko = (trigger: any) => {
 
   useEffect(() => {
     const getEthPrice = async () => {
-      const { data, success } = await coinGeckoClient.simple.price({
-        ids: ["ethereum"],
-        vs_currencies: ["eur", "usd", "gbp"],
-      });
-      if (success) {
-        setFiatPrice(data);
+      try {
+        const { data, success } = await coinGeckoClient.simple.price({
+          ids: ["ethereum"],
+          vs_currencies: ["eur", "usd", "gbp"],
+        });
+        if (success) {
+          setFiatPrice(data);
+        }
+      } catch (error) {
+        console.log(error);
       }
     };
     getEthPrice();

@@ -1,4 +1,4 @@
-import { useState, Dispatch, SetStateAction } from "react";
+import { useState, Dispatch, SetStateAction, useEffect } from "react";
 import { useDebounce } from "use-debounce";
 import { usePrepareSendTransaction, useSendTransaction } from "wagmi";
 import { utils } from "ethers";
@@ -68,11 +68,12 @@ export const SendTransactionForm = ({
       resetForm();
     },
   });
-
   // update tx hash in WalletProvider
   // which uses useWaitForTransaction hook internally
   // and its result is used in TransactionHistory component
-  setTxHash(txData?.hash);
+  useEffect(() => {
+    setTxHash(txData?.hash);
+  }, [txData?.hash]);
 
   const ethGasPrice = getGasPrice(gasPrice as string);
   const ethMaxGasPrice = getGasPrice(maxFeePerGas as string);
