@@ -221,5 +221,3 @@ const TxTable = () => {
     </div>
   );
 };
-
-const headers = ["date", "link", "direction", "from", "value"];
