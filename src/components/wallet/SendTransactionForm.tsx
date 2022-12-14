@@ -221,7 +221,7 @@ export const SendTransactionForm = ({
           <div
             className={`${
               isFetching ? "text-slate-300" : "text-gray-500"
-            } transition-all duration-200 ease-in-out`}
+            } duration-400 transition-all ease-in-out`}
           >
             Max fee: {ethMaxGasPrice}
           </div>
@@ -257,7 +257,7 @@ export const SendTransactionForm = ({
           <div
             className={`${
               isFetching ? "text-slate-300" : "text-gray-500"
-            } transition-all duration-200 ease-in-out`}
+            } duration-400 transition-all ease-in-out`}
           >
             Max total: {totalMax}
           </div>

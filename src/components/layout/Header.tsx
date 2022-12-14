@@ -33,7 +33,7 @@ const dashItems: MenuItem[] = [
   },
   {
     text: "Chats",
-    href: "",
+    href: "/chats",
   },
 ];
 
