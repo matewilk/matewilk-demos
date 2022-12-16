@@ -124,10 +124,6 @@ describe("SendTransactionForm", () => {
     const address = screen.getByRole("textbox", { name: /recipient/i });
     expect(address.getAttribute("placeholder")).toBe("0xA0Cf…342e");
 
-    screen.getByText(/asset/i);
-    const asset = screen.getByRole("textbox", { name: /asset/i });
-    expect(asset.getAttribute("placeholder")).toBe("ETH");
-
     screen.getByText(/amount \(ether\)/i);
     const amountEth = screen.getByRole("textbox", {
       name: /amount \(ether\)/i,
