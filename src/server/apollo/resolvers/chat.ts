@@ -8,7 +8,7 @@ export default {
   Subscription: {
     chat: {
       subscribe(
-        _,
+        _: any,
         { id }: { id: string },
         { pubSub }: { pubSub: PubSub }
       ): AsyncIterator<string> {
@@ -25,7 +25,7 @@ export default {
 
   Mutation: {
     sendMessage: async (
-      _,
+      _: any,
       { chatId, message }: { chatId: string; message: string },
       { pubSub }: { pubSub: PubSub }
     ) => {
