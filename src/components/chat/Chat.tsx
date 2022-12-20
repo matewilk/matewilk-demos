@@ -44,7 +44,7 @@ export const Chat = () => {
         <div className="flex h-full flex-col-reverse overflow-auto rounded-xl bg-white p-10">
           <MessageList messages={messages} />
         </div>
-        <MessageForm send={() => {}} />
+        <MessageForm send={() => ({})} />
       </div>
     </section>
   );
