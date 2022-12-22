@@ -1,14 +1,19 @@
+import { MutationFunction } from "@apollo/client";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { useChat } from "@/hooks/useChat";
 
 type Inputs = {
   message: string;
 };
 
-export const MessageForm = ({ chatId }: { chatId: string }) => {
-  const { sendMessageMutation } = useChat({ chatId });
-  const [sendMessage, { data, loading, error }] = sendMessageMutation;
-
+export const MessageForm = ({
+  sendMessage,
+  chatId,
+  error,
+}: {
+  sendMessage: MutationFunction;
+  chatId: string;
+  error: any;
+}) => {
   const {
     register,
     handleSubmit,

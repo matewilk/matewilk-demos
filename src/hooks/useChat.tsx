@@ -1,11 +1,10 @@
-import { useState } from "react";
-import { gql, SubscriptionOptions, useMutation } from "@apollo/client";
-import { useSubscription } from "@/hooks/useSubscription";
+import { useState, useEffect } from "react";
+import { gql, useSubscription, useMutation } from "@apollo/client";
 
 export const useChat = ({ chatId }: { chatId: string }) => {
   const [messages, setMessages] = useState([
-    { id: "1", text: "Hello", sender: "user" },
-    { id: "2", text: "Hi", sender: "other" },
+    { id: "0", text: "Hello", sender: "user" },
+    { id: "1", text: "Hi", sender: "other" },
   ]);
 
   const CHAT_SUBSCRIPTION = gql`
@@ -16,22 +15,23 @@ export const useChat = ({ chatId }: { chatId: string }) => {
     }
   `;
 
-  const chatSubscription: SubscriptionOptions = {
-    query: CHAT_SUBSCRIPTION,
+  const subscription = useSubscription(CHAT_SUBSCRIPTION, {
     variables: { chatId },
-  };
+  });
+  const { data } = subscription;
 
-  const observer = {
-    next({ data }: { data: any }) {
-      const message = data.chat.message;
-      setMessages((messages) => [
-        ...messages,
-        { text: message, id: (messages.length + 1).toString(), sender: "user" },
+  useEffect(() => {
+    if (data) {
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: messages.length.toString(),
+          text: data.chat.message,
+          sender: "other",
+        },
       ]);
-    },
-  };
-
-  useSubscription(chatSubscription, observer);
+    }
+  }, [data]);
 
   const SEND_MESSAGE = gql`
     mutation Mutation($chatId: String!, $message: String!) {
@@ -41,9 +41,11 @@ export const useChat = ({ chatId }: { chatId: string }) => {
     }
   `;
 
+  const mutation = useMutation(SEND_MESSAGE);
+
   return {
     messages,
-    sendMessageMutation: useMutation(SEND_MESSAGE),
-    observer,
+    subscription,
+    mutation,
   };
 };

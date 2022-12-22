@@ -3,9 +3,9 @@ import { GraphQLWsLink } from "@apollo/client/link/subscriptions";
 import { createClient } from "graphql-ws";
 
 export const apolloClient = () => {
+  // ws port is 3001 in dev as to not interfere wtih the nextjs dev server (hot reloading)
   const PORT = process.env.NODE_ENV === "production" ? 3000 : 3001;
   const WS_ENDPOINT = `ws://localhost:${PORT}/api/graphql`;
-  // const HTTP_ENDPOINT = `http://localhost:3000/api/graphql`;
 
   const wsLink = new GraphQLWsLink(
     createClient({
@@ -16,8 +16,6 @@ export const apolloClient = () => {
 
   return new ApolloClient({
     link: wsLink,
-    // uri: HTTP_ENDPOINT,
     cache: new InMemoryCache(),
-    // connectToDevTools: typeof window !== "undefined" ? true : false,
   });
 };

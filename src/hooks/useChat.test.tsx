@@ -24,39 +24,15 @@ describe("useChat", () => {
     });
   });
 
-  it.only("returns a function to send messages", async () => {
+  it("returns a function to send messages", async () => {
     const { result } = renderHook(() => useChat({ chatId: "test" }), {
       wrapper,
     });
 
-    const [sendMessage] = result.current.sendMessageMutation;
+    const [sendMessage] = result.current.mutation;
 
     await waitFor(() => {
       expect(sendMessage).toBeInstanceOf(Function);
-    });
-  });
-
-  it("sends messages", async () => {
-    const { result } = renderHook(() => useChat({ chatId: "test" }), {
-      wrapper,
-    });
-
-    await waitFor(() => {
-      expect(result.current.messages).toHaveLength(2);
-    });
-
-    act(() => {
-      result.current.observer.next({
-        data: {
-          chat: {
-            message: "test observer",
-          },
-        },
-      });
-    });
-
-    await waitFor(() => {
-      expect(result.current.messages).toHaveLength(3);
     });
   });
 });
