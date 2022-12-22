@@ -45,6 +45,8 @@ export const apolloServer = new ApolloServer({
   },
 });
 
+const isDev = process.env.NODE_ENV !== "production";
+
 // ws server setup
 // https://github.com/vercel/next.js/discussions/27680#discussioncomment-3105268
 export const webSocketServer = (res: any) => {
@@ -59,11 +61,15 @@ export const webSocketServer = (res: any) => {
   if (!res.socket.server.apolloServer) {
     res.socket.server.apolloServer = apolloServer;
     if (!serverCleanup) {
-      const wss = new WebSocketServer({
-        server: res.socket.server,
+      // set port to 3001 for dev env to avoid conflict with nextjs hot reload
+      const options = {
         path: "/api/graphql",
-      });
+        ...(isDev && { port: 3001 }),
+        ...(!isDev && { server: res.socket.server }),
+      };
+      const wss = new WebSocketServer(options);
 
+      // eslint-disable-next-line react-hooks/rules-of-hooks
       serverCleanup = useServer(
         {
           schema,

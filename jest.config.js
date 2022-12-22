@@ -22,9 +22,12 @@ const customJestConfig = {
     "^@/hooks/(.*)$": "<rootDir>/src/hooks/$1",
     "^@/providers/(.*)$": "<rootDir>/src/providers/$1",
     "^@/utils/(.*)$": "<rootDir>/src/utils/$1",
+    "^@/server/(.*)$": "<rootDir>/src/server/$1",
+    "^@/helpers/(.*)$": "<rootDir>/src/helpers/$1",
   },
 
   setupFilesAfterEnv: ["<rootDir>/jest.setup.ts"],
+  setupFiles: ["core-js"],
 };
 
 // createJestConfig is exported this way to ensure that next/jest can load the Next.js config which is async

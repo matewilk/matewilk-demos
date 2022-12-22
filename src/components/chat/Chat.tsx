@@ -33,7 +33,8 @@ const MessageList = ({ messages }: { messages: Message[] }) => {
 };
 
 export const Chat = () => {
-  const { messages } = useChat();
+  const chatId = "1";
+  const { messages } = useChat({ chatId });
 
   return (
     // h-1 defines hegith of parent element
@@ -44,7 +45,7 @@ export const Chat = () => {
         <div className="flex h-full flex-col-reverse overflow-auto rounded-xl bg-white p-10">
           <MessageList messages={messages} />
         </div>
-        <MessageForm send={() => ({})} />
+        <MessageForm chatId={chatId} />
       </div>
     </section>
   );
