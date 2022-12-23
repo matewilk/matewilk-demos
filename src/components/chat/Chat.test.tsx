@@ -16,17 +16,17 @@ const queries = [
       query: gql`
         subscription Subscription($chatId: String) {
           chat(id: $chatId) {
-            message
+            text
           }
         }
       `,
-      variables: { chatId: "1" },
+      variables: { chatId: "test" },
     },
     result: () => {
       return {
         data: {
           chat: {
-            message: "Hello World",
+            text: "Hello World",
           },
         },
       };
@@ -40,17 +40,28 @@ const client = new ApolloClient({
 });
 
 describe("ChatWindow", () => {
+  const history = [
+    {
+      id: "1",
+      text: "Hello",
+    },
+    {
+      id: "2",
+      text: "Hi",
+    },
+  ];
+
   beforeEach(() => {
     render(
       <ApolloProvider client={client}>
         <MockedProvider mocks={queries} addTypename={false}>
-          <Chat />
+          <Chat chatId="test" history={history} />
         </MockedProvider>
       </ApolloProvider>
     );
   });
 
-  it("renders messages", async () => {
+  it("renders messages history", async () => {
     await waitFor(() => {
       expect(screen.getByText("Hello")).toBeInTheDocument();
       expect(screen.getByText("Hi")).toBeInTheDocument();

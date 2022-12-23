@@ -2,15 +2,12 @@ import { useState, useEffect } from "react";
 import { gql, useSubscription, useMutation } from "@apollo/client";
 
 export const useChat = ({ chatId }: { chatId: string }) => {
-  const [messages, setMessages] = useState([
-    { id: "0", text: "Hello", sender: "user" },
-    { id: "1", text: "Hi", sender: "other" },
-  ]);
+  const [messages, setMessages] = useState([]);
 
   const CHAT_SUBSCRIPTION = gql`
     subscription Subscription($chatId: String) {
       chat(id: $chatId) {
-        message
+        text
       }
     }
   `;
@@ -26,7 +23,7 @@ export const useChat = ({ chatId }: { chatId: string }) => {
         ...prev,
         {
           id: messages.length.toString(),
-          text: data.chat.message,
+          text: data.chat.text,
           sender: "other",
         },
       ]);
@@ -34,9 +31,9 @@ export const useChat = ({ chatId }: { chatId: string }) => {
   }, [data]);
 
   const SEND_MESSAGE = gql`
-    mutation Mutation($chatId: String!, $message: String!) {
-      sendMessage(chatId: $chatId, message: $message) {
-        message
+    mutation Mutation($chatId: String!, $text: String!) {
+      sendMessage(chatId: $chatId, text: $text) {
+        text
       }
     }
   `;

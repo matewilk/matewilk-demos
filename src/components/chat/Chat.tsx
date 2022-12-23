@@ -32,10 +32,17 @@ const MessageList = ({ messages }: { messages: Message[] }) => {
   );
 };
 
-export const Chat = () => {
-  const chatId = "1";
+export const Chat = ({
+  chatId,
+  history = [],
+}: {
+  chatId: string;
+  history: any[];
+}) => {
   const { messages, mutation } = useChat({ chatId });
   const [sendMessage, { error }] = mutation;
+
+  const all = [...history, ...messages];
 
   return (
     // h-1 defines hegith of parent element
@@ -44,7 +51,7 @@ export const Chat = () => {
       <div className="mx-auto h-full max-w-3xl pb-28 pt-10">
         {/* chat window - flex-col-reverse to always scroll to the bottom of container */}
         <div className="flex h-full flex-col-reverse overflow-auto rounded-xl bg-white p-10">
-          <MessageList messages={messages} />
+          <MessageList messages={all} />
         </div>
         <MessageForm sendMessage={sendMessage} chatId={chatId} error={error} />
       </div>

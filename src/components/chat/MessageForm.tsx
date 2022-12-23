@@ -23,7 +23,7 @@ export const MessageForm = ({
 
   const onSubmit: SubmitHandler<Inputs> = (data: Inputs) => {
     const { message } = data;
-    sendMessage({ variables: { message, chatId } });
+    sendMessage({ variables: { text: message, chatId } });
     if (!error) reset();
   };
 

@@ -55,7 +55,7 @@ const Header = ({ signedIn }: { signedIn: boolean }) => {
         className="relative z-50 flex flex-col items-end bg-white p-2 md:mx-auto md:max-w-5xl"
       >
         <div id="img-container" className="absolute left-2 top-2 h-12 w-12">
-          <img src="favicon.ico" alt="" className="h-12 w-12"></img>
+          <img src="/favicon.ico" alt="" className="h-12 w-12"></img>
         </div>
         <div
           id="nav-icon"

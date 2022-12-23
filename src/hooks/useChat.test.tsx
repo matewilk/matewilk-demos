@@ -15,12 +15,12 @@ const wrapper = ({
 );
 
 describe("useChat", () => {
-  it("returns messages", async () => {
+  it("returns empty messages array on init", async () => {
     const { result } = renderHook(() => useChat({ chatId: "test" }), {
       wrapper,
     });
     await waitFor(() => {
-      expect(result.current.messages).toHaveLength(2);
+      expect(result.current.messages).toHaveLength(0);
     });
   });
 

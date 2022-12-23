@@ -6,10 +6,16 @@ export default gql`
   }
 
   extend type Mutation {
-    sendMessage(chatId: String!, message: String!): Message
+    sendMessage(chatId: String!, text: String!): Message
+  }
+
+  extend type Query {
+    chatHistory(chatId: String!): [Message]
   }
 
   type Message {
-    message: String
+    id: ID!
+    text: String
+    sender: User
   }
 `;

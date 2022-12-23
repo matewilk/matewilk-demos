@@ -16,7 +16,7 @@ import {
   waitFor,
   act,
 } from "@testing-library/react";
-import { WalletContext } from "../../providers/WalletContextProvider";
+import { WalletContext } from "@/providers/WalletContextProvider";
 import { SendTransactionForm } from "@/components/wallet/SendTransactionForm";
 
 // mock useCoingGecko hook return values
