@@ -1,0 +1,125 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Chats should render a list of chats 1`] = `
+<div>
+  <div
+    class="flex min-h-screen flex-col"
+  >
+    <header
+      class="sticky top-0 h-16 bg-white"
+      id="intro"
+    >
+      <div
+        class="relative z-50 flex flex-col items-end bg-white p-2 md:mx-auto md:max-w-5xl"
+        id="nav-container"
+      >
+        <div
+          class="absolute left-2 top-2 h-12 w-12"
+          id="img-container"
+        >
+          <img
+            alt=""
+            class="h-12 w-12"
+            src="/favicon.ico"
+          />
+        </div>
+        <div
+          class="p2 group h-12 w-12 md:hidden"
+          id="nav-icon"
+        >
+          <svg
+            class="h-full w-full group-hover:fill-gray-600"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+            xmlns="<http://www.w3.org/2000/svg>"
+          >
+            <path
+              clip-rule="evenodd"
+              d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
+              fill-rule="evenodd"
+            />
+          </svg>
+        </div>
+        <ul
+          class="hidden w-full space-y-2 pr-3 text-center font-semibold md:flex md:h-12 md:flex-row md:items-center md:justify-start md:space-x-5 md:space-y-0 md:pl-16"
+          id="nav-menu"
+        >
+          <li
+            class="cursor-pointer rounded-full py-2 px-4 hover:bg-slate-100 hover:text-gray-600"
+          >
+            <a
+              href=""
+            >
+              Dashboard
+            </a>
+          </li>
+          <li
+            class="cursor-pointer rounded-full py-2 px-4 hover:bg-slate-100 hover:text-gray-600"
+          >
+            <a
+              href=""
+            >
+              Connections
+            </a>
+          </li>
+          <li
+            class="cursor-pointer rounded-full py-2 px-4 hover:bg-slate-100 hover:text-gray-600"
+          >
+            <a
+              href="/chats"
+            >
+              Chats
+            </a>
+          </li>
+          <li
+            class="btn-blue md:absolute md:right-28"
+          >
+            <a
+              href="/games"
+            >
+              Games
+            </a>
+          </li>
+          <li
+            class="btn-white md:absolute md:right-2"
+          >
+            <a
+              href="/api/auth/signout"
+            >
+              Sign out
+            </a>
+          </li>
+        </ul>
+      </div>
+    </header>
+    <section
+      aria-label="chat"
+      class="h-1 flex-grow bg-blue-100"
+      id="chat"
+    >
+      <div
+        class="mx-auto h-full max-w-3xl py-10"
+      >
+        <div
+          class="flex h-full overflow-auto rounded-xl bg-white"
+        >
+          <ul
+            class="flex w-full flex-col gap-2 py-5 px-5"
+          >
+            <li
+              class="w-full cursor-pointer rounded-md bg-blue-50 p-5"
+            >
+              Chat 1
+            </li>
+            <li
+              class="w-full cursor-pointer rounded-md bg-blue-50 p-5"
+            >
+              Chat 2
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+`;

@@ -1,12 +1,13 @@
 import { gql } from "apollo-server-micro";
 
-export const typeDefs = gql`
+export default gql`
   type User {
     id: ID
+    name: String
     login: String
   }
 
-  type Query {
+  extend type Query {
     user(id: ID!): User
     users: [User]
   }

@@ -22,7 +22,7 @@ jest.mock("@/components/wallet/SendTransactionForm", () => {
 });
 
 // mock useCoingGecko hook return values
-jest.mock("../hooks/useCoinGecko", () => {
+jest.mock("@/hooks/useCoinGecko", () => {
   return {
     useCoinGecko: () => {
       return {

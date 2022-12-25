@@ -5,7 +5,9 @@ import { MessageForm } from "./MessageForm";
 describe("MessageForm", () => {
   const sendMock = jest.fn();
   beforeEach(() => {
-    render(<MessageForm send={sendMock} />);
+    render(
+      <MessageForm sendMessage={sendMock} chatId={"1"} error={undefined} />
+    );
   });
 
   it("has send button disabled when message is empty", () => {
@@ -36,7 +38,25 @@ describe("MessageForm", () => {
     fireEvent.submit(sendButton);
 
     await waitFor(() => {
-      expect(sendMock).toHaveBeenCalled();
+      expect(sendMock).toHaveBeenCalledWith({
+        variables: { text: "test message", chatId: "1", userId: "1" },
+      });
+    });
+  });
+
+  it("shows error message when there is error", async () => {
+    render(
+      <MessageForm
+        sendMessage={sendMock}
+        chatId={"1"}
+        error={"error message"}
+      />
+    );
+
+    const errorMessage = screen.getByText(/something went wrong/i);
+
+    await waitFor(() => {
+      expect(errorMessage).toBeInTheDocument();
     });
   });
 });

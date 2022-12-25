@@ -22,6 +22,8 @@ const customJestConfig = {
     "^@/hooks/(.*)$": "<rootDir>/src/hooks/$1",
     "^@/providers/(.*)$": "<rootDir>/src/providers/$1",
     "^@/utils/(.*)$": "<rootDir>/src/utils/$1",
+    "^@/server/(.*)$": "<rootDir>/src/server/$1",
+    "^@/helpers/(.*)$": "<rootDir>/src/helpers/$1",
   },
 
   setupFilesAfterEnv: ["<rootDir>/jest.setup.ts"],

@@ -33,7 +33,7 @@ const Balance = ({ showSendForm }: { showSendForm: boolean }) => {
   const eth = useCoinGecko(data?.value);
 
   const balanceFiat = multiplyFloats(
-    [data?.formatted!],
+    [data?.formatted as string],
     eth?.ethereum?.gbp || 0
   );
 
