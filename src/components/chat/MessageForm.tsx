@@ -23,6 +23,7 @@ export const MessageForm = ({
 
   const onSubmit: SubmitHandler<Inputs> = (data: Inputs) => {
     const { message } = data;
+    // TODO: get userId from context
     const userId = "1";
     sendMessage({ variables: { text: message, chatId, userId } });
     if (!error) reset();
