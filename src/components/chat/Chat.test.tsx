@@ -17,6 +17,7 @@ const queries = [
         subscription Subscription($chatId: String) {
           chat(id: $chatId) {
             text
+            userId
           }
         }
       `,
@@ -27,6 +28,7 @@ const queries = [
         data: {
           chat: {
             text: "Hello World",
+            userId: "1",
           },
         },
       };

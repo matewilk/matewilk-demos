@@ -3,10 +3,7 @@ import { PubSub } from "graphql-subscriptions";
 type Payload = {
   id: string;
   text: string;
-  sender: {
-    id: string;
-    name: string;
-  };
+  userId: string;
 };
 
 export default {
@@ -21,7 +18,11 @@ export default {
       },
 
       resolve: (payload: Payload) => {
-        return payload;
+        return {
+          id: payload.id,
+          text: payload.text,
+          userId: payload.userId,
+        };
       },
     },
   },
@@ -29,13 +30,18 @@ export default {
   Mutation: {
     sendMessage: async (
       _: any,
-      { chatId, text }: { chatId: string; text: string },
+      {
+        chatId,
+        text,
+        userId,
+      }: { chatId: string; text: string; userId: string },
       { pubSub }: { pubSub: PubSub }
     ) => {
-      await pubSub.publish(`CHAT_${chatId}`, { text });
+      await pubSub.publish(`CHAT_${chatId}`, { text, userId });
 
       return {
         text,
+        userId,
       };
     },
   },
@@ -49,18 +55,12 @@ export default {
         {
           id: "1",
           text: "Hello",
-          sender: {
-            id: "1",
-            name: "John",
-          },
+          userId: "1",
         },
         {
           id: "2",
           text: "World",
-          sender: {
-            id: "2",
-            name: "Jane",
-          },
+          userId: "2",
         },
       ]);
     },

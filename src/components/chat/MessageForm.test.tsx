@@ -39,12 +39,12 @@ describe("MessageForm", () => {
 
     await waitFor(() => {
       expect(sendMock).toHaveBeenCalledWith({
-        variables: { text: "test message", chatId: "1" },
+        variables: { text: "test message", chatId: "1", userId: "1" },
       });
     });
   });
 
-  it("shows error message when ther is error", async () => {
+  it("shows error message when there is error", async () => {
     render(
       <MessageForm
         sendMessage={sendMock}

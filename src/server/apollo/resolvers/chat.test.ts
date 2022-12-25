@@ -26,11 +26,16 @@ describe("chat resolver", () => {
         const payload = {
           id: "1",
           text: "test message",
-          sender: { id: "1", name: "John" },
+          userId: "1",
         };
         const result = Subscription.chat.resolve(payload);
 
-        expect(result).toEqual(payload);
+        const expected = {
+          id: "1",
+          text: "test message",
+          userId: "1",
+        };
+        expect(result).toEqual(expected);
       });
     });
   });
@@ -40,15 +45,15 @@ describe("chat resolver", () => {
 
     describe("sendMessage", () => {
       it("should publish and return message", async () => {
-        const args = { chatId: "345", text: "test message" };
+        const args = { chatId: "345", text: "test message", userId: "1" };
 
         const result = await Mutation.sendMessage(null, args, contextMock);
 
-        expect(contextMock.pubSub.publish).toHaveBeenCalledWith(
-          `CHAT_${args.chatId}`,
-          { text: args.text }
-        );
-        expect(result).toEqual({ text: args.text });
+        expect(contextMock.pubSub.publish).toHaveBeenCalledWith(`CHAT_345`, {
+          text: "test message",
+          userId: "1",
+        });
+        expect(result).toEqual({ text: "test message", userId: "1" });
       });
     });
   });

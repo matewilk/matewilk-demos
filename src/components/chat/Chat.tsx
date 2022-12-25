@@ -4,15 +4,16 @@ import { MessageForm } from "./MessageForm";
 type Message = {
   id: string;
   text: string;
-  sender: string;
+  userId: string;
 };
 
-const Message = ({ id, sender, text }: Message) => {
+const Message = ({ id, userId, text }: Message) => {
   return (
     <li
       key={id}
       className={`rounded-xl px-3 py-2 shadow ${
-        sender === "user"
+        // TODO: plug in the actual user id
+        userId === "1"
           ? "place-self-end rounded-tr-none bg-green-100 text-right"
           : "place-self-start rounded-tl-none bg-blue-100 text-left"
       }`}

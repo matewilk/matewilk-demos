@@ -20,10 +20,7 @@ const CHAT_HISTORY = gql`
     chatHistory(chatId: $chatId) {
       id
       text
-      sender {
-        id
-        name
-      }
+      userId
     }
   }
 `;
