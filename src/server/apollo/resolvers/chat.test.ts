@@ -1,6 +1,8 @@
 import { PubSub } from "graphql-subscriptions";
 import chatResolver from "./chat";
 
+jest.mock("uuid", () => ({ v4: () => "123456789" }));
+
 describe("chat resolver", () => {
   const contextMock = {
     pubSub: {
@@ -45,15 +47,24 @@ describe("chat resolver", () => {
 
     describe("sendMessage", () => {
       it("should publish and return message", async () => {
-        const args = { chatId: "345", text: "test message", userId: "1" };
+        const args = {
+          chatId: "345",
+          text: "test message",
+          userId: "1",
+        };
 
         const result = await Mutation.sendMessage(null, args, contextMock);
 
         expect(contextMock.pubSub.publish).toHaveBeenCalledWith(`CHAT_345`, {
+          id: "123456789",
           text: "test message",
           userId: "1",
         });
-        expect(result).toEqual({ text: "test message", userId: "1" });
+        expect(result).toEqual({
+          id: "123456789",
+          text: "test message",
+          userId: "1",
+        });
       });
     });
   });

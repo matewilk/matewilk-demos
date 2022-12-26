@@ -7,6 +7,7 @@ export const useChat = ({ chatId }: { chatId: string }) => {
   const CHAT_SUBSCRIPTION = gql`
     subscription Subscription($chatId: String) {
       chat(id: $chatId) {
+        id
         text
         userId
       }
@@ -35,8 +36,9 @@ export const useChat = ({ chatId }: { chatId: string }) => {
   }, [data]);
 
   const SEND_MESSAGE = gql`
-    mutation Mutation($chatId: String!, $text: String!, $userId: String!) {
-      sendMessage(chatId: $chatId, text: $text, userId: $userId) {
+    mutation Mutation($text: String!, $chatId: String!, $userId: String!) {
+      sendMessage(text: $text, chatId: $chatId, userId: $userId) {
+        id
         text
         userId
       }

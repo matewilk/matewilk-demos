@@ -5,7 +5,7 @@ import { rest } from "msw";
 
 import { apolloClient } from "@/helpers/webSocketClient";
 
-import Chats from "./index";
+import Chats, { getServerSideProps } from "./index";
 
 const expectedChats = [
   {
@@ -43,8 +43,10 @@ describe("Chats", () => {
 
 describe("serverSideProps", () => {
   it("should fetch chats", async () => {
-    const res = await fetch("http://localhost:3000/api/chats");
-    const chats = await res.json();
-    expect(chats).toEqual(expectedChats);
+    const contextMock = {};
+    const res = await getServerSideProps(contextMock as any);
+
+    const expected = { props: { chats: expectedChats } };
+    expect(res).toEqual(expected);
   });
 });

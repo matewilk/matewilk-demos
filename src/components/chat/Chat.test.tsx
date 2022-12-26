@@ -16,6 +16,7 @@ const queries = [
       query: gql`
         subscription Subscription($chatId: String) {
           chat(id: $chatId) {
+            id
             text
             userId
           }
@@ -27,6 +28,7 @@ const queries = [
       return {
         data: {
           chat: {
+            id: "test-uuuid",
             text: "Hello World",
             userId: "1",
           },

@@ -39,7 +39,11 @@ describe("MessageForm", () => {
 
     await waitFor(() => {
       expect(sendMock).toHaveBeenCalledWith({
-        variables: { text: "test message", chatId: "1", userId: "1" },
+        variables: {
+          text: "test message",
+          chatId: "1",
+          userId: "1",
+        },
       });
     });
   });
