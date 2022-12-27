@@ -4,7 +4,7 @@ import { ApolloProvider } from "@apollo/client";
 import { useChat } from "@/hooks/useChat";
 import { ReactElement } from "react";
 
-import { apolloClient } from "@/helpers/webSocketClient";
+import { apolloClient } from "@/hooks/useWebSocketClient";
 
 const wrapper = ({
   children,

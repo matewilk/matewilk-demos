@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import type { NextPage } from "next";
 import { ApolloProvider, gql } from "@apollo/client";
 
-import { apolloClient } from "@/helpers/webSocketClient";
+import { apolloClient } from "@/hooks/useWebSocketClient";
 import Header from "@/components/layout/Header";
 import { Chat } from "@/components/chat/Chat";
 

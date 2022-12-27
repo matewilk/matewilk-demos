@@ -3,7 +3,7 @@ import { ApolloProvider } from "@apollo/client";
 import { setupServer } from "msw/node";
 import { rest } from "msw";
 
-import { apolloClient } from "@/helpers/webSocketClient";
+import { apolloClient } from "@/hooks/useWebSocketClient";
 
 import Chats, { getServerSideProps } from "./index";
 
