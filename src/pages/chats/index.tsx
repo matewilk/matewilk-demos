@@ -2,7 +2,7 @@ import type { NextPage, GetServerSideProps } from "next";
 import Link from "next/link";
 
 import { ApolloProvider } from "@apollo/client";
-import { apolloClient } from "@/helpers/webSocketClient";
+import { apolloClient } from "@/hooks/useWebSocketClient";
 
 import Header from "@/components/layout/Header";
 import { Chat } from "@/components/chat/Chat";

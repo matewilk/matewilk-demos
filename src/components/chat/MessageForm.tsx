@@ -37,7 +37,7 @@ export const MessageForm = ({
     >
       <div className="flex flex-grow flex-col">
         <textarea
-          className="rounded bg-slate-100 p-2"
+          className="max-h-16 rounded bg-slate-100 p-2"
           id="message"
           aria-label="message"
           {...register("message", { required: true })}

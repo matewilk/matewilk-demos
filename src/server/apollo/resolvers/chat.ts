@@ -1,4 +1,5 @@
 import { PubSub } from "graphql-subscriptions";
+import { v4 as uuidv4 } from "uuid";
 
 type Payload = {
   id: string;
@@ -37,9 +38,11 @@ export default {
       }: { chatId: string; text: string; userId: string },
       { pubSub }: { pubSub: PubSub }
     ) => {
-      await pubSub.publish(`CHAT_${chatId}`, { text, userId });
+      const id = uuidv4();
+      await pubSub.publish(`CHAT_${chatId}`, { id, text, userId });
 
       return {
+        id,
         text,
         userId,
       };

@@ -22,8 +22,7 @@
       "@/hooks/*": ["./src/hooks/*"],
       "@/providers/*": ["./src/providers/*"],
       "@/utils/*": ["./src/utils/*"],
-      "@/server/*": ["./src/server/*"],
-      "@/helpers/*": ["./src/helpers/*"]
+      "@/server/*": ["./src/server/*"]
     }
   },
   "include": [
