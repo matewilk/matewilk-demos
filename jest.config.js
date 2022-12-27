@@ -23,7 +23,6 @@ const customJestConfig = {
     "^@/providers/(.*)$": "<rootDir>/src/providers/$1",
     "^@/utils/(.*)$": "<rootDir>/src/utils/$1",
     "^@/server/(.*)$": "<rootDir>/src/server/$1",
-    "^@/helpers/(.*)$": "<rootDir>/src/helpers/$1",
   },
 
   setupFilesAfterEnv: ["<rootDir>/jest.setup.ts"],
