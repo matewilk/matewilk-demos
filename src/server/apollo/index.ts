@@ -5,16 +5,16 @@ import { Disposable } from "graphql-ws";
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import { WebSocketServer } from "ws";
-
 import Redis from "ioredis";
 import { RedisPubSub } from "graphql-redis-subscriptions";
 
+import { env } from "../../env/server.mjs";
 import { typeDefs } from "./schema";
 import { resolvers } from "./resolvers";
 
 const redisOptions = {
-  host: process.env.REDIS_HOST,
-  port: process.env.REDIS_PORT as unknown as number,
+  host: env.REDIS_HOST,
+  port: env.REDIS_PORT as unknown as number,
 };
 
 const redisPubSub = new RedisPubSub({
