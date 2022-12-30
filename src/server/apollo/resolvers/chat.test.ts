@@ -1,4 +1,4 @@
-import { PubSub } from "graphql-subscriptions";
+import { RedisPubSub } from "graphql-redis-subscriptions";
 import chatResolver from "./chat";
 
 jest.mock("uuid", () => ({ v4: () => "123456789" }));
@@ -8,7 +8,7 @@ describe("chat resolver", () => {
     pubSub: {
       asyncIterator: jest.fn(),
       publish: jest.fn(),
-    } as unknown as PubSub,
+    } as unknown as RedisPubSub,
   };
   describe("Subscription", () => {
     const { Subscription } = chatResolver;

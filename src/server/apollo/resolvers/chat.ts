@@ -1,4 +1,4 @@
-import { PubSub } from "graphql-subscriptions";
+import { RedisPubSub } from "graphql-redis-subscriptions";
 import { v4 as uuidv4 } from "uuid";
 
 type Payload = {
@@ -13,7 +13,7 @@ export default {
       subscribe(
         _: any,
         { id }: { id: string },
-        { pubSub }: { pubSub: PubSub }
+        { pubSub }: { pubSub: RedisPubSub }
       ): AsyncIterator<string> {
         return pubSub.asyncIterator(`CHAT_${id}`);
       },
@@ -36,7 +36,7 @@ export default {
         text,
         userId,
       }: { chatId: string; text: string; userId: string },
-      { pubSub }: { pubSub: PubSub }
+      { pubSub }: { pubSub: RedisPubSub }
     ) => {
       const id = uuidv4();
       await pubSub.publish(`CHAT_${chatId}`, { id, text, userId });

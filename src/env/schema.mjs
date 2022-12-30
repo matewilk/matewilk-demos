@@ -20,6 +20,8 @@ export const serverSchema = z.object({
   GOOGLE_CLIENT_SECRET: z.string(),
   TWITTER_CLIENT_ID: z.string(),
   TWITTER_CLIENT_SECRET: z.string(),
+  REDIS_HOST: z.string(),
+  REDIS_PORT: z.string().transform((str) => parseInt(str, 10)),
 });
 
 /**

@@ -5,12 +5,22 @@ import { Disposable } from "graphql-ws";
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import { WebSocketServer } from "ws";
-import { PubSub } from "graphql-subscriptions";
+import Redis from "ioredis";
+import { RedisPubSub } from "graphql-redis-subscriptions";
 
+import { env } from "../../env/server.mjs";
 import { typeDefs } from "./schema";
 import { resolvers } from "./resolvers";
 
-const pubSub = new PubSub();
+const redisOptions = {
+  host: env.REDIS_HOST,
+  port: env.REDIS_PORT as unknown as number,
+};
+
+const redisPubSub = new RedisPubSub({
+  publisher: new Redis(redisOptions),
+  subscriber: new Redis(redisOptions),
+});
 
 const schema = makeExecutableSchema({
   typeDefs,
@@ -40,7 +50,7 @@ export const apolloServer = new ApolloServer({
     return {
       req,
       res,
-      pubSub,
+      pubSub: redisPubSub,
     };
   },
 });
@@ -74,7 +84,7 @@ export const webSocketServer = (res: any) => {
         {
           schema,
           context() {
-            return { pubSub };
+            return { pubSub: redisPubSub };
           },
         },
         wss
