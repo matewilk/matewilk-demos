@@ -1,7 +1,10 @@
 import * as React from "react";
 import { renderHook } from "@testing-library/react";
 
-import { SignInPopUpContext } from "@/providers/SignInPopUpContextProvider";
+import {
+  SignInPopUpContext,
+  type SignInPopUpContextType,
+} from "@/providers/SignInPopUpContextProvider";
 import { useSignInPopUp } from "./useSignInPopUp";
 
 jest.mock("next-auth/react", () => ({
@@ -13,7 +16,7 @@ jest.mock("next-auth/react", () => ({
 
 const mockUseContext = {
   test: "test",
-};
+} as unknown as SignInPopUpContextType;
 
 const wrapper = ({
   children,
@@ -29,7 +32,9 @@ describe("useSignInPopUp", () => {
   beforeEach(() => {
     // spy on console.error to prevent (jsdom) from logging an error to the console
     // https://github.com/facebook/jest/issues/5785
-    jest.spyOn(console, "error").mockImplementation(() => {});
+    jest.spyOn(console, "error").mockImplementation(() => {
+      /* noop */
+    });
   });
 
   afterEach(() => {

@@ -1,6 +1,6 @@
 import { render } from "@testing-library/react";
 
-import SignInPage from "./signin";
+import SignInPage from "@/pages/signin";
 
 const signIn = jest.fn();
 const useSession = jest.fn().mockImplementation(() => ({

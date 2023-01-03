@@ -4,7 +4,7 @@ import { setupServer } from "msw/node";
 import { rest } from "msw";
 
 import { apolloClient } from "@/hooks/useWebSocketClient";
-import Chats, { getServerSideProps } from "./index";
+import Chats, { getServerSideProps } from "@/pages/chats/index";
 
 jest.mock("@/components/layout/Header", () => () => <div>Header</div>);
 
