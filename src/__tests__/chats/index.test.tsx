@@ -1,11 +1,12 @@
-import { render } from "@testing-library/react";
+import { render } from "@/utils/test-utils";
 import { ApolloProvider } from "@apollo/client";
 import { setupServer } from "msw/node";
 import { rest } from "msw";
 
 import { apolloClient } from "@/hooks/useWebSocketClient";
+import Chats, { getServerSideProps } from "@/pages/chats/index";
 
-import Chats, { getServerSideProps } from "./index";
+jest.mock("@/components/layout/Header", () => () => <div>Header</div>);
 
 const expectedChats = [
   {
@@ -31,7 +32,7 @@ afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
 
 describe("Chats", () => {
-  it("should render a list of chats", () => {
+  it("should render a list of chats and header", () => {
     const { container } = render(
       <ApolloProvider client={apolloClient()}>
         <Chats chats={expectedChats} />

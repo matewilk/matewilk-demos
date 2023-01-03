@@ -17,7 +17,7 @@ const Dashboard: NextPage = () => {
         {isMounted ? (
           // layout class to flex-grow containers in tx history component
           <div className="flex min-h-screen flex-col">
-            <Header signedIn={true} />
+            <Header />
             <Wallet />
             <TransactionHistory />
           </div>

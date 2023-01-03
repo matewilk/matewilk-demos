@@ -32,7 +32,7 @@ const ChatPage: NextPage<ChatPageProps> = ({ query, history }) => {
   return isReady ? (
     <ApolloProvider client={apolloClient()}>
       <div className="flex min-h-screen flex-col">
-        <Header signedIn={true} />
+        <Header />
         <Chat chatId={id} history={history} />
       </div>
     </ApolloProvider>

@@ -1,9 +1,10 @@
-import { render, screen } from "@testing-library/react";
+import { renderWithAppProviders, screen } from "@/utils/test-utils";
+
 import Home from "@/pages/index";
 
 describe("Home", () => {
   it("renders a heading", () => {
-    render(<Home />);
+    renderWithAppProviders(<Home />);
 
     const heading = screen.getByRole("heading", {
       name: /Crypto made simple\./i,

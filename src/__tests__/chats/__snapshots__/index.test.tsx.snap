@@ -1,0 +1,41 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Chats should render a list of chats and header 1`] = `
+<div>
+  <div
+    class="flex min-h-screen flex-col"
+  >
+    <div>
+      Header
+    </div>
+    <section
+      aria-label="chat"
+      class="h-1 flex-grow bg-blue-100"
+      id="chat"
+    >
+      <div
+        class="mx-auto h-full max-w-3xl py-10"
+      >
+        <div
+          class="flex h-full overflow-auto rounded-xl bg-white"
+        >
+          <ul
+            class="flex w-full flex-col gap-2 py-5 px-5"
+          >
+            <li
+              class="w-full cursor-pointer rounded-md bg-blue-50 p-5"
+            >
+              Chat 1
+            </li>
+            <li
+              class="w-full cursor-pointer rounded-md bg-blue-50 p-5"
+            >
+              Chat 2
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+`;

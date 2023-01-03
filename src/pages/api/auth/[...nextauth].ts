@@ -1,6 +1,5 @@
 import NextAuth, { type NextAuthOptions } from "next-auth";
 import GoogleProvider, { GoogleProfile } from "next-auth/providers/google";
-import TwitterProvider, { TwitterProfile } from "next-auth/providers/twitter";
 import { OAuthUserConfig } from "next-auth/providers";
 
 // Prisma adapter for NextAuth, optional and can be removed
@@ -25,10 +24,6 @@ export const authOptions: NextAuthOptions = {
       clientId: env.GOOGLE_CLIENT_ID,
       clientSecret: env.GOOGLE_CLIENT_SECRET,
     } as OAuthUserConfig<GoogleProfile>),
-    TwitterProvider({
-      clientId: env.TWITTER_CLIENT_ID,
-      clientSecret: env.TWITTER_CLIENT_SECRET,
-    } as OAuthUserConfig<TwitterProfile>),
   ],
 };
 
