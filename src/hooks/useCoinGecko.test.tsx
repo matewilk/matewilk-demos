@@ -42,4 +42,24 @@ describe("useCoinGecko", () => {
       });
     });
   });
+
+  it("should swallow up error from server", async () => {
+    server.use(
+      rest.get(
+        "https://api.coingecko.com/api/v3/simple/price",
+        (req, res, ctx) => {
+          return res.once(
+            ctx.status(500),
+            ctx.json({ message: "Internal server error" })
+          );
+        }
+      )
+    );
+
+    const { result } = renderHook(() => useCoinGecko(1));
+
+    await waitFor(() => {
+      expect(result.current).toEqual(undefined);
+    });
+  });
 });

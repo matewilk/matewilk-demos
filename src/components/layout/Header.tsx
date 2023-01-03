@@ -1,5 +1,7 @@
 import { useState } from "react";
-import Link from "next/link";
+import { signOut, useSession } from "next-auth/react";
+
+import { useSignInPopUp } from "@/hooks/useSignInPopUp";
 
 type MenuItem = { text: string; href: string };
 
@@ -45,9 +47,13 @@ const MenuItem = ({ text, href }: MenuItem) => {
   );
 };
 
-const Header = ({ signedIn }: { signedIn: boolean }) => {
-  const [open, setOpen] = useState(false);
-  const [signed] = useState(signedIn);
+const Header = () => {
+  const [open, setOpenMobileMenu] = useState(false);
+
+  const { setIsSignInPopUpOpen, SignInPopUp } = useSignInPopUp();
+  const { status } = useSession();
+  const signed = status === "authenticated";
+
   return (
     <header id="intro" className="sticky top-0 h-16 bg-white">
       <div
@@ -59,7 +65,7 @@ const Header = ({ signedIn }: { signedIn: boolean }) => {
         </div>
         <div
           id="nav-icon"
-          onClick={() => setOpen(!open)}
+          onClick={() => setOpenMobileMenu(!open)}
           className="p2 group h-12 w-12 md:hidden"
         >
           <svg
@@ -95,21 +101,24 @@ const Header = ({ signedIn }: { signedIn: boolean }) => {
                 <a href="/games">Games</a>
               </li>
               <li className="btn-white md:absolute md:right-2">
-                <Link href="/api/auth/signout">Sign out</Link>
+                <button onClick={() => signOut()}>Sign out</button>
               </li>
             </>
           ) : (
             <>
               <li className="btn-white md:absolute md:right-44">
-                <Link href="/api/auth/signin">Sign in</Link>
+                <button onClick={() => setIsSignInPopUpOpen(true)}>
+                  Sign in
+                </button>
               </li>
               <li className="btn-blue md:absolute md:right-2">
-                <Link href="/api/auth/signin">Get started today</Link>
+                <button onClick={() => signOut()}>Get started today</button>
               </li>
             </>
           )}
         </ul>
       </div>
+      {SignInPopUp}
     </header>
   );
 };

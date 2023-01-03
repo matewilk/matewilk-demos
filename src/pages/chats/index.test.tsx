@@ -1,4 +1,4 @@
-import { render } from "@testing-library/react";
+import { renderWithAppProviders } from "@/utils/test-utils";
 import { ApolloProvider } from "@apollo/client";
 import { setupServer } from "msw/node";
 import { rest } from "msw";
@@ -32,7 +32,7 @@ afterAll(() => server.close());
 
 describe("Chats", () => {
   it("should render a list of chats", () => {
-    const { container } = render(
+    const { container } = renderWithAppProviders(
       <ApolloProvider client={apolloClient()}>
         <Chats chats={expectedChats} />
       </ApolloProvider>

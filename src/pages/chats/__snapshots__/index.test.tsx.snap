@@ -48,46 +48,51 @@ exports[`Chats should render a list of chats 1`] = `
             class="cursor-pointer rounded-full py-2 px-4 hover:bg-slate-100 hover:text-gray-600"
           >
             <a
-              href=""
+              href="/#intro"
             >
-              Dashboard
+              Intro
             </a>
           </li>
           <li
             class="cursor-pointer rounded-full py-2 px-4 hover:bg-slate-100 hover:text-gray-600"
           >
             <a
-              href=""
+              href="/#features"
             >
-              Connections
+              Features
             </a>
           </li>
           <li
             class="cursor-pointer rounded-full py-2 px-4 hover:bg-slate-100 hover:text-gray-600"
           >
             <a
-              href="/chats"
+              href="/#about"
             >
-              Chats
+              About
             </a>
           </li>
           <li
-            class="btn-blue md:absolute md:right-28"
+            class="cursor-pointer rounded-full py-2 px-4 hover:bg-slate-100 hover:text-gray-600"
           >
             <a
-              href="/games"
+              href="/#faqs"
             >
-              Games
+              FAQs
             </a>
           </li>
           <li
-            class="btn-white md:absolute md:right-2"
+            class="btn-white md:absolute md:right-44"
           >
-            <a
-              href="/api/auth/signout"
-            >
-              Sign out
-            </a>
+            <button>
+              Sign in
+            </button>
+          </li>
+          <li
+            class="btn-blue md:absolute md:right-2"
+          >
+            <button>
+              Get started today
+            </button>
           </li>
         </ul>
       </div>

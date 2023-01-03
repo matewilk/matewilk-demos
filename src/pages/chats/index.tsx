@@ -44,7 +44,7 @@ const Chats: NextPage<ChatsProps> = ({ chats }: { chats: Chat[] }) => {
   return (
     <ApolloProvider client={apolloClient()}>
       <div className="flex min-h-screen flex-col">
-        <Header signedIn={true} />
+        <Header />
         <ChatsList chats={chats} />
       </div>
     </ApolloProvider>

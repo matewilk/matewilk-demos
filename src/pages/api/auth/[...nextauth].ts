@@ -17,6 +17,10 @@ export const authOptions: NextAuthOptions = {
       }
       return session;
     },
+    async redirect({ url, baseUrl }) {
+      console.log("redirect", url, baseUrl);
+      return baseUrl;
+    },
   },
   // Configure one or more authentication providers
   adapter: PrismaAdapter(prisma),
@@ -25,10 +29,6 @@ export const authOptions: NextAuthOptions = {
       clientId: env.GOOGLE_CLIENT_ID,
       clientSecret: env.GOOGLE_CLIENT_SECRET,
     } as OAuthUserConfig<GoogleProfile>),
-    TwitterProvider({
-      clientId: env.TWITTER_CLIENT_ID,
-      clientSecret: env.TWITTER_CLIENT_SECRET,
-    } as OAuthUserConfig<TwitterProfile>),
   ],
 };
 
