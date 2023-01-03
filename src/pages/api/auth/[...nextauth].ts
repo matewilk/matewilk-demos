@@ -1,6 +1,5 @@
 import NextAuth, { type NextAuthOptions } from "next-auth";
 import GoogleProvider, { GoogleProfile } from "next-auth/providers/google";
-import TwitterProvider, { TwitterProfile } from "next-auth/providers/twitter";
 import { OAuthUserConfig } from "next-auth/providers";
 
 // Prisma adapter for NextAuth, optional and can be removed
@@ -16,10 +15,6 @@ export const authOptions: NextAuthOptions = {
         session.user.id = user.id;
       }
       return session;
-    },
-    async redirect({ url, baseUrl }) {
-      console.log("redirect", url, baseUrl);
-      return baseUrl;
     },
   },
   // Configure one or more authentication providers

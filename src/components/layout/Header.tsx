@@ -52,7 +52,7 @@ const Header = () => {
 
   const { setIsSignInPopUpOpen, SignInPopUp } = useSignInPopUp();
   const { status } = useSession();
-  const signed = status === "authenticated";
+  const authenticated = status === "authenticated";
 
   return (
     <header id="intro" className="sticky top-0 h-16 bg-white">
@@ -88,14 +88,14 @@ const Header = () => {
             open ? "" : "hidden"
           } w-full space-y-2 pr-3 text-center font-semibold md:flex md:h-12 md:flex-row md:items-center md:justify-start md:space-x-5 md:space-y-0 md:pl-16`}
         >
-          {signed
+          {authenticated
             ? dashItems.map((item, index) => (
                 <MenuItem key={index} href={item.href} text={item.text} />
               ))
             : menuItems.map((item, index) => (
                 <MenuItem key={index} href={item.href} text={item.text} />
               ))}
-          {signed ? (
+          {authenticated ? (
             <>
               <li className="btn-blue md:absolute md:right-28">
                 <a href="/games">Games</a>

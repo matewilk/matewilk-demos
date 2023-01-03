@@ -1,9 +1,15 @@
 import NewWindow from "react-new-window";
 import { useSession } from "next-auth/react";
-import { Dispatch, useState, createContext } from "react";
+import { Dispatch, useState, createContext, PropsWithChildren } from "react";
 
-// TODO: define context type
-export const SignInPopUpContext = createContext<any | null>(null);
+export type SignInPopUpContextType = {
+  setIsSignInPopUpOpen: Dispatch<boolean>;
+  SignInPopUp: JSX.Element | null;
+};
+
+export const SignInPopUpContext = createContext<SignInPopUpContextType | null>(
+  null
+);
 
 const SignInPopUp = ({
   setIsSignInPopUpOpen,
@@ -30,7 +36,7 @@ const SignInPopUp = ({
   );
 };
 
-export const SignInPopUpProvider = (props: any) => {
+export const SignInPopUpProvider = (props: PropsWithChildren) => {
   const [isSignInPopUpOpen, setIsSignInPopUpOpen] = useState(false);
   const { data: session } = useSession();
 

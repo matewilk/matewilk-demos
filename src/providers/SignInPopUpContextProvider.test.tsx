@@ -4,6 +4,7 @@ import { useContext, useEffect } from "react";
 import {
   SignInPopUpProvider,
   SignInPopUpContext,
+  type SignInPopUpContextType,
 } from "./SignInPopUpContextProvider";
 
 const useSessionMock = jest.fn().mockImplementation(() => ({
@@ -20,7 +21,9 @@ jest.mock("react-new-window", () => ({
 }));
 
 const TestComponent = () => {
-  const { SignInPopUp, setIsSignInPopUpOpen } = useContext(SignInPopUpContext);
+  const { SignInPopUp, setIsSignInPopUpOpen } = useContext(
+    SignInPopUpContext
+  ) as SignInPopUpContextType;
 
   useEffect(() => {
     setIsSignInPopUpOpen(true);
