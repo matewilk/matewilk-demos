@@ -48,6 +48,7 @@ export default {
         id,
         text,
         userId,
+        userName,
       };
     },
   },

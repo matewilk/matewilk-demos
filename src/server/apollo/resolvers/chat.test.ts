@@ -29,6 +29,7 @@ describe("chat resolver", () => {
           id: "1",
           text: "test message",
           userId: "1",
+          userName: "test user",
         };
         const result = Subscription.chat.resolve(payload);
 
@@ -36,6 +37,7 @@ describe("chat resolver", () => {
           id: "1",
           text: "test message",
           userId: "1",
+          userName: "test user",
         };
         expect(result).toEqual(expected);
       });
@@ -51,6 +53,7 @@ describe("chat resolver", () => {
           chatId: "345",
           text: "test message",
           userId: "1",
+          userName: "test user",
         };
 
         const result = await Mutation.sendMessage(null, args, contextMock);
@@ -59,11 +62,13 @@ describe("chat resolver", () => {
           id: "123456789",
           text: "test message",
           userId: "1",
+          userName: "test user",
         });
         expect(result).toEqual({
           id: "123456789",
           text: "test message",
           userId: "1",
+          userName: "test user",
         });
       });
     });
