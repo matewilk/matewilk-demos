@@ -6,7 +6,12 @@ export default gql`
   }
 
   extend type Mutation {
-    sendMessage(text: String!, chatId: String!, userId: String!): Message
+    sendMessage(
+      text: String!
+      chatId: String!
+      userId: String!
+      userName: String!
+    ): Message
   }
 
   extend type Query {
@@ -17,5 +22,6 @@ export default gql`
     id: ID!
     text: String
     userId: String
+    userName: String
   }
 `;

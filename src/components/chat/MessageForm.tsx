@@ -1,5 +1,6 @@
 import { MutationFunction } from "@apollo/client";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { useSession } from "next-auth/react";
 
 type Inputs = {
   message: string;
@@ -21,11 +22,15 @@ export const MessageForm = ({
     formState: { isValid },
   } = useForm<Inputs>({ mode: "onChange" });
 
+  const { data: session } = useSession();
+  const user = session?.user;
+
   const onSubmit: SubmitHandler<Inputs> = (data: Inputs) => {
     const { message } = data;
     // TODO: get userId from context
-    const userId = "1";
-    sendMessage({ variables: { text: message, chatId, userId } });
+    const userId = user?.id;
+    const userName = user?.name;
+    sendMessage({ variables: { text: message, chatId, userId, userName } });
     if (!error) reset();
   };
 

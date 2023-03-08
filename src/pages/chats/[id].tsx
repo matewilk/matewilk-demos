@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import type { NextPage } from "next";
+import type { GetServerSidePropsContext, NextPage } from "next";
 import { ApolloProvider, gql } from "@apollo/client";
 
 import { apolloClient } from "@/hooks/useWebSocketClient";
@@ -41,7 +41,14 @@ const ChatPage: NextPage<ChatPageProps> = ({ query, history }) => {
 
 export default ChatPage;
 
-export const getServerSideProps = async ({ query }: { query: Query }) => {
+import { getServerAuthSession } from "@/server/common/get-server-auth-session";
+
+export const getServerSideProps = async (
+  context: GetServerSidePropsContext
+) => {
+  const session = await getServerAuthSession(context);
+
+  const { query } = context;
   const { id } = query;
   const { data } = await apolloClient().query({
     query: CHAT_HISTORY,
@@ -52,6 +59,6 @@ export const getServerSideProps = async ({ query }: { query: Query }) => {
   const { chatHistory: history } = data;
 
   return {
-    props: { query, history },
+    props: { query, history, session },
   };
 };

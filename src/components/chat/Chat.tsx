@@ -1,3 +1,5 @@
+import { useSession } from "next-auth/react";
+
 import { useChat } from "@/hooks/useChat";
 import { MessageForm } from "./MessageForm";
 
@@ -5,21 +7,32 @@ type Message = {
   id: string;
   text: string;
   userId: string;
+  userName: string;
 };
 
-const Message = ({ id, userId, text }: Message) => {
+const Message = ({ id, text, userId, userName }: Message) => {
+  const { data: session } = useSession();
+  const uId = session?.user?.id;
   return (
-    <li
-      key={id}
-      className={`rounded-xl px-3 py-2 shadow ${
-        // TODO: plug in the actual user id
-        userId === "1"
-          ? "place-self-end rounded-tr-none bg-green-100 text-right"
-          : "place-self-start rounded-tl-none bg-blue-100 text-left"
+    <div
+      className={`${
+        userId === uId
+          ? "place-self-end text-right"
+          : "place-self-start text-left"
       }`}
     >
-      {text}
-    </li>
+      <li
+        key={id}
+        className={`rounded-xl px-3 py-2 shadow ${
+          userId === uId
+            ? "rounded-tr-none bg-green-100 text-right"
+            : "rounded-tl-none bg-blue-100 text-left"
+        }`}
+      >
+        {text}
+      </li>
+      <span className="text-xs">{userId === uId ? "You" : userName}</span>
+    </div>
   );
 };
 

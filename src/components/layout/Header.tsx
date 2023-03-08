@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { signOut, useSession } from "next-auth/react";
+import Link from "next/link";
 
 import { useSignInPopUp } from "@/hooks/useSignInPopUp";
 
@@ -26,12 +27,8 @@ const menuItems: MenuItem[] = [
 
 const dashItems: MenuItem[] = [
   {
-    text: "Dashboard",
-    href: "",
-  },
-  {
-    text: "Connections",
-    href: "",
+    text: "Wallet",
+    href: "/dashboard",
   },
   {
     text: "Chats",
@@ -42,7 +39,7 @@ const dashItems: MenuItem[] = [
 const MenuItem = ({ text, href }: MenuItem) => {
   return (
     <li className="cursor-pointer rounded-full py-2 px-4 hover:bg-slate-100 hover:text-gray-600">
-      <a href={href}>{text}</a>
+      <Link href={href}>{text}</Link>
     </li>
   );
 };
@@ -112,7 +109,9 @@ const Header = () => {
                 </button>
               </li>
               <li className="btn-blue md:absolute md:right-2">
-                <button onClick={() => signOut()}>Get started today</button>
+                <button onClick={() => setIsSignInPopUpOpen(true)}>
+                  Get started today
+                </button>
               </li>
             </>
           )}
