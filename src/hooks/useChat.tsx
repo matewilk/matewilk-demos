@@ -10,6 +10,7 @@ export const useChat = ({ chatId }: { chatId: string }) => {
         id
         text
         userId
+        userName
       }
     }
   `;
@@ -30,17 +31,29 @@ export const useChat = ({ chatId }: { chatId: string }) => {
           id: data.chat.id,
           text: data.chat.text,
           userId: data.chat.userId,
+          userName: data.chat.userName,
         },
       ]);
     }
   }, [data]);
 
   const SEND_MESSAGE = gql`
-    mutation Mutation($text: String!, $chatId: String!, $userId: String!) {
-      sendMessage(text: $text, chatId: $chatId, userId: $userId) {
+    mutation Mutation(
+      $text: String!
+      $chatId: String!
+      $userId: String!
+      $userName: String!
+    ) {
+      sendMessage(
+        text: $text
+        chatId: $chatId
+        userId: $userId
+        userName: $userName
+      ) {
         id
         text
         userId
+        userName
       }
     }
   `;

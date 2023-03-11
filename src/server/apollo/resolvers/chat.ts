@@ -5,6 +5,7 @@ type Payload = {
   id: string;
   text: string;
   userId: string;
+  userName: string;
 };
 
 export default {
@@ -23,6 +24,7 @@ export default {
           id: payload.id,
           text: payload.text,
           userId: payload.userId,
+          userName: payload.userName,
         };
       },
     },
@@ -35,16 +37,18 @@ export default {
         chatId,
         text,
         userId,
-      }: { chatId: string; text: string; userId: string },
+        userName,
+      }: { chatId: string; text: string; userId: string; userName: string },
       { pubSub }: { pubSub: RedisPubSub }
     ) => {
       const id = uuidv4();
-      await pubSub.publish(`CHAT_${chatId}`, { id, text, userId });
+      await pubSub.publish(`CHAT_${chatId}`, { id, text, userId, userName });
 
       return {
         id,
         text,
         userId,
+        userName,
       };
     },
   },
@@ -59,11 +63,13 @@ export default {
           id: "1",
           text: "Hello",
           userId: "1",
+          userName: "John",
         },
         {
           id: "2",
           text: "World",
           userId: "2",
+          userName: "Jane",
         },
       ]);
     },

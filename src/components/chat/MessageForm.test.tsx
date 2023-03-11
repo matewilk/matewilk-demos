@@ -2,6 +2,18 @@ import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 
 import { MessageForm } from "./MessageForm";
 
+// mock useSession - does not require to be wrapped in ApolloProvider
+const useSession = jest.fn().mockImplementation(() => ({
+  data: {
+    user: { id: "1" },
+  },
+  status: "authenticated",
+}));
+
+jest.mock("next-auth/react", () => ({
+  useSession: () => useSession(),
+}));
+
 describe("MessageForm", () => {
   const sendMock = jest.fn();
   beforeEach(() => {

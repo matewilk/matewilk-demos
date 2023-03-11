@@ -10,6 +10,19 @@ import { MockedProvider } from "@apollo/client/testing";
 
 import { Chat } from "@/components/chat/Chat";
 
+// mock useSession - does not require to be wrapped in ApolloProvider
+const useSession = jest.fn().mockImplementation(() => ({
+  data: {
+    user: { id: "1" },
+  },
+  status: "authenticated",
+}));
+
+jest.mock("next-auth/react", () => ({
+  useSession: () => useSession(),
+}));
+
+// remember to modify mocked data/fields to match your schema
 const queries = [
   {
     request: {
@@ -19,6 +32,7 @@ const queries = [
             id
             text
             userId
+            userName
           }
         }
       `,
@@ -31,6 +45,7 @@ const queries = [
             id: "test-uuuid",
             text: "Hello World",
             userId: "1",
+            userName: "Test",
           },
         },
       };
