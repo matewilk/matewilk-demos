@@ -3,7 +3,7 @@ import { useSession } from "next-auth/react";
 import { useChat } from "@/hooks/useChat";
 import { MessageForm } from "./MessageForm";
 
-type Message = {
+export type Message = {
   id: string;
   text: string;
   userId: string;

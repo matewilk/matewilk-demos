@@ -1,10 +1,13 @@
-import { useRouter } from "next/router";
 import type { GetServerSidePropsContext, NextPage } from "next";
 import { ApolloProvider, gql } from "@apollo/client";
+import { useSession } from "next-auth/react";
+import { useIsMounted } from "@/hooks/useIsMounted";
 
 import { apolloClient } from "@/hooks/useWebSocketClient";
 import Header from "@/components/layout/Header";
+import PleaseSignIn from "@/components/layout/SignIn";
 import { Chat } from "@/components/chat/Chat";
+import { type Message } from "@/components/chat/Chat";
 
 type Query = {
   id: string;
@@ -12,8 +15,28 @@ type Query = {
 
 interface ChatPageProps {
   query: Query;
-  history: { message: string }[];
+  history: Message[];
 }
+
+const ChatPage: NextPage<ChatPageProps> = ({ query, history }) => {
+  const isMounted = useIsMounted();
+  const { id } = query;
+  const { data: session } = useSession();
+
+  return isMounted ? (
+    <ApolloProvider client={apolloClient()}>
+      <div className="flex min-h-screen flex-col">
+        <Header />
+        {session ? <Chat chatId={id} history={history} /> : null}
+        {!session ? <PleaseSignIn /> : null}
+      </div>
+    </ApolloProvider>
+  ) : null;
+};
+
+export default ChatPage;
+
+import { getServerAuthSession } from "@/server/common/get-server-auth-session";
 
 const CHAT_HISTORY = gql`
   query GetChatHistory($chatId: String!) {
@@ -24,24 +47,6 @@ const CHAT_HISTORY = gql`
     }
   }
 `;
-
-const ChatPage: NextPage<ChatPageProps> = ({ query, history }) => {
-  const { id } = query;
-  const { isReady } = useRouter();
-
-  return isReady ? (
-    <ApolloProvider client={apolloClient()}>
-      <div className="flex min-h-screen flex-col">
-        <Header />
-        <Chat chatId={id} history={history} />
-      </div>
-    </ApolloProvider>
-  ) : null;
-};
-
-export default ChatPage;
-
-import { getServerAuthSession } from "@/server/common/get-server-auth-session";
 
 export const getServerSideProps = async (
   context: GetServerSidePropsContext

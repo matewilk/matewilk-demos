@@ -6,6 +6,7 @@ import { rest } from "msw";
 import { apolloClient } from "@/hooks/useWebSocketClient";
 import Chats, { getServerSideProps } from "@/pages/chats/index";
 
+// eslint-disable-next-line react/display-name
 jest.mock("@/components/layout/Header", () => () => <div>Header</div>);
 
 const expectedChats = [
