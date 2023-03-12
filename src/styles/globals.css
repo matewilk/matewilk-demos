@@ -6,7 +6,6 @@
   .btn-blue {
     @apply cursor-pointer rounded-full bg-[#6666FF] py-2 px-4 font-thin text-slate-200 hover:bg-[#7A66FF] hover:text-blue-100 focus:outline-none focus-visible:outline-2 focus-visible:outline-[#6d57fd] active:bg-[#624afd] active:text-white
   }
-
   .btn-white {
     @apply cursor-pointer rounded-full py-2 px-4 font-thin text-slate-400 ring-1 ring-slate-200 hover:text-slate-100 hover:ring-slate-200 hover:bg-white/10 focus:outline-none focus-visible:outline-slate-500 focus-visible:ring-slate-300 active:bg-slate-100 active:text-slate-600 
   }
