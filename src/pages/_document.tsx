@@ -23,6 +23,14 @@ class MyDocument extends Document {
             href="https://fonts.googleapis.com/css2?family=Archivo:wght@200&display=swap"
             rel="stylesheet"
           />
+          <link
+            href="https://fonts.googleapis.com/css2?family=Archivo:wght@400&display=swap"
+            rel="stylesheet"
+          />
+          <link
+            href="https://fonts.googleapis.com/css2?family=Archivo:wght@800&display=swap"
+            rel="stylesheet"
+          />
         </Head>
         <body className="font-Archivo">
           <Main />

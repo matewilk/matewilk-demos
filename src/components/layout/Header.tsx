@@ -83,7 +83,7 @@ const Header = () => {
           id="nav-menu"
           className={`${
             open ? "" : "hidden"
-          } w-full space-y-2 pr-3 text-center font-semibold md:flex md:h-12 md:flex-row md:items-center md:justify-start md:space-x-5 md:space-y-0 md:pl-16`}
+          } w-full space-y-2 pr-3 text-center font-thin md:flex md:h-12 md:flex-row md:items-center md:justify-start md:space-x-5 md:space-y-0 md:pl-16`}
         >
           {authenticated
             ? dashItems.map((item, index) => (

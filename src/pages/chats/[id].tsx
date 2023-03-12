@@ -25,7 +25,7 @@ const ChatPage: NextPage<ChatPageProps> = ({ query, history }) => {
 
   return isMounted ? (
     <ApolloProvider client={apolloClient()}>
-      <div className="flex min-h-screen flex-col">
+      <div className="flex min-h-screen flex-col font-thin">
         <Header />
         {session ? <Chat chatId={id} history={history} /> : null}
         {!session ? <PleaseSignIn /> : null}

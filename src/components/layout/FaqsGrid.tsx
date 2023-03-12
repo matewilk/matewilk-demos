@@ -6,7 +6,7 @@ const FaqCell = ({ children }: { children: ReactNode }) => {
 
 const FaqsGrid = () => {
   return (
-    <div className="p-5 text-start">
+    <div className="p-5 text-start text-white">
       <div className="grid grid-cols-1 gap-2 md:grid-cols-2 xl:grid-cols-3">
         {faqs.map(({ question, answer }, index) => {
           return (

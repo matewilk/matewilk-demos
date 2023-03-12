@@ -18,7 +18,11 @@ interface ChatsProps {
 
 const ChatsList = ({ chats }: { chats: Chat[] }) => {
   return (
-    <section id="chat" aria-label="chat" className="h-1 flex-grow bg-blue-100">
+    <section
+      id="chat"
+      aria-label="chat"
+      className="h-1 flex-grow bg-blue-100 font-thin"
+    >
       <div className="mx-auto h-full max-w-3xl py-10">
         <div className="flex h-full overflow-auto rounded-xl bg-white">
           <ul className="flex w-full flex-col gap-2 py-5 px-5">

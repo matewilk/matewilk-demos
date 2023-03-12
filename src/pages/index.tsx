@@ -15,7 +15,7 @@ const Home: NextPage = () => {
       </Head>
 
       <Header />
-      <main>
+      <main className="bg-gradient-to-b from-[#2e026d] to-[#15162c] font-thin">
         <Intro />
         <Sections />
       </main>
