@@ -21,10 +21,10 @@ const ChatsList = ({ chats }: { chats: Chat[] }) => {
     <section
       id="chat"
       aria-label="chat"
-      className="h-1 flex-grow bg-blue-100 font-thin"
+      className="h-1 flex-grow bg-black/10 font-thin text-slate-300"
     >
       <div className="mx-auto h-full max-w-3xl py-10">
-        <div className="flex h-full overflow-auto rounded-xl bg-white">
+        <div className="frosted flex h-full overflow-auto rounded-xl">
           <ul className="flex w-full flex-col gap-2 py-5 px-5">
             {chats.map((chat) => (
               <Link
@@ -32,7 +32,7 @@ const ChatsList = ({ chats }: { chats: Chat[] }) => {
                 href={`/chats/${chat.id}`}
                 key={chat.id}
               >
-                <li className="w-full cursor-pointer rounded-md bg-blue-50 p-5">
+                <li className="frosted w-full cursor-pointer rounded-md p-5">
                   {chat.name}
                 </li>
               </Link>
@@ -47,7 +47,7 @@ const ChatsList = ({ chats }: { chats: Chat[] }) => {
 const Chats: NextPage<ChatsProps> = ({ chats }: { chats: Chat[] }) => {
   return (
     <ApolloProvider client={apolloClient()}>
-      <div className="flex min-h-screen flex-col">
+      <div className="flex min-h-screen flex-col bg-gradient-to-t from-blue-400 to-[#2e026d]">
         <Header />
         <ChatsList chats={chats} />
       </div>

@@ -52,10 +52,15 @@ const Header = () => {
   const authenticated = status === "authenticated";
 
   return (
-    <header id="intro" className="sticky top-0 h-16 bg-white">
+    <header
+      id="intro"
+      className="sticky top-0 z-50 h-16 border-b border-white border-opacity-20 bg-[#2e026d] text-slate-200 shadow-lg"
+    >
       <div
         id="nav-container"
-        className="relative z-50 flex flex-col items-end bg-white p-2 md:mx-auto md:max-w-5xl"
+        className={`${
+          open ? "" : "border-b-0"
+        } relative z-50 flex flex-col items-end border-b border-white border-opacity-20 pt-2  md:mx-auto md:max-w-5xl md:border-b-0`}
       >
         <div id="img-container" className="absolute left-2 top-2 h-12 w-12">
           <img src="/favicon.ico" alt="" className="h-12 w-12"></img>
@@ -83,7 +88,7 @@ const Header = () => {
           id="nav-menu"
           className={`${
             open ? "" : "hidden"
-          } w-full space-y-2 pr-3 text-center font-thin md:flex md:h-12 md:flex-row md:items-center md:justify-start md:space-x-5 md:space-y-0 md:pl-16`}
+          } xs:shadow-lg w-full space-y-2 bg-[#2e026d] p-3 text-center font-thin md:flex md:h-12 md:flex-row md:items-center md:justify-start md:space-x-5 md:space-y-0 md:pl-16 md:shadow-none`}
         >
           {authenticated
             ? dashItems.map((item, index) => (

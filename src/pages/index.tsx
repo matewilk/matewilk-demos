@@ -14,8 +14,8 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Header />
       <main className="bg-gradient-to-b from-[#2e026d] to-[#15162c] font-thin">
+        <Header />
         <Intro />
         <Sections />
       </main>
