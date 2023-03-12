@@ -16,11 +16,11 @@ const TransactionHistory = () => {
   return (
     <section
       // flex-grow to make container flex-grow to fill remaining space
-      className="flex-grow bg-slate-50 md:py-10"
+      className="flex-grow bg-white/5 md:py-10"
       id="transactions"
       aria-label="transactions"
     >
-      <div className="mx-auto max-w-3xl rounded-lg bg-white">
+      <div className="frosted mx-auto max-w-3xl rounded-lg">
         <TxTable />
       </div>
     </section>
@@ -78,8 +78,8 @@ const TxTableRow = ({
 }) => {
   const { day, month } = formatDate(Number(timestamp));
   return (
-    <tr className="border-b text-center last:border-b-0 hover:bg-stone-100">
-      <th scope="row" className="whitespace-nowrap py-4 px-4 font-medium">
+    <tr className="border-b border-purple-300 text-center text-slate-300 last:border-b-0 hover:bg-white/10">
+      <th scope="row" className="whitespace-nowrap py-4 px-4 font-thin">
         {day} {month}
       </th>
       <td className="py-4 px-4">
@@ -104,23 +104,23 @@ const TxTableRow = ({
 const AnimatedRow = () => {
   return (
     <tr
-      className="h-12 animate-pulse border-b bg-slate-100 last:border-b-0"
+      className="h-12 animate-pulse border-b border-purple-300 bg-slate-100 bg-opacity-5 last:border-b-0"
       data-testid="animated-loading-row"
     >
       <th className="w-16">
-        <p className="m-auto h-5 w-3/4 rounded bg-slate-200"></p>
+        <p className="m-auto h-5 w-3/4 rounded bg-slate-200 bg-opacity-5"></p>
       </th>
       <td>
-        <p className="m-auto h-5 w-3/4 rounded bg-slate-200"></p>
+        <p className="m-auto h-5 w-3/4 rounded bg-slate-200 bg-opacity-5"></p>
       </td>
       <td className="w-16">
-        <p className="m-auto h-5 w-3/4 rounded bg-slate-200"></p>
+        <p className="m-auto h-5 w-3/4 rounded bg-slate-200 bg-opacity-5"></p>
       </td>
       <td className="w-72">
-        <p className="m-auto h-5 w-3/4 rounded bg-slate-200"></p>
+        <p className="m-auto h-5 w-3/4 rounded bg-slate-200 bg-opacity-5"></p>
       </td>
       <td>
-        <p className="m-auto h-5 w-3/4 rounded bg-slate-200"></p>
+        <p className="m-auto h-5 w-3/4 rounded bg-slate-200 bg-opacity-5"></p>
       </td>
     </tr>
   );
@@ -189,7 +189,7 @@ const TxTable = () => {
 
   return (
     <div className="overflow-x-auto rounded-lg">
-      <table className="w-full text-sm">
+      <table className="w-full text-sm text-white">
         <tbody>
           {isLoading
             ? // iterate 3 times over the animated row

@@ -4,12 +4,8 @@ import Home from "@/pages/index";
 
 describe("Home", () => {
   it("renders a heading", () => {
-    renderWithAppProviders(<Home />);
+    const { container } = renderWithAppProviders(<Home />);
 
-    const heading = screen.getByRole("heading", {
-      name: /Crypto made simple\./i,
-    });
-
-    expect(heading).toBeInTheDocument();
+    expect(container).toHaveTextContent(/Welcome to matewilk\'s demo page/i);
   });
 });

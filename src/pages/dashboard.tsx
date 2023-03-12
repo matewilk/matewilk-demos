@@ -16,7 +16,7 @@ const Dashboard: NextPage = () => {
       <WalletProvider>
         {isMounted ? (
           // layout class to flex-grow containers in tx history component
-          <div className="flex min-h-screen flex-col">
+          <div className="flex min-h-screen flex-col bg-gradient-to-b from-[#2e026d] to-[#15162c] font-thin">
             <Header />
             <Wallet />
             <TransactionHistory />

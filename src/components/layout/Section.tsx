@@ -2,10 +2,10 @@ import { ReactNode } from "react";
 
 const SectionType = {
   textColor: {
-    header: { blue: "text-white", white: "text-black" },
-    subheader: { blue: "text-blue-100", white: "text-gray-800" },
+    header: { blue: "text-white", white: "text-white" },
+    subheader: { blue: "text-white", white: "text-white" },
   },
-  bgColor: { blue: "bg-blue-600", white: "bg-white " },
+  bgColor: { blue: "", white: "" },
 };
 
 enum Type {

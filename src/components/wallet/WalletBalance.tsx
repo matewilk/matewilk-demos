@@ -17,7 +17,7 @@ const WalletPlaceholder = () => {
           : "Connect Wallet"}
       </h1>
       {error && (
-        <div className="text-sm font-bold text-red-400">
+        <div className="text-sm font-thin text-red-400">
           <div>{error.message}</div>
         </div>
       )}
@@ -43,7 +43,7 @@ const Balance = ({ showSendForm }: { showSendForm: boolean }) => {
     } transition-all duration-300 ease-in-out`;
 
   return (
-    <div className={`flex flex-col gap-5 ${animateText()}`}>
+    <div className={`flex flex-col gap-5 ${animateText()} text-slate-200`}>
       <div className="flex-col text-center">
         <span>Your Address</span>
         <h3 className={animateText("lg")}>{truncateEthAddress(address)}</h3>
@@ -56,7 +56,7 @@ const Balance = ({ showSendForm }: { showSendForm: boolean }) => {
           >{`${data?.formatted} ${data?.symbol}`}</h3>
         </div>
         <div className="flex items-center justify-center">
-          <h3 className="text-lg text-slate-500">{`£ ${balanceFiat}`}</h3>
+          <h3 className="text-lg font-normal text-white">{`£ ${balanceFiat}`}</h3>
         </div>
       </div>
     </div>
@@ -82,7 +82,7 @@ const WalletBalance = ({
 
   return (
     <div
-      className={`${animateHeight} w-full max-w-3xl overflow-hidden rounded-xl bg-white px-10`}
+      className={`${animateHeight} frosted w-full max-w-3xl overflow-hidden rounded-xl px-10`}
     >
       {isLoading || !isConnected ? (
         <WalletPlaceholder />

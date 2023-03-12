@@ -144,7 +144,7 @@ export const SendTransactionForm = ({
           })}
           aria-label="Recipient address"
           placeholder="0xA0Cf…342e"
-          className="h-8 rounded bg-slate-50 px-2"
+          className="frosted h-8 rounded px-2"
           onChange={(e) => {
             setTo(e.target.value);
             setValue("address", e.target.value);
@@ -170,7 +170,7 @@ export const SendTransactionForm = ({
             })}
             aria-label="Amount (ether)"
             placeholder="0.5"
-            className="h-8 flex-1 rounded bg-slate-50 px-2"
+            className="frosted h-8 flex-1 rounded px-2"
             onChange={(e) => {
               const re = /^\d+(\.\d{0,18})?$/;
               if (e.target.value === "" || re.test(e.target.value)) {
@@ -187,14 +187,14 @@ export const SendTransactionForm = ({
             placeholder={`£ ${
               isNaN(parseFloat(amountFiat)) ? "50" : amountFiat
             }`}
-            className="h-8 w-1/3 rounded bg-slate-50 px-2 sm:w-1/4"
+            className="frosted h-8 w-1/3 rounded px-2 sm:w-1/4"
             readOnly
           />
         </div>
         <p className="text-sm text-red-600">{errors.amount?.message}</p>
       </div>
 
-      <span className="mt-3 mb-1 h-0.5 w-full bg-slate-100"></span>
+      <span className="mt-3 mb-1 h-[1px] w-full bg-purple-400"></span>
 
       <div className="flex flex-col">
         <label htmlFor="gas">Gas (ether)</label>
@@ -205,14 +205,14 @@ export const SendTransactionForm = ({
             placeholder={ethGasPrice || "0.0005"}
             className={`${
               isFetching ? "text-slate-300" : "text-gray-500"
-            } h-8 flex-1 rounded bg-slate-50 px-2`}
+            } frosted h-8 flex-1 rounded px-2`}
             readOnly
           />
           <input
             id="gas-fiat"
             aria-label="Gas (fiat)"
             placeholder={`£ ${feeFiat || "2.36"}`}
-            className="h-8 w-1/3 rounded bg-slate-50 px-2 sm:w-1/4"
+            className="frosted h-8 w-1/3 rounded px-2 sm:w-1/4"
             readOnly
           />
         </div>
@@ -228,7 +228,7 @@ export const SendTransactionForm = ({
         </div>
       </div>
 
-      <span className="mt-3 mb-1 h-0.5 w-full bg-slate-100"></span>
+      <span className="mt-3 mb-1 h-[1px] w-full bg-purple-400"></span>
 
       <div className="flex flex-col">
         <label htmlFor="Total">Total (ether)</label>
@@ -239,7 +239,7 @@ export const SendTransactionForm = ({
             placeholder={total.toString()}
             className={`${
               isFetching ? "text-slate-300" : "text-gray-500"
-            } h-8 flex-1 rounded bg-slate-50 px-2`}
+            } frosted h-8 flex-1 rounded px-2`}
             readOnly
           />
           <input
@@ -248,7 +248,7 @@ export const SendTransactionForm = ({
             placeholder={`£ ${
               isNaN(parseFloat(totalFiat)) ? feeFiat : totalFiat
             }`}
-            className="h-8 w-1/3 rounded bg-slate-50 px-2 sm:w-1/4"
+            className="frosted h-8 w-1/3 rounded px-2 sm:w-1/4"
             readOnly
           />
         </div>

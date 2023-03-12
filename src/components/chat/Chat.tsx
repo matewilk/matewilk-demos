@@ -23,15 +23,17 @@ const Message = ({ id, text, userId, userName }: Message) => {
     >
       <li
         key={id}
-        className={`rounded-xl px-3 py-2 shadow ${
+        className={`rounded-xl px-3 py-2 text-slate-700 shadow ${
           userId === uId
-            ? "rounded-tr-none bg-green-100 text-right"
-            : "rounded-tl-none bg-blue-100 text-left"
+            ? "rounded-tr-none bg-[#d283fa] text-right"
+            : "rounded-tl-none bg-[#8dd9fe] text-left"
         }`}
       >
         {text}
       </li>
-      <span className="text-xs">{userId === uId ? "You" : userName}</span>
+      <span className="text-xs text-slate-300">
+        {userId === uId ? "You" : userName}
+      </span>
     </div>
   );
 };
@@ -61,10 +63,10 @@ export const Chat = ({
   return (
     // h-1 defines hegith of parent element
     // and makes child (whith h-full) grow to fill height
-    <section id="chat" aria-label="chat" className="h-1 flex-grow bg-blue-100">
-      <div className="mx-auto h-full max-w-3xl pb-28 pt-10">
+    <section id="chat" aria-label="chat" className="h-1 flex-grow">
+      <div className="mx-auto h-full max-w-3xl pb-28 lg:pt-10">
         {/* chat window - flex-col-reverse to always scroll to the bottom of container */}
-        <div className="flex h-full flex-col-reverse overflow-auto rounded-xl bg-white p-10">
+        <div className="mb-1 flex h-full flex-col-reverse overflow-auto rounded-xl bg-black/20 p-10">
           <MessageList messages={all} />
         </div>
         <MessageForm sendMessage={sendMessage} chatId={chatId} error={error} />

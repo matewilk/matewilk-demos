@@ -37,11 +37,11 @@ export const MessageForm = ({
     <form
       onSubmit={handleSubmit(onSubmit)}
       className="flex flex-row rounded-xl
-       border-t-2 bg-white p-4"
+       bg-black/20 p-4"
     >
-      <div className="flex flex-grow flex-col">
+      <div className="flex flex-grow flex-col text-white">
         <textarea
-          className="max-h-16 rounded bg-slate-100 p-2"
+          className="frosted max-h-16 rounded p-2"
           id="message"
           aria-label="message"
           {...register("message", { required: true })}

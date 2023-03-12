@@ -6,12 +6,13 @@ import {
 } from "@heroicons/react/24/outline";
 import { GetAccountResult } from "@wagmi/core";
 import { useWallet } from "@/hooks/useWallet";
-import { ReducerStateWithoutAction } from "react";
 
 const SendButton = ({
   setShowSendForm,
+  showSendForm,
 }: {
   setShowSendForm: Dispatch<SetStateAction<boolean>>;
+  showSendForm: boolean;
 }) => {
   const { account } = useWallet();
   const { isConnected } = account;
@@ -28,9 +29,7 @@ const SendButton = ({
       >
         <ChevronDoubleUpIcon
           className={`h-14 w-14 rounded-md ${
-            isConnected
-              ? "bg-blue-300 hover:bg-blue-400 active:bg-blue-500"
-              : "bg-slate-200"
+            isConnected && !showSendForm ? "btn-blue" : "border-2 bg-white/10"
           } p-3`}
         />
         Send
@@ -50,8 +49,8 @@ const ConnectButton = () => {
       <button className="flex flex-col items-center" onClick={() => handler()}>
         <PlusIcon
           className={`h-14 w-14 rounded-md ${
-            isConnected ? "bg-slate-200" : "bg-blue-300"
-          }  p-3 hover:bg-blue-400 active:bg-blue-500`}
+            isConnected ? "btn-white" : "btn-blue"
+          }  p-3`}
         />
         {isConnected ? "Disconnect Wallet" : "Connect Wallet"}
       </button>
@@ -66,14 +65,14 @@ const ReceiveButton = () => {
   return (
     <div
       className={`flex flex-col items-center gap-1 p-3 ${
-        !isConnected && "text-slate-400"
+        isConnected ? "text-slate-400" : "text-slate-400"
       }`}
     >
       <ChevronDoubleDownIcon
         className={`h-14 w-14 rounded-md ${
           isConnected
-            ? "bg-blue-300 hover:bg-blue-400 active:bg-blue-500"
-            : "bg-slate-200"
+            ? "border-2 border-slate-400"
+            : "border-2 border-slate-400"
         } p-3`}
       />
       Request
@@ -83,12 +82,17 @@ const ReceiveButton = () => {
 
 const WalletActions = ({
   setShowSendForm,
+  showSendForm,
 }: {
   setShowSendForm: Dispatch<SetStateAction<boolean>>;
+  showSendForm: boolean;
 }) => {
   return (
-    <div className="flex w-full max-w-3xl flex-row items-center justify-around rounded-xl bg-white pt-2">
-      <SendButton setShowSendForm={setShowSendForm} />
+    <div className="frosted flex w-full max-w-3xl flex-row items-center justify-around rounded-xl pt-2">
+      <SendButton
+        setShowSendForm={setShowSendForm}
+        showSendForm={showSendForm}
+      />
       <ConnectButton />
       <ReceiveButton />
     </div>
