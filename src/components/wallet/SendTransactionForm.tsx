@@ -194,7 +194,7 @@ export const SendTransactionForm = ({
         <p className="text-sm text-red-600">{errors.amount?.message}</p>
       </div>
 
-      <span className="mt-3 mb-1 h-0.5 w-full bg-slate-100"></span>
+      <span className="mt-3 mb-1 h-[1px] w-full bg-purple-400"></span>
 
       <div className="flex flex-col">
         <label htmlFor="gas">Gas (ether)</label>
@@ -228,7 +228,7 @@ export const SendTransactionForm = ({
         </div>
       </div>
 
-      <span className="mt-3 mb-1 h-0.5 w-full bg-slate-100"></span>
+      <span className="mt-3 mb-1 h-[1px] w-full bg-purple-400"></span>
 
       <div className="flex flex-col">
         <label htmlFor="Total">Total (ether)</label>

@@ -43,7 +43,7 @@ const Balance = ({ showSendForm }: { showSendForm: boolean }) => {
     } transition-all duration-300 ease-in-out`;
 
   return (
-    <div className={`flex flex-col gap-5 ${animateText()}`}>
+    <div className={`flex flex-col gap-5 ${animateText()} text-slate-200`}>
       <div className="flex-col text-center">
         <span>Your Address</span>
         <h3 className={animateText("lg")}>{truncateEthAddress(address)}</h3>

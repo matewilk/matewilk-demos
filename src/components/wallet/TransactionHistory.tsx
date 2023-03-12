@@ -78,7 +78,7 @@ const TxTableRow = ({
 }) => {
   const { day, month } = formatDate(Number(timestamp));
   return (
-    <tr className="border-b text-center text-slate-300 last:border-b-0 hover:bg-white/10">
+    <tr className="border-b border-purple-300 text-center text-slate-300 last:border-b-0 hover:bg-white/10">
       <th scope="row" className="whitespace-nowrap py-4 px-4 font-thin">
         {day} {month}
       </th>
@@ -104,7 +104,7 @@ const TxTableRow = ({
 const AnimatedRow = () => {
   return (
     <tr
-      className="h-12 animate-pulse border-b bg-slate-100 bg-opacity-5 last:border-b-0"
+      className="h-12 animate-pulse border-b border-purple-300 bg-slate-100 bg-opacity-5 last:border-b-0"
       data-testid="animated-loading-row"
     >
       <th className="w-16">
