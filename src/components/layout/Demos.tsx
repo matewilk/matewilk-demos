@@ -27,8 +27,11 @@ export default function Demos() {
       </div>
       <div className="mt-6 space-y-12 py-5 lg:grid lg:grid-cols-2 lg:gap-x-6 lg:space-y-0">
         {callouts.map((callout) => (
-          <div key={callout.name} className="group relative">
-            <div className="sm:aspect-w-2 sm:aspect-h-1 lg:aspect-w-1 lg:aspect-h-1 relative h-80 w-full overflow-hidden rounded-lg group-hover:opacity-75 sm:h-64">
+          <div
+            key={callout.name}
+            className="group relative transform rounded-lg border border-white border-opacity-10 bg-black/20 p-5 transition duration-500 hover:scale-105"
+          >
+            <div className="sm:aspect-w-2 sm:aspect-h-1 lg:aspect-w-1 lg:aspect-h-1 relative h-80 w-full transform overflow-hidden rounded-lg transition duration-500 group-hover:opacity-75 sm:h-64">
               <Image
                 layout="fill"
                 src={callout.imageSrc}
