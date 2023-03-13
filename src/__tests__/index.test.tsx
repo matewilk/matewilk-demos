@@ -1,4 +1,4 @@
-import { renderWithAppProviders, screen } from "@/utils/test-utils";
+import { renderWithAppProviders } from "@/utils/test-utils";
 
 import Home from "@/pages/index";
 

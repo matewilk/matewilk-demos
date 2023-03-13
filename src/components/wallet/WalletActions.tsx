@@ -29,7 +29,9 @@ const SendButton = ({
       >
         <ChevronDoubleUpIcon
           className={`h-14 w-14 rounded-md ${
-            isConnected && !showSendForm ? "btn-blue" : "border-2 bg-white/10"
+            isConnected && !showSendForm
+              ? "btn-blue"
+              : "border-2 border-slate-400"
           } p-3`}
         />
         Send

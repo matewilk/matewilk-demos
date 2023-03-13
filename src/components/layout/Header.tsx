@@ -28,7 +28,7 @@ const menuItems: MenuItem[] = [
 const dashItems: MenuItem[] = [
   {
     text: "Wallet",
-    href: "/dashboard",
+    href: "/wallet",
   },
   {
     text: "Chats",
@@ -99,25 +99,25 @@ const Header = () => {
               ))}
           {authenticated ? (
             <>
-              <li className="btn-blue md:absolute md:right-28">
+              {/* <li className="btn-blue md:absolute md:right-28">
                 <a href="/games">Games</a>
-              </li>
+              </li> */}
               <li className="btn-white md:absolute md:right-2">
                 <button onClick={() => signOut()}>Sign out</button>
               </li>
             </>
           ) : (
             <>
-              <li className="btn-white md:absolute md:right-44">
+              <li className="btn-white md:absolute md:right-2">
                 <button onClick={() => setIsSignInPopUpOpen(true)}>
                   Sign in
                 </button>
               </li>
-              <li className="btn-blue md:absolute md:right-2">
+              {/* <li className="btn-blue md:absolute md:right-2">
                 <button onClick={() => setIsSignInPopUpOpen(true)}>
                   Get started today
                 </button>
-              </li>
+              </li> */}
             </>
           )}
         </ul>

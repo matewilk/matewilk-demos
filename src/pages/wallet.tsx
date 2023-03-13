@@ -8,7 +8,7 @@ import TransactionHistory from "@/components/wallet/TransactionHistory";
 import { client } from "@/components/wallet/wagmi.config";
 import { WalletProvider } from "@/providers/WalletContextProvider";
 
-const Dashboard: NextPage = () => {
+const WalletPage: NextPage = () => {
   const isMounted = useIsMounted();
 
   return (
@@ -27,4 +27,4 @@ const Dashboard: NextPage = () => {
   );
 };
 
-export default Dashboard;
+export default WalletPage;

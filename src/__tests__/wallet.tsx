@@ -1,10 +1,10 @@
 import { renderWithAppProviders, screen } from "@/utils/test-utils";
 
-import Dashboard from "@/pages/dashboard";
+import Wallet from "@/pages/wallet";
 
-describe("Dashboard", () => {
+describe("Wallet", () => {
   it("renders a heading", async () => {
-    renderWithAppProviders(<Dashboard />);
+    renderWithAppProviders(<Wallet />);
 
     const heading = await screen.findByRole("heading", {
       name: /Connect Wallet/i,
