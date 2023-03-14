@@ -6,8 +6,8 @@ import Demos from "./Demos";
 
 type SectionData = {
   id: string;
-  header?: string;
-  subheader?: string;
+  header?: string | undefined;
+  subheader?: string | undefined;
   children?: ReactNode | undefined;
 };
 
@@ -35,8 +35,8 @@ const Sections = () => {
               key={index}
               type={index % 2 === 0 ? "blue" : "white"}
               sectionId={id}
-              headerText={header}
-              subheaderText={subheader}
+              headerText={header as string}
+              subheaderText={subheader as string}
             >
               {children}
             </Section>
