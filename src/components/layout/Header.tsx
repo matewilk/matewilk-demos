@@ -34,10 +34,10 @@ const MenuItem = ({ text, href }: MenuItem) => {
       <li
         className={`${
           active ? "text-fuchsia-500" : ""
-        } text group relative mx-2 cursor-pointer py-2 px-2 text-lg`}
+        } text group relative mx-2 transform cursor-pointer py-2 px-2 text-lg transition duration-500 hover:text-fuchsia-500`}
       >
         {text}
-        <span className="absolute left-0 bottom-0 inline-block h-[2px] w-full origin-top-right scale-0 bg-[#BB33FF] align-middle transition-transform duration-500 group-hover:origin-top-left group-hover:scale-100"></span>
+        <span className="absolute left-0 bottom-0 inline-block h-[2px] w-full origin-top-right scale-0 bg-fuchsia-500 align-middle transition-transform duration-500 group-hover:origin-top-left group-hover:scale-100"></span>
       </li>
     </Link>
   );
@@ -53,7 +53,7 @@ const Header = () => {
   return (
     <header
       id="intro"
-      className="sticky top-0 z-50 h-16 border-b border-white border-opacity-20 bg-[#2e026d] text-slate-200 shadow-lg"
+      className="sticky top-0 z-50 h-16 border-b border-white border-opacity-20 bg-[#2e026d] text-white shadow-lg"
     >
       <div
         id="nav-container"
