@@ -6,16 +6,14 @@ import Demos from "./Demos";
 
 type SectionData = {
   id: string;
-  header: string;
-  subheader: string;
+  header?: string;
+  subheader?: string;
   children?: ReactNode | undefined;
 };
 
 const sections: SectionData[] = [
   {
     id: "demos",
-    header: "Demos",
-    subheader: "Select a demo to get started and enjoy the experience.",
     children: <Demos />,
   },
   {

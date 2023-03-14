@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { signOut, useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 import Link from "next/link";
 
 import { useSignInPopUp } from "@/hooks/useSignInPopUp";
@@ -8,24 +9,9 @@ type MenuItem = { text: string; href: string };
 
 const menuItems: MenuItem[] = [
   {
-    text: "Intro",
-    href: "/#intro",
+    text: "Home",
+    href: "/#",
   },
-  {
-    text: "Features",
-    href: "/#features",
-  },
-  {
-    text: "About",
-    href: "/#about",
-  },
-  {
-    text: "FAQs",
-    href: "/#faqs",
-  },
-];
-
-const dashItems: MenuItem[] = [
   {
     text: "Wallet",
     href: "/wallet",
@@ -34,13 +20,26 @@ const dashItems: MenuItem[] = [
     text: "Chats",
     href: "/chats",
   },
+  {
+    text: "FAQs",
+    href: "/#faqs",
+  },
 ];
 
 const MenuItem = ({ text, href }: MenuItem) => {
+  const { pathname, asPath } = useRouter();
+  const active = asPath === href || pathname === href;
   return (
-    <li className="cursor-pointer rounded-full py-2 px-4 hover:bg-slate-100 hover:text-gray-600">
-      <Link href={href}>{text}</Link>
-    </li>
+    <Link href={href}>
+      <li
+        className={`${
+          active ? "text-fuchsia-500" : ""
+        } text group relative mx-2 cursor-pointer py-2 px-2 text-lg`}
+      >
+        {text}
+        <span className="absolute left-0 bottom-0 inline-block h-[2px] w-full origin-top-right scale-0 bg-[#BB33FF] align-middle transition-transform duration-500 group-hover:origin-top-left group-hover:scale-100"></span>
+      </li>
+    </Link>
   );
 };
 
@@ -90,18 +89,11 @@ const Header = () => {
             open ? "" : "hidden"
           } xs:shadow-lg w-full space-y-2 bg-[#2e026d] p-3 text-center font-thin md:flex md:h-12 md:flex-row md:items-center md:justify-start md:space-x-5 md:space-y-0 md:pl-16 md:shadow-none`}
         >
-          {authenticated
-            ? dashItems.map((item, index) => (
-                <MenuItem key={index} href={item.href} text={item.text} />
-              ))
-            : menuItems.map((item, index) => (
-                <MenuItem key={index} href={item.href} text={item.text} />
-              ))}
+          {menuItems.map((item, index) => (
+            <MenuItem key={index} href={item.href} text={item.text} />
+          ))}
           {authenticated ? (
             <>
-              {/* <li className="btn-blue md:absolute md:right-28">
-                <a href="/games">Games</a>
-              </li> */}
               <li className="btn-white md:absolute md:right-2">
                 <button onClick={() => signOut()}>Sign out</button>
               </li>
@@ -113,11 +105,6 @@ const Header = () => {
                   Sign in
                 </button>
               </li>
-              {/* <li className="btn-blue md:absolute md:right-2">
-                <button onClick={() => setIsSignInPopUpOpen(true)}>
-                  Get started today
-                </button>
-              </li> */}
             </>
           )}
         </ul>
