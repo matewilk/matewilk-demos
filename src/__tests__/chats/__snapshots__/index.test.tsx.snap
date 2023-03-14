@@ -23,12 +23,12 @@ exports[`Chats should render a list of chats and header 1`] = `
             class="flex w-full flex-col gap-2 py-5 px-5"
           >
             <li
-              class="frosted w-full cursor-pointer rounded-md p-5"
+              class="frosted w-full cursor-pointer rounded-md p-5 duration-500 hover:bg-white/10"
             >
               Chat 1
             </li>
             <li
-              class="frosted w-full cursor-pointer rounded-md p-5"
+              class="frosted w-full cursor-pointer rounded-md p-5 duration-500 hover:bg-white/10"
             >
               Chat 2
             </li>

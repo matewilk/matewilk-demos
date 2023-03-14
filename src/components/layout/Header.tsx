@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { signOut, useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 import Link from "next/link";
 
 import { useSignInPopUp } from "@/hooks/useSignInPopUp";
@@ -8,16 +9,16 @@ type MenuItem = { text: string; href: string };
 
 const menuItems: MenuItem[] = [
   {
-    text: "Intro",
-    href: "/#intro",
+    text: "Home",
+    href: "/#",
   },
   {
-    text: "Features",
-    href: "/#features",
+    text: "Wallet",
+    href: "/wallet",
   },
   {
-    text: "About",
-    href: "/#about",
+    text: "Chats",
+    href: "/chats",
   },
   {
     text: "FAQs",
@@ -25,22 +26,20 @@ const menuItems: MenuItem[] = [
   },
 ];
 
-const dashItems: MenuItem[] = [
-  {
-    text: "Wallet",
-    href: "/dashboard",
-  },
-  {
-    text: "Chats",
-    href: "/chats",
-  },
-];
-
 const MenuItem = ({ text, href }: MenuItem) => {
+  const { pathname, asPath } = useRouter();
+  const active = asPath === href || pathname === href;
   return (
-    <li className="cursor-pointer rounded-full py-2 px-4 hover:bg-slate-100 hover:text-gray-600">
-      <Link href={href}>{text}</Link>
-    </li>
+    <Link href={href}>
+      <li
+        className={`${
+          active ? "text-fuchsia-500" : ""
+        } text group relative mx-2 transform cursor-pointer py-2 px-2 text-lg transition duration-500 hover:text-fuchsia-500`}
+      >
+        {text}
+        <span className="absolute left-0 bottom-0 inline-block h-[2px] w-full origin-top-right scale-0 bg-fuchsia-500 align-middle transition-transform duration-500 group-hover:origin-top-left group-hover:scale-100"></span>
+      </li>
+    </Link>
   );
 };
 
@@ -54,7 +53,7 @@ const Header = () => {
   return (
     <header
       id="intro"
-      className="sticky top-0 z-50 h-16 border-b border-white border-opacity-20 bg-[#2e026d] text-slate-200 shadow-lg"
+      className="sticky top-0 z-50 h-16 border-b border-white border-opacity-20 bg-[#2e026d] text-white shadow-lg"
     >
       <div
         id="nav-container"
@@ -90,32 +89,20 @@ const Header = () => {
             open ? "" : "hidden"
           } xs:shadow-lg w-full space-y-2 bg-[#2e026d] p-3 text-center font-thin md:flex md:h-12 md:flex-row md:items-center md:justify-start md:space-x-5 md:space-y-0 md:pl-16 md:shadow-none`}
         >
-          {authenticated
-            ? dashItems.map((item, index) => (
-                <MenuItem key={index} href={item.href} text={item.text} />
-              ))
-            : menuItems.map((item, index) => (
-                <MenuItem key={index} href={item.href} text={item.text} />
-              ))}
+          {menuItems.map((item, index) => (
+            <MenuItem key={index} href={item.href} text={item.text} />
+          ))}
           {authenticated ? (
             <>
-              <li className="btn-blue md:absolute md:right-28">
-                <a href="/games">Games</a>
-              </li>
               <li className="btn-white md:absolute md:right-2">
                 <button onClick={() => signOut()}>Sign out</button>
               </li>
             </>
           ) : (
             <>
-              <li className="btn-white md:absolute md:right-44">
+              <li className="btn-white md:absolute md:right-2">
                 <button onClick={() => setIsSignInPopUpOpen(true)}>
                   Sign in
-                </button>
-              </li>
-              <li className="btn-blue md:absolute md:right-2">
-                <button onClick={() => setIsSignInPopUpOpen(true)}>
-                  Get started today
                 </button>
               </li>
             </>

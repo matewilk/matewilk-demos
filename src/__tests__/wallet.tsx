@@ -1,10 +1,21 @@
 import { renderWithAppProviders, screen } from "@/utils/test-utils";
 
-import Dashboard from "@/pages/dashboard";
+jest.mock("next/router", () => ({
+  useRouter() {
+    return {
+      route: "/",
+      pathname: "",
+      query: "",
+      asPath: "",
+    };
+  },
+}));
 
-describe("Dashboard", () => {
+import Wallet from "@/pages/wallet";
+
+describe("Wallet", () => {
   it("renders a heading", async () => {
-    renderWithAppProviders(<Dashboard />);
+    renderWithAppProviders(<Wallet />);
 
     const heading = await screen.findByRole("heading", {
       name: /Connect Wallet/i,

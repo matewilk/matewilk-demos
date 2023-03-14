@@ -1,32 +1,20 @@
-import Section from "./Section";
-import Tabs, { TabsVertical } from "./Tabs";
-import FaqsGrid from "./FaqsGrid";
 import { ReactNode } from "react";
+
+import Section from "./Section";
+import FaqsGrid from "./FaqsGrid";
+import Demos from "./Demos";
 
 type SectionData = {
   id: string;
-  header: string;
-  subheader: string;
+  header?: string | undefined;
+  subheader?: string | undefined;
   children?: ReactNode | undefined;
 };
 
 const sections: SectionData[] = [
   {
-    id: "features",
-    header: "Everything you need to exchange your tokens.",
-    subheader: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-    children: <Tabs />,
-  },
-  {
-    id: "about",
-    header: "Simplify everyday token operations.",
-    subheader: "Etiam eu dui pulvinar, pharetra odio.",
-    children: <TabsVertical />,
-  },
-  {
-    id: "getstarted",
-    header: "Get started today.",
-    subheader: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+    id: "demos",
+    children: <Demos />,
   },
   {
     id: "faqs",
@@ -47,8 +35,8 @@ const Sections = () => {
               key={index}
               type={index % 2 === 0 ? "blue" : "white"}
               sectionId={id}
-              headerText={header}
-              subheaderText={subheader}
+              headerText={header as string}
+              subheaderText={subheader as string}
             >
               {children}
             </Section>
