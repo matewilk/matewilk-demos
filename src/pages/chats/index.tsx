@@ -32,7 +32,7 @@ const ChatsList = ({ chats }: { chats: Chat[] }) => {
                 href={`/chats/${chat.id}`}
                 key={chat.id}
               >
-                <li className="frosted w-full cursor-pointer rounded-md p-5">
+                <li className="frosted w-full cursor-pointer rounded-md p-5 duration-500 hover:bg-white/10">
                   {chat.name}
                 </li>
               </Link>
