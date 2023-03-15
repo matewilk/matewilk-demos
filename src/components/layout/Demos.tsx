@@ -29,7 +29,7 @@ export default function Demos() {
         {callouts.map((callout) => (
           <div
             key={callout.name}
-            className="group relative transform rounded-lg border border-white border-opacity-10 bg-black/20 p-5 transition duration-500 hover:scale-105"
+            className="group relative transform rounded-lg border border-white border-opacity-10 bg-black/20 p-5 transition duration-500 hover:scale-105 hover:shadow-2xl"
           >
             <div className="sm:aspect-w-2 sm:aspect-h-1 lg:aspect-w-1 lg:aspect-h-1 relative h-80 w-full transform overflow-hidden rounded-lg transition duration-500 group-hover:opacity-75 sm:h-64">
               <Image
@@ -39,8 +39,11 @@ export default function Demos() {
                 className="h-full w-full object-cover object-center"
               />
             </div>
-            <h3 className="mt-6 text-sm text-slate-200">
-              <a href={callout.href}>
+            <h3 className="group mt-6 text-lg font-semibold text-slate-200">
+              <a
+                href={callout.href}
+                className="group-hover:text-shadow-lg transition-all duration-500 group-hover:text-slate-200"
+              >
                 <span className="absolute inset-0" />
                 {callout.name}
               </a>

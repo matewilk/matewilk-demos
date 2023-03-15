@@ -1,22 +1,19 @@
 version: '3.1'
+
 services:
   nextjs:
     container_name: nextjs
     build:
       context: ./
+      target: production
     env_file:
       - ./.env
-    # volumes used for nextjs hot reaload
-    volumes:
-      - ./:/app
-      - /app/node_modules
-      - /app/.next
     ports:
       - 3000:3000
-      - 3001:3001
     depends_on:
       - mongo
       - redis
+
   mongo:
     container_name: mongo
     image: 'bitnami/mongodb:4.4'
@@ -30,6 +27,7 @@ services:
       - 27017:27017
     volumes:
       - ./prisma/data/mongo:/data/db
+
   redis:
     container_name: redis
     image: bitnami/redis:latest
@@ -38,6 +36,5 @@ services:
     environment:
       - ALLOW_EMPTY_PASSWORD=yes
     command: /opt/bitnami/scripts/redis/run.sh --maxmemory 100mb
-    # mount volume to persist data after docker is stopped
     volumes:
       - ./.redis/data/:/bitnami/redis/data
