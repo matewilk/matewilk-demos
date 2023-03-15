@@ -16,3 +16,9 @@
     @apply border border-white border-opacity-10 bg-gray-100 bg-opacity-5 backdrop-blur-md backdrop-filter
   }
 }
+
+@layer utilities {
+  .text-shadow-lg {
+    text-shadow: 0 0 15px #33BBFF, 0 0 25px #33BBFF, 0 0 35px #33BBFF, 0 0 45px #33BBFF;
+  }
+}
